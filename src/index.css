@@ -10,4 +10,11 @@ body {
   line-height: 1.5;
   color: #242424;
   background: #f2f3f4;
+  user-select: none;
+  cursor: default;
+}
+
+.enableSelection {
+  user-select: text;
+  cursor: text;
 }

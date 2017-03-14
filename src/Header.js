@@ -1,10 +1,11 @@
 import React, { PropTypes } from "react";
 import Logo from "./Logo";
+import Selectable from "./Selectable";
 import "./Header.css";
 
 export default function Header({ title }) {
   const headerRight = title
-    ? <h1 className="Header-right">{title}</h1>
+    ? <h1 className="Header-right"><Selectable>{title}</Selectable></h1>
     : <div className="Header-right" />;
 
   return (
