@@ -12,4 +12,12 @@
 
 .Header-right {
   flex: 1;
+  padding-left: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.Header h1 {
+  font-size: 23px;
+  font-weight: 400;
 }

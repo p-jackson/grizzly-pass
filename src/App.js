@@ -11,7 +11,7 @@ export default function App() {
         <SideMenu />
       </div>
       <div className="App-header">
-        <Header />
+        <Header title="Dummy Projects 2017" />
       </div>
       <div className="App-content">
         <Card title="Coffee Swirl" person="Joe Lemon" />

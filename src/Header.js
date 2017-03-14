@@ -1,14 +1,22 @@
-import React from "react";
+import React, { PropTypes } from "react";
 import Logo from "./Logo";
 import "./Header.css";
 
-export default function Header() {
+export default function Header({ title }) {
+  const headerRight = title
+    ? <h1 className="Header-right">{title}</h1>
+    : <div className="Header-right" />;
+
   return (
     <header className="Header">
       <div className="Header-left">
         <Logo />
       </div>
-      <div className="Header-right" />
+      {headerRight}
     </header>
   );
 }
+
+Header.propTypes = {
+  title: PropTypes.string
+};

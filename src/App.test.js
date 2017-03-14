@@ -10,6 +10,10 @@ it("shows a header", () => {
   expect(app.find(Header).length).toBe(1);
 });
 
+it("passes the dummy document title to the header", () => {
+  expect(app.find(Header).prop("title")).toBe("Dummy Projects 2017");
+});
+
 it("shows a dummy project card with dummy fields", () => {
   expect(app.find(Card).props()).toMatchObject({
     title: "Coffee Swirl",
