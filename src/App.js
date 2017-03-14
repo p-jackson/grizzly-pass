@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import SideMenu from "./SideMenu";
+import Card from "./Card";
 import "./App.css";
 
 export default function App() {
@@ -12,9 +13,9 @@ export default function App() {
       <div className="App-header">
         <Header />
       </div>
-      <p className="App-content">
-        https://grizzly-pass.surge.sh
-      </p>
+      <div className="App-content">
+        <Card title="Coffee Swirl" person="Joe Lemon" />
+      </div>
     </div>
   );
 }
