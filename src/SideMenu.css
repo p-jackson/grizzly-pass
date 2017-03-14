@@ -1,0 +1,6 @@
+.SideMenu {
+  background: #2f3d44;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

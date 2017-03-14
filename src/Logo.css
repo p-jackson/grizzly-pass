@@ -1,0 +1,10 @@
+.Logo {
+  background: #fb7818;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 23px;
+  height: 100%;
+}

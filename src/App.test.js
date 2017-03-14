@@ -1,11 +1,12 @@
 import React from "react";
 import { shallow } from "enzyme";
 import App from "./App";
+import Header from "./Header";
 
 const app = shallow(<App />);
 
-it("shows the project name in a heading", () => {
-  expect(app.find("h2").text()).toBe("grizzly-pass");
+it("shows a header", () => {
+  expect(app.find(Header).length).toBe(1);
 });
 
 it("shows the url", () => {
