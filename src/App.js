@@ -14,7 +14,12 @@ export default function App() {
         <Header title="Dummy Projects 2017" />
       </div>
       <div className="App-content">
-        <Card title="Coffee Swirl" person="Joe Lemon" />
+        <Card
+          title="Coffee Swirl"
+          person="Joe Lemon"
+          progress={13}
+          status="ontrack"
+        />
       </div>
     </div>
   );

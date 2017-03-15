@@ -17,6 +17,8 @@ it("passes the dummy document title to the header", () => {
 it("shows a dummy project card with dummy fields", () => {
   expect(app.find(Card).props()).toMatchObject({
     title: "Coffee Swirl",
-    person: "Joe Lemon"
+    person: "Joe Lemon",
+    progress: 13,
+    status: "ontrack"
   });
 });
