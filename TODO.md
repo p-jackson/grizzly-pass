@@ -3,7 +3,7 @@
 - ~~Progress~~
 - ~~Health/at risk text~~
 - ~~Dates and month columns~~
-- Drag-drop json file
+- ~~Drag-drop json file~~
 - Labels
 - Filtering
 - Text search

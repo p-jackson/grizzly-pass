@@ -1,4 +1,4 @@
-exports[`test project demo data 1`] = `
+exports[`test uses the demo data as it's default projects state 1`] = `
 Array [
   Object {
     "id": "1",

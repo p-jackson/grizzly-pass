@@ -6,7 +6,7 @@ import Card from "./Card";
 import { ProjectShape } from "./types";
 import "./App.css";
 
-export default function App({ projects = [] }) {
+export default function App({ onFileDrop, title = "", projects = [] }) {
   const months = splitIntoMonths(projects).map(({ month, projects }) => {
     const cards = projects.map(project => (
       <Card
@@ -27,12 +27,16 @@ export default function App({ projects = [] }) {
   });
 
   return (
-    <div className="App">
+    <div
+      className="App"
+      onDrop={e => handleDrop(onFileDrop, e)}
+      onDragOver={handleDragOver}
+    >
       <div className="App-sideMenu">
         <SideMenu />
       </div>
       <div className="App-header">
-        <Header title="Dummy Projects 2017" />
+        <Header title={title} />
       </div>
       <div className="App-content">{months}</div>
     </div>
@@ -40,7 +44,9 @@ export default function App({ projects = [] }) {
 }
 
 App.propTypes = {
-  projects: PropTypes.arrayOf(ProjectShape)
+  onFileDrop: PropTypes.func.isRequired,
+  projects: PropTypes.arrayOf(ProjectShape),
+  title: PropTypes.string
 };
 
 function splitIntoMonths(projects) {
@@ -53,4 +59,22 @@ function splitIntoMonths(projects) {
       month: moment(month[0].time).format("MMMM"),
       projects: month
     }));
+}
+
+function handleDragOver(e) {
+  e.preventDefault();
+}
+
+function handleDrop(onFileDrop, e) {
+  e.preventDefault();
+  const dt = e.dataTransfer;
+  if (dt.items) {
+    const item = Array.prototype.find.call(
+      dt.items,
+      ({ kind }) => kind === "file"
+    );
+    if (item) onFileDrop(item.getAsFile());
+  } else if (dt.files.length) {
+    onFileDrop(dt.files[0]);
+  }
 }
