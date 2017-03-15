@@ -1,0 +1,20 @@
+exports[`test project demo data 1`] = `
+Array [
+  Object {
+    "id": "1",
+    "person": "Joe Lemon",
+    "progress": 13,
+    "status": "ontrack",
+    "time": "2017-03-15T10:54:04.445Z",
+    "title": "Coffee Swirl",
+  },
+  Object {
+    "id": "2",
+    "person": "Alex Apple",
+    "progress": 50,
+    "status": "onhold",
+    "time": "2017-04-12T10:54:04.445Z",
+    "title": "Rake Twister",
+  },
+]
+`;

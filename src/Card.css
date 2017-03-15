@@ -10,3 +10,16 @@
   font-size: 20px;
   font-weight: 600;
 }
+
+.Card-person {
+  font-weight: 600;
+  color: #666;
+}
+
+.Card-date {
+  color: #666;
+}
+
+.Card-progress {
+  padding-top: 15px;
+}
