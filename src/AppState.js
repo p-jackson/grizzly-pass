@@ -4,6 +4,7 @@ import App from "./App";
 
 export default class AppState extends Component {
   static propTypes = {
+    db: PropTypes.func.isRequired,
     readFileAsText: PropTypes.func.isRequired
   };
 

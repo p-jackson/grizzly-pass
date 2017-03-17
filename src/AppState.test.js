@@ -17,8 +17,9 @@ const jsonFile = {
   ]
 };
 
+const db = jest.fn();
 const readFileAsText = jest.fn(() => JSON.stringify(jsonFile));
-const appState = shallow(<AppState readFileAsText={readFileAsText} />);
+const appState = shallow(<AppState db={db} readFileAsText={readFileAsText} />);
 
 it("uses the demo data as it's default projects state", () => {
   expect(appState.state("projects")).toMatchSnapshot();
