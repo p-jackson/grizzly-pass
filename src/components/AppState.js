@@ -39,10 +39,11 @@ export default class AppState extends Component {
 
   async handleFileDrop(file) {
     const asText = await this.props.readFileAsText(file);
-    const { title, projects } = JSON.parse(asText);
+    const { title, projects, labels } = JSON.parse(asText);
     this.setState({
+      title,
       projects,
-      title
+      labels
     });
   }
 }

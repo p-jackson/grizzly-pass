@@ -83,5 +83,7 @@ it("updates the projects state if the dropped file is json", async function() {
   const mockFile = { MOCK: "FILE" };
   await appState.instance().handleFileDrop(mockFile);
   expect(readFileAsText).toHaveBeenCalledWith(mockFile);
+  expect(appState.state("title")).toEqual(jsonFile.title);
   expect(appState.state("projects")).toEqual(jsonFile.projects);
+  expect(appState.state("labels")).toEqual(jsonFile.labels);
 });
