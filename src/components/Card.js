@@ -3,7 +3,7 @@ import moment from "moment";
 import Selectable from "./Selectable";
 import ProgressBar from "./ProgressBar";
 import Label from "./Label";
-import { statusIds } from "./types";
+import { statusIds } from "../types";
 import "./Card.css";
 
 export default function Card(props) {

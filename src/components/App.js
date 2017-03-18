@@ -3,7 +3,7 @@ import moment from "moment";
 import Header from "./Header";
 import SideMenu from "./SideMenu";
 import Card from "./Card";
-import { statusIds } from "./types";
+import { statusIds } from "../types";
 import "./App.css";
 
 export default function App({ onFileDrop, title = "", projects = [] }) {

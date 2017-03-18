@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import AppState from "./AppState";
+import AppState from "./components/AppState";
 import { init as initDatabase } from "./database";
 import "./index.css";
 import debugFactory from "debug";
