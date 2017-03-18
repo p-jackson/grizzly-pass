@@ -8,7 +8,10 @@ import debugFactory from "debug";
 const debug = debugFactory("gp:main");
 debugFactory.log = console.log.bind(console);
 
+const { version: appVersion } = require("../package.json");
+
 async function run() {
+  console.log(appVersion);
   const db = await initDatabase(window);
 
   render(
