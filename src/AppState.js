@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { projects as demoProjects } from "./demo-data";
+import { projects as demoProjects, labels as demoLabels } from "./demo-data";
+import { generateLabelInfo } from "./labelutil";
 import App from "./App";
 
 export default class AppState extends Component {
@@ -13,14 +14,26 @@ export default class AppState extends Component {
     this.handleFileDrop = this.handleFileDrop.bind(this);
     this.state = {
       title: "Demo Dashboard",
-      projects: demoProjects
+      projects: demoProjects,
+      labels: demoLabels
     };
   }
 
   render() {
-    const { title, projects } = this.state;
+    const { title, projects, labels } = this.state;
+
+    const labelInfo = generateLabelInfo(labels);
+    const projectsWithLabels = projects.map(project => ({
+      ...project,
+      ...(!project.labels ? {} : { labels: getLabelInfo(labelInfo, project) })
+    }));
+
     return (
-      <App title={title} projects={projects} onFileDrop={this.handleFileDrop} />
+      <App
+        title={title}
+        projects={projectsWithLabels}
+        onFileDrop={this.handleFileDrop}
+      />
     );
   }
 
@@ -32,4 +45,8 @@ export default class AppState extends Component {
       title
     });
   }
+}
+
+function getLabelInfo(labelInfo, project) {
+  return project.labels.map(labelId => labelInfo[labelId]);
 }

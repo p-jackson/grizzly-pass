@@ -23,3 +23,12 @@
 .Card-progress {
   padding-top: 15px;
 }
+
+.Card-labels {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.Card-label {
+  padding-left: 4px;
+}

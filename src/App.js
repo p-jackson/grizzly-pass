@@ -3,7 +3,7 @@ import moment from "moment";
 import Header from "./Header";
 import SideMenu from "./SideMenu";
 import Card from "./Card";
-import { ProjectShape } from "./types";
+import { statusIds } from "./types";
 import "./App.css";
 
 export default function App({ onFileDrop, title = "", projects = [] }) {
@@ -16,6 +16,7 @@ export default function App({ onFileDrop, title = "", projects = [] }) {
         time={project.time}
         progress={project.progress}
         status={project.status}
+        labels={project.labels}
       />
     ));
     return (
@@ -45,7 +46,23 @@ export default function App({ onFileDrop, title = "", projects = [] }) {
 
 App.propTypes = {
   onFileDrop: PropTypes.func.isRequired,
-  projects: PropTypes.arrayOf(ProjectShape),
+  projects: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      person: PropTypes.string.isRequired,
+      time: PropTypes.string.isRequired,
+      progress: PropTypes.number.isRequired,
+      status: PropTypes.oneOf(statusIds).isRequired,
+      label: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.string.isRequired,
+          initial: PropTypes.string.isRequired,
+          colour: PropTypes.string.isRequired
+        })
+      )
+    })
+  ),
   title: PropTypes.string
 };
 

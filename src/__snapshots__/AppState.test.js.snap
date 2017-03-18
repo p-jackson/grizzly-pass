@@ -2,6 +2,9 @@ exports[`test uses the demo data as it's default projects state 1`] = `
 Array [
   Object {
     "id": "1",
+    "labels": Array [
+      "3",
+    ],
     "person": "Joe Lemon",
     "progress": 13,
     "status": "ontrack",
@@ -10,11 +13,28 @@ Array [
   },
   Object {
     "id": "2",
+    "labels": Array [
+      "3",
+      "4",
+    ],
     "person": "Alex Apple",
     "progress": 50,
     "status": "onhold",
     "time": "2017-04-12T10:54:04.445Z",
     "title": "Rake Twister",
+  },
+]
+`;
+
+exports[`test uses the demo data as it's default projects state 2`] = `
+Array [
+  Object {
+    "id": "3",
+    "title": "Apple",
+  },
+  Object {
+    "id": "4",
+    "title": "Orange",
   },
 ]
 `;

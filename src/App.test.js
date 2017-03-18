@@ -19,7 +19,8 @@ const projects = [
     person: "Alex Apple",
     time: "2017-04-12T10:54:04.445Z",
     progress: 50,
-    status: "onhold"
+    status: "onhold",
+    labels: [{ id: "13", initial: "A", colour: "#ff0" }]
   }
 ];
 
@@ -59,6 +60,20 @@ it("passes project props to the <Card />", () => {
     time: "2017-03-15T10:54:04.445Z",
     progress: 13,
     status: "ontrack"
+  });
+});
+
+it("passes labels prop to the <Card /> if it exists", () => {
+  const app = shallow(
+    <App projects={projects.slice(1, 2)} onFileDrop={handleFileDrop} />
+  );
+  expect(app.find(Card).props()).toEqual({
+    title: "Rake Twister",
+    person: "Alex Apple",
+    time: "2017-04-12T10:54:04.445Z",
+    progress: 50,
+    status: "onhold",
+    labels: [{ id: "13", initial: "A", colour: "#ff0" }]
   });
 });
 
