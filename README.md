@@ -5,3 +5,6 @@
 A dashboard to show project health. It's a work in progress but you can see the
 current state here:
 [https://grizzly-pass.surge.sh](https://grizzly-pass.surge.sh)
+
+If you drag drop a correctly formatted json file onto the page (you can find one
+[here](./example/example.json)) then it will display those projects.
