@@ -4,7 +4,7 @@
 - ~~Health/at risk text~~
 - ~~Dates and month columns~~
 - ~~Drag-drop json file~~
-- Labels
+- ~~Labels~~
 - Filtering
 - Text search
 - Editing

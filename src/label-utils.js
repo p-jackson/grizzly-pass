@@ -14,13 +14,21 @@ export function maxLabels() {
 
 export function generateLabelInfo(labels) {
   return labels.reduce(
-    (memo, label, i) => Object.assign(memo, {
-      [label.id]: {
-        id: label.id,
-        initial: label.title.substr(0, 1),
-        colour: colours[i]
-      }
-    }),
+    (memo, label, i) =>
+      Object.assign(memo, {
+        [label.id]: {
+          id: label.id,
+          initial: (sharesFirstLetter(labels, label)
+            ? label.title.substr(0, 2)
+            : label.title.substr(0, 1)).toUpperCase(),
+          colour: colours[i]
+        }
+      }),
     {}
   );
+}
+
+function sharesFirstLetter(labels, label) {
+  const ch = label.title.substr(0, 1);
+  return labels.some(l => l !== label && l.title.startsWith(ch));
 }
