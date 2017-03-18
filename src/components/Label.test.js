@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import Label from "./label";
+import Label from "./Label";
 
 const label = shallow(<Label initial="A" colour="#f00" />);
 
