@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import App from "./App";
 import Header from "./Header";
+import Legend from "./Legend";
 import Card from "./Card";
 
 const projects = [
@@ -20,7 +21,7 @@ const projects = [
     time: "2017-04-12T10:54:04.445Z",
     progress: 50,
     status: "onhold",
-    labels: [{ id: "13", initial: "A", colour: "#ff0" }]
+    labels: [{ id: "13", initial: "A", colour: "#ff0", title: "Apple" }]
   }
 ];
 
@@ -39,6 +40,21 @@ it("shows a header", () => {
 
 it("passes the dummy document title to the header", () => {
   expect(app.find(Header).prop("title")).toBe("Dummy Projects 2020");
+});
+
+it("shows no legend when there are no projects", () => {
+  expect(app.find(Legend).length).toBe(0);
+});
+
+it("passes the `projects` prop to the <Legend /> when it exists", () => {
+  const app = shallow(
+    <App
+      title="Dummy Projects 2020"
+      onFileDrop={handleFileDrop}
+      projects={projects}
+    />
+  );
+  expect(app.find(Legend).props()).toEqual({ projects });
 });
 
 it("contains no cards when passed no projects", () => {
@@ -67,7 +83,7 @@ it("passes labels prop to the <Card /> if it exists", () => {
   const app = shallow(
     <App projects={projects.slice(1, 2)} onFileDrop={handleFileDrop} />
   );
-  expect(app.find(Card).props()).toEqual({
+  expect(app.find(Card).props()).toMatchObject({
     title: "Rake Twister",
     person: "Alex Apple",
     time: "2017-04-12T10:54:04.445Z",

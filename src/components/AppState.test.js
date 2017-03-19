@@ -67,7 +67,8 @@ it("passes the projects (with embedded label info) to it's child <App />", () =>
         {
           id: "3",
           initial: "A",
-          colour: "#EF5350"
+          colour: "#EF5350",
+          title: "Apple"
         }
       ]
     }

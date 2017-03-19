@@ -21,7 +21,8 @@ export function generateLabelInfo(labels) {
           initial: (sharesFirstLetter(labels, label)
             ? label.title.substr(0, 2)
             : label.title.substr(0, 1)).toUpperCase(),
-          colour: colours[i]
+          colour: colours[i],
+          title: label.title
         }
       }),
     {}

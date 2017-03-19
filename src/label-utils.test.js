@@ -11,15 +11,15 @@ describe("generateLabelInfo", () => {
     expect(generateLabelInfo([])).toEqual({});
   });
 
-  it("returns initial and colour info for labels", () => {
+  it("returns initial, colour and title info for labels", () => {
     expect(
       generateLabelInfo([
         { id: "1", title: "Lemon" },
         { id: "2", title: "Apple" }
       ])
     ).toEqual({
-      "1": { id: "1", initial: "L", colour: "#EF5350" },
-      "2": { id: "2", initial: "A", colour: "#7E57C2" }
+      "1": { id: "1", initial: "L", colour: "#EF5350", title: "Lemon" },
+      "2": { id: "2", initial: "A", colour: "#7E57C2", title: "Apple" }
     });
   });
 
@@ -30,8 +30,8 @@ describe("generateLabelInfo", () => {
         { id: "2", title: "Ant" }
       ])
     ).toEqual({
-      "1": { id: "1", initial: "AP", colour: "#EF5350" },
-      "2": { id: "2", initial: "AN", colour: "#7E57C2" }
+      "1": { id: "1", initial: "AP", colour: "#EF5350", title: "Apple" },
+      "2": { id: "2", initial: "AN", colour: "#7E57C2", title: "Ant" }
     });
   });
 });
