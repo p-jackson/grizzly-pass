@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import AppState from "./AppState";
-import App from "./App";
+import App from "../App";
 
 const jsonFile = {
   title: "Mock Title",

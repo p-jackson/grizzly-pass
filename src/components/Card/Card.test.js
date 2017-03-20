@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
 import Card from "./Card";
-import Selectable from "./Selectable";
-import ProgressBar from "./ProgressBar";
-import Label from "./Label";
+import Selectable from "../Selectable";
+import ProgressBar from "../ProgressBar";
+import Label from "../Label";
 
 const card = shallow(
   <Card

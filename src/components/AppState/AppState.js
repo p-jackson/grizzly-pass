@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from "react";
-import { projects as demoProjects, labels as demoLabels } from "../demo-data";
-import { generateLabelInfo } from "../label-utils";
-import App from "./App";
+import {
+  projects as demoProjects,
+  labels as demoLabels
+} from "../../demo-data";
+import { generateLabelInfo } from "../../label-utils";
+import App from "../App";
 
 export default class AppState extends Component {
   static propTypes = {

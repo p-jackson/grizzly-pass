@@ -1,9 +1,9 @@
 import React, { PropTypes } from "react";
 import moment from "moment";
-import Selectable from "./Selectable";
-import ProgressBar from "./ProgressBar";
-import Label from "./Label";
-import { statusIds } from "../types";
+import Selectable from "../Selectable";
+import ProgressBar from "../ProgressBar";
+import Label from "../Label";
+import { statusIds } from "../../types";
 import "./Card.css";
 
 export default function Card(props) {

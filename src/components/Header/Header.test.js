@@ -1,8 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
-import Header from "./Header";
-import Selectable from "./Selectable";
-import Logo from "./Logo";
+import Header from "../Header";
+import Selectable from "../Selectable";
+import Logo from "../Logo";
 
 const header = shallow(<Header title="Projects 2017" />);
 

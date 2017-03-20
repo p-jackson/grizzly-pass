@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import Legend from "./Legend";
-import Label from "./Label";
+import Label from "../Label";
 
 const projects = [
   {

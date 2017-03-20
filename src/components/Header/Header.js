@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react";
-import Logo from "./Logo";
-import Selectable from "./Selectable";
+import Logo from "../Logo";
+import Selectable from "../Selectable";
 import "./Header.css";
 
 export default function Header({ title }) {

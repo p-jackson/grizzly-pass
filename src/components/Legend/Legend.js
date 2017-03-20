@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import Label from "./Label";
+import Label from "../Label";
 import "./Legend.css";
 
 export default function Legend({ projects, labels }) {

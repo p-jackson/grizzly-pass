@@ -1,9 +1,9 @@
 import React from "react";
 import { shallow } from "enzyme";
 import App from "./App";
-import Header from "./Header";
-import Legend from "./Legend";
-import Card from "./Card";
+import Header from "../Header";
+import Legend from "../Legend";
+import Card from "../Card";
 
 const projects = [
   {

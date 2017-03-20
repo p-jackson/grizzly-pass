@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import { statusIds } from "../types";
+import { statusIds } from "../../types";
 import "./ProgressBar.css";
 
 export default function ProgressBar({ progress, status }) {
