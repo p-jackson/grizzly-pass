@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import Selectable from "./Selectable";
+import Selectable from "../Selectable";
 
 const selectable = shallow(<Selectable>child text</Selectable>);
 

@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build && cpx CNAME build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --collectCoverageFrom=src/**/*.js --collectCoverageFrom=!src/**/*.stories.js",
     "storybook": "start-storybook -p 9001 -c .storybook"
   }
 }

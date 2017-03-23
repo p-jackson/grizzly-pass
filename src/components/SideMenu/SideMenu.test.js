@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import SideMenu from "./SideMenu";
+import SideMenu from "../SideMenu";
 
 const sideMenu = shallow(<SideMenu />);
 

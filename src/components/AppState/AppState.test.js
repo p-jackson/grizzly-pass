@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import AppState from "./AppState";
+import AppState from "../AppState";
 import App from "../App";
 
 const jsonFile = {

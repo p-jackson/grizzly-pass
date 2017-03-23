@@ -1,3 +1,6 @@
-export * from "./SideMenu";
-import SideMenu from "./SideMenu";
-export default SideMenu;
+import React from "react";
+import "./SideMenu.css";
+
+export default function SideMenu() {
+  return <div className="SideMenu" />;
+}
