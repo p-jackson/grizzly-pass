@@ -3,7 +3,7 @@ import {
   projects as demoProjects,
   labels as demoLabels
 } from "../../demo-data";
-import { generateLabelInfo } from "../../label-utils";
+import { generateLabelInfo } from "../../labels";
 import App from "../App";
 
 export default class AppState extends Component {

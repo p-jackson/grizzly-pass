@@ -1,0 +1,59 @@
+exports[`importFiles imports projects with labels 1`] = `
+Object {
+  "labels": Array [
+    Object {
+      "title": "Apple",
+    },
+    Object {
+      "title": "Orange",
+    },
+  ],
+  "projects": Array [
+    Object {
+      "person": "Joe Lemon",
+      "progress": 13,
+      "status": "ontrack",
+      "time": "2017-03-15T00:00:00+13:00",
+      "title": "Coffee Swirl",
+    },
+    Object {
+      "person": "Alex Apple",
+      "progress": 50,
+      "status": "onhold",
+      "time": "2017-03-15T00:00:00+13:00",
+      "title": "Rake Twister",
+    },
+  ],
+  "title": null,
+}
+`;
+
+exports[`importFiles imports projects with no labels 1`] = `
+Object {
+  "labels": Array [],
+  "projects": Array [
+    Object {
+      "person": "Karen Lemon",
+      "progress": 23,
+      "status": "ontrack",
+      "time": "2017-08-28T00:00:00+12:00",
+      "title": "Tea Swirl",
+    },
+    Object {
+      "person": "Lennie Apple",
+      "progress": 90,
+      "status": "onhold",
+      "time": "2018-02-19T00:00:00+13:00",
+      "title": "Rake Jumper",
+    },
+    Object {
+      "person": "Timmy no Tag",
+      "progress": 90,
+      "status": "onhold",
+      "time": "2018-02-17T00:00:00+13:00",
+      "title": "Empty Tag List",
+    },
+  ],
+  "title": null,
+}
+`;

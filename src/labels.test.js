@@ -1,4 +1,4 @@
-import { maxLabels, generateLabelInfo } from "./label-utils";
+import { maxLabels, generateLabelInfo } from "./labels";
 
 describe("maxLabels", () => {
   it("returns the maximum number of labels before we run out of colours", () => {

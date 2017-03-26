@@ -1,0 +1,1 @@
+exports[`test throws if an error result is unsafeUnwrap'd 1`] = `"Unwrapped result with err: bad"`;
