@@ -24,20 +24,20 @@ it("leaves an err result unchanged when map is called", () => {
   expect(Err(113).map(i => i + 1)).toEqual(Err(113));
 });
 
-it("uses the returned result when flatMap is called", () => {
-  expect(Ok(113).flatMap(i => Err("to error"))).toEqual(Err("to error"));
+it("uses the returned result when andThen is called", () => {
+  expect(Ok(113).andThen(i => Err("to error"))).toEqual(Err("to error"));
 });
 
-it("leaves an err result unchanged when flatMmap is called", () => {
-  expect(Err(113).flatMap(i => Err(i + 1))).toEqual(Err(113));
+it("leaves an err result unchanged when andThen is called", () => {
+  expect(Err(113).andThen(i => Err(i + 1))).toEqual(Err(113));
 });
 
-it("uses the returned result when flatMapErr is called", () => {
-  expect(Err(113).flatMapErr(i => Err(i + 1))).toEqual(Err(114));
+it("uses the returned result when orElse is called", () => {
+  expect(Err(113).orElse(i => Err(i + 1))).toEqual(Err(114));
 });
 
-it("leaves an ok result unchanged when flatMapErr is called", () => {
-  expect(Ok(113).flatMapErr(i => Err(i + 1))).toEqual(Ok(113));
+it("leaves an ok result unchanged when orElse is called", () => {
+  expect(Ok(113).orElse(i => Err(i + 1))).toEqual(Ok(113));
 });
 
 describe("fromList", () => {

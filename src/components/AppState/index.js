@@ -48,7 +48,7 @@ export default class AppState extends Component {
     const asText = await this.props.readFileAsText(file);
     importFile(asText)
       .map(fileData => ({ ...fileData, errorMessage: null }))
-      .flatMapErr(errorMessage => Ok({ errorMessage }))
+      .orElse(errorMessage => Ok({ errorMessage }))
       .map(stateChange => this.setState(stateChange));
   }
 }

@@ -186,7 +186,7 @@ describe("importFile", () => {
 
   it("returns an array of errors for invalid projects", () => {
     const err = importFile(JSON.stringify([omit(allProjects[0], "title")]))
-      .flatMapErr(e => Ok(e))
+      .orElse(e => Ok(e))
       .unsafeUnwrap();
     expect(err.length).toBe(1);
   });

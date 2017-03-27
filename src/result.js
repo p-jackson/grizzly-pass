@@ -20,11 +20,11 @@ class Result {
     return this.isOk() ? Ok(f(this.value)) : this;
   }
 
-  flatMap(f) {
+  andThen(f) {
     return this.isOk() ? f(this.value) : this;
   }
 
-  flatMapErr(f) {
+  orElse(f) {
     return this.isErr() ? f(this.value) : this;
   }
 
