@@ -2,7 +2,7 @@ import React from "react";
 import { storiesOf } from "@kadira/storybook";
 import { text, color } from "@kadira/storybook-addon-knobs";
 import { host } from "storybook-host";
-import Label from "./Label";
+import Label from "../Label";
 
 storiesOf("Label", module)
   .addDecorator(

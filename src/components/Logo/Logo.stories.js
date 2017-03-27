@@ -1,7 +1,7 @@
 import React from "react";
 import { storiesOf } from "@kadira/storybook";
 import { host } from "storybook-host";
-import Logo from "./Logo";
+import Logo from "../Logo";
 
 storiesOf("Logo", module)
   .addDecorator(

@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf } from "@kadira/storybook";
-import Legend from "./Legend";
+import Legend from "../Legend";
 
 const projects = [
   {

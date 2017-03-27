@@ -2,7 +2,7 @@ import React from "react";
 import { storiesOf } from "@kadira/storybook";
 import { text, number, select } from "@kadira/storybook-addon-knobs";
 import { host } from "storybook-host";
-import Card from "./Card";
+import Card from "../Card";
 import { statusIds } from "../../types";
 
 const statusOptions = statusIds.reduce(
