@@ -57,11 +57,26 @@ function uniqueIds({ projects, labels }) {
     uniq(ids).length === ids.length;
 }
 
+// Remove ids so projects can be snapshotted (ids can be
+// different each time).
 function stripIds({ title, projects, labels }) {
   return {
     title,
     projects: projects.map(p => omit(p, "id", "labels")),
     labels: labels.map(l => omit(l, "id"))
+  };
+}
+
+// Force project end times to UTC time (switching the
+// actual instant in time) so it can be snapshotted.
+function utcTimes({ title, projects, labels }) {
+  return {
+    title,
+    projects: projects.map(project => ({
+      ...project,
+      time: moment(project.time).utcOffset(0, true)
+    })),
+    labels
   };
 }
 
@@ -115,7 +130,7 @@ describe("importFiles", () => {
       ]
     });
     expect(uniqueIds(result)).toEqual(true);
-    expect(stripIds(result)).toMatchSnapshot();
+    expect(utcTimes(stripIds(result))).toMatchSnapshot();
   });
 
   it("imports projects with labels", () => {
@@ -153,7 +168,7 @@ describe("importFiles", () => {
     ]);
 
     expect(uniqueIds(result)).toBe(true);
-    expect(stripIds(result)).toMatchSnapshot();
+    expect(utcTimes(stripIds(result))).toMatchSnapshot();
   });
 
   it("interprets dates as midnight local time", () => {
