@@ -12,15 +12,16 @@ export default function App(
 ) {
   const months = splitIntoMonths(projects).map(({ month, projects }) => {
     const cards = projects.map(project => (
-      <Card
-        key={project.id}
-        title={project.title}
-        person={project.person}
-        time={project.time}
-        progress={project.progress}
-        status={project.status}
-        labels={project.labels}
-      />
+      <div className="App-cardWrapper" key={project.id}>
+        <Card
+          title={project.title}
+          person={project.person}
+          time={project.time}
+          progress={project.progress}
+          status={project.status}
+          labels={project.labels}
+        />
+      </div>
     ));
     return (
       <div key={month} className="App-month">
