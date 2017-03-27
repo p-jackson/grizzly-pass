@@ -7,7 +7,9 @@ import Legend from "../Legend";
 import { statusIds } from "../../types";
 import "./App.css";
 
-export default function App({ onFileDrop, title = "", projects = [] }) {
+export default function App(
+  { onFileDrop, title = "", projects = [], errorMessage }
+) {
   const months = splitIntoMonths(projects).map(({ month, projects }) => {
     const cards = projects.map(project => (
       <Card
@@ -29,6 +31,7 @@ export default function App({ onFileDrop, title = "", projects = [] }) {
   });
 
   const hasProjects = projects && projects.length;
+  const noErrors = !errorMessage;
 
   return (
     <div
@@ -42,8 +45,11 @@ export default function App({ onFileDrop, title = "", projects = [] }) {
       <div className="App-header">
         <Header title={title} />
       </div>
-      <div className="App-content">{months}</div>
+      <div className="App-content">
+        {noErrors ? months : formatErrors(errorMessage)}
+      </div>
       {hasProjects &&
+        noErrors &&
         <div className="App-footer">
           <Legend projects={projects} />
         </div>}
@@ -71,7 +77,11 @@ App.propTypes = {
       )
     })
   ),
-  title: PropTypes.string
+  title: PropTypes.string,
+  errorMessage: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string)
+  ])
 };
 
 function splitIntoMonths(projects) {
@@ -102,4 +112,14 @@ function handleDrop(onFileDrop, e) {
   } else if (dt.files.length) {
     onFileDrop(dt.files[0]);
   }
+}
+
+function formatErrors(errorMessage) {
+  if (typeof errorMessage === "string") return errorMessage;
+
+  return (
+    <ul>
+      {errorMessage.map((message, i) => <li key={i}>{message}</li>)}
+    </ul>
+  );
 }

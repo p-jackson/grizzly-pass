@@ -1,4 +1,4 @@
-exports[`importFiles imports projects with labels 1`] = `
+exports[`importFile imports projects with labels 1`] = `
 Object {
   "labels": Array [
     Object {
@@ -28,7 +28,7 @@ Object {
 }
 `;
 
-exports[`importFiles imports projects with no labels 1`] = `
+exports[`importFile imports projects with no labels 1`] = `
 Object {
   "labels": Array [],
   "projects": Array [

@@ -24,6 +24,10 @@ class Result {
     return this.isOk() ? f(this.value) : this;
   }
 
+  flatMapErr(f) {
+    return this.isErr() ? f(this.value) : this;
+  }
+
   unsafeUnwrap() {
     if (this.isOk()) return this.value;
     else throw new Error(`Unwrapped result with err: ${this.value}`);

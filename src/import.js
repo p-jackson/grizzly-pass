@@ -8,7 +8,9 @@ import { Err, Ok, fromList as resultFromList } from "./result";
 export function importFile(fileContents) {
   return parseFile(fileContents)
     .mapErr(e => `File ${e}`)
-    .flatMap(data => resultFromList(data.map(validateProject)))
+    .flatMap(data =>
+      resultFromList(data.map(validateProject)).mapErr(badProjects =>
+        badProjects.map((badProject, i) => `Project ${i + 1} ${badProject}`)))
     .map(projects => [projects, generateLabels(projects)])
     .map(([projects, labels]) => ({
       title: null,

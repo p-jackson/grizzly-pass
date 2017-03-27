@@ -151,3 +151,20 @@ it("doesn't call drop handler it wasn't a file that was dropped", () => {
   });
   expect(handleFileDrop).not.toHaveBeenCalled();
 });
+
+it("displays errorMessage if it's passed as a prop", () => {
+  const app = shallow(
+    <App errorMessage="Error Name" onFileDrop={handleFileDrop} />
+  );
+  expect(app.find(".App-content").text()).toEqual("Error Name");
+});
+
+it("displays errors as a list if errorMessage prop is an array", () => {
+  const errorMessage = ["Error 1", "Error 2"];
+  const app = shallow(
+    <App errorMessage={errorMessage} onFileDrop={handleFileDrop} />
+  );
+  expect(app.find(".App-content li").length).toBe(2);
+  expect(app.find(".App-content li").at(0).text()).toBe("Error 1");
+  expect(app.find(".App-content li").at(1).text()).toBe("Error 2");
+});

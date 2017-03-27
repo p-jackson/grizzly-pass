@@ -4,6 +4,8 @@ import {
   labels as demoLabels
 } from "../../demo-data";
 import { generateLabelInfo } from "../../labels";
+import { importFile } from "../../import";
+import { Ok } from "../../result";
 import App from "../App";
 
 export default class AppState extends Component {
@@ -18,12 +20,13 @@ export default class AppState extends Component {
     this.state = {
       title: "Demo Dashboard",
       projects: demoProjects,
-      labels: demoLabels
+      labels: demoLabels,
+      errorMessage: null
     };
   }
 
   render() {
-    const { title, projects, labels } = this.state;
+    const { title, projects, labels, errorMessage } = this.state;
 
     const labelInfo = generateLabelInfo(labels);
     const projectsWithLabels = projects.map(project => ({
@@ -35,6 +38,7 @@ export default class AppState extends Component {
       <App
         title={title}
         projects={projectsWithLabels}
+        errorMessage={errorMessage}
         onFileDrop={this.handleFileDrop}
       />
     );
@@ -42,12 +46,10 @@ export default class AppState extends Component {
 
   async handleFileDrop(file) {
     const asText = await this.props.readFileAsText(file);
-    const { title, projects, labels } = JSON.parse(asText);
-    this.setState({
-      title,
-      projects,
-      labels
-    });
+    importFile(asText)
+      .map(fileData => ({ ...fileData, errorMessage: null }))
+      .flatMapErr(errorMessage => Ok({ errorMessage }))
+      .map(stateChange => this.setState(stateChange));
   }
 }
 

@@ -2,6 +2,7 @@ import { importFile, validateProject } from "./import";
 import uniq from "lodash/uniq";
 import omit from "lodash/omit";
 import moment from "moment";
+import { Ok } from "./result";
 
 const untaggedProjects = [
   {
@@ -80,7 +81,7 @@ function utcTimes({ title, projects, labels }) {
   };
 }
 
-describe("importFiles", () => {
+describe("importFile", () => {
   it("returns invalid if the file is not an array", () => {
     expect(importFile().isErr()).toBe(true);
     expect(importFile(3).isErr()).toBe(true);
@@ -181,6 +182,13 @@ describe("importFiles", () => {
     expect(moment(time).minute()).toBe(0);
     expect(moment(time).second()).toBe(0);
     expect(moment(time).millisecond()).toBe(0);
+  });
+
+  it("returns an array of errors for invalid projects", () => {
+    const err = importFile(JSON.stringify([omit(allProjects[0], "title")]))
+      .flatMapErr(e => Ok(e))
+      .unsafeUnwrap();
+    expect(err.length).toBe(1);
   });
 });
 

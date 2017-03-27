@@ -1,3 +1,5 @@
+exports[`test sets the errorMessage state if the dropped file is invalid 1`] = `"File isn\'t a JSON array"`;
+
 exports[`test uses the demo data as it's default projects state 1`] = `
 Array [
   Object {
