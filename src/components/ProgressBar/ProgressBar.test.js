@@ -41,5 +41,12 @@ describe("status text", () => {
         statusText[index]
       );
     });
+
+    it(`displays "Done" text when progress is 100% for project with "${status}" status`, () => {
+      const progressBar = shallow(
+        <ProgressBar progress={100} status={status} />
+      );
+      expect(progressBar.find(".ProgressBar-text").text()).toBe("Done");
+    });
   });
 });

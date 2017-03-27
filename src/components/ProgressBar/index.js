@@ -7,7 +7,7 @@ export default function ProgressBar({ progress, status }) {
 
   return (
     <div className={className}>
-      <div className="ProgressBar-text">{statusText(status)}</div>
+      <div className="ProgressBar-text">{statusText(progress, status)}</div>
       <div className="ProgressBar-inner" style={{ width: `${progress}%` }} />
     </div>
   );
@@ -18,7 +18,9 @@ ProgressBar.propTypes = {
   status: PropTypes.oneOf(statusIds).isRequired
 };
 
-function statusText(statusId) {
+function statusText(progress, statusId) {
+  if (progress >= 100) return "Done";
+
   switch (statusId) {
     case "ontrack":
       return "On Track";
