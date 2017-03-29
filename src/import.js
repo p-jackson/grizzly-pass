@@ -3,6 +3,7 @@ import isPlainObject from "lodash/isPlainObject";
 import uniqueId from "lodash/uniqueId";
 import uniqBy from "lodash/uniqBy";
 import moment from "moment";
+import { statusIds } from "./types";
 import { Err, Ok, fromList as resultFromList } from "./result";
 
 export function importFile(fileContents) {
@@ -36,8 +37,10 @@ export function validateProject(project) {
     return Err("has an invalid/missing title field");
   if (typeof project.person !== "string")
     return Err("has an invalid/missing person field");
-  if (typeof project.health !== "string")
-    return Err("has an invalid/missing health field");
+  if (!statusIds.includes(project.health))
+    return Err(
+      `has an invalid/missing health field, it must be one of: ${statusIds.join(", ")}`
+    );
   if (
     typeof project.date !== "string" ||
     !/^\d\d\d\d-\d\d-\d\d$/.test(project.date)

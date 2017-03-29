@@ -226,4 +226,9 @@ describe("validateProject", () => {
     const project = { ...allProjects[0], tags: ["Tag", 3, "Tag2"] };
     expect(validateProject(project).isErr()).toBe(true);
   });
+
+  it("rejects invalid project `health` properties", () => {
+    const project = { ...allProjects[0], health: "wrong" };
+    expect(validateProject(project).isErr()).toBe(true);
+  });
 });
