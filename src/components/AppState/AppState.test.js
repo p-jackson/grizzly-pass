@@ -1,5 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
+import omit from "lodash/omit";
 import AppState from "../AppState";
 import {
   projects as demoProjects,
@@ -84,6 +85,30 @@ it("passes the projects (with embedded label info) to it's child <App />", () =>
           title: "Orange"
         }
       ]
+    }
+  ]);
+});
+
+it("passes no label info with projects (if there's no labels) to it's child <App />", () => {
+  appState.setState({
+    projects: demoProjects.map(project => omit(project, "labels"))
+  });
+  expect(appState.find(App).prop("projects")).toEqual([
+    {
+      id: "1",
+      title: "Coffee Swirl",
+      person: "Joe Lemon",
+      time: "2017-03-15T10:54:04.445Z",
+      progress: 13,
+      status: "ontrack"
+    },
+    {
+      id: "2",
+      title: "Rake Twister",
+      person: "Alex Apple",
+      time: "2017-04-12T10:54:04.445Z",
+      progress: 50,
+      status: "onhold"
     }
   ]);
 });
