@@ -1,9 +1,10 @@
-import React from "react";
-import { shallow } from "enzyme";
 import App from "../App";
+import Card from "../Card";
 import Header from "../Header";
 import Legend from "../Legend";
-import Card from "../Card";
+import React from "react";
+import SideMenu from "../SideMenu";
+import { shallow } from "enzyme";
 
 const projects = [
   {
@@ -25,51 +26,59 @@ const projects = [
   }
 ];
 
-const handleFileDrop = jest.fn();
-const app = shallow(
-  <App title="Dummy Projects 2020" onFileDrop={handleFileDrop} />
-);
+function renderApp(
+  {
+    title = undefined,
+    projects = undefined,
+    handleFileDrop = jest.fn(),
+    errorMessage = undefined,
+    selectedTab = null,
+    handleTabChange = jest.fn()
+  } = {}
+) {
+  return shallow(
+    <App
+      projects={projects}
+      title={title}
+      onFileDrop={handleFileDrop}
+      onTabChange={handleTabChange}
+      errorMessage={errorMessage}
+      selectedTab={selectedTab}
+    />
+  );
+}
 
-beforeEach(() => {
-  handleFileDrop.mockClear();
-});
+const defaultApp = renderApp();
 
 it("shows a header", () => {
-  expect(app.find(Header).length).toBe(1);
+  expect(defaultApp.find(Header).length).toBe(1);
 });
 
 it("passes the dummy document title to the header", () => {
+  const app = renderApp({ title: "Dummy Projects 2020" });
   expect(app.find(Header).prop("title")).toBe("Dummy Projects 2020");
 });
 
 it("shows no legend when there are no projects", () => {
-  expect(app.find(Legend).length).toBe(0);
+  expect(defaultApp.find(Legend).length).toBe(0);
 });
 
 it("passes the `projects` prop to the <Legend /> when it exists", () => {
-  const app = shallow(
-    <App
-      title="Dummy Projects 2020"
-      onFileDrop={handleFileDrop}
-      projects={projects}
-    />
-  );
+  const app = renderApp({ projects });
   expect(app.find(Legend).props()).toEqual({ projects });
 });
 
 it("contains no cards when passed no projects", () => {
-  expect(app.find(Card).length).toBe(0);
+  expect(defaultApp.find(Card).length).toBe(0);
 });
 
 it("shows a card for each project passed in", () => {
-  const app = shallow(<App projects={projects} onFileDrop={handleFileDrop} />);
+  const app = renderApp({ projects });
   expect(app.find(Card).length).toBe(projects.length);
 });
 
 it("passes project props to the <Card />", () => {
-  const app = shallow(
-    <App projects={projects.slice(0, 1)} onFileDrop={handleFileDrop} />
-  );
+  const app = renderApp({ projects: projects.slice(0, 1) });
   expect(app.find(Card).props()).toEqual({
     title: "Coffee Swirl",
     person: "Joe Lemon",
@@ -80,9 +89,7 @@ it("passes project props to the <Card />", () => {
 });
 
 it("passes labels prop to the <Card /> if it exists", () => {
-  const app = shallow(
-    <App projects={projects.slice(1, 2)} onFileDrop={handleFileDrop} />
-  );
+  const app = renderApp({ projects: projects.slice(1, 2) });
   expect(app.find(Card).props()).toMatchObject({
     title: "Rake Twister",
     person: "Alex Apple",
@@ -94,7 +101,7 @@ it("passes labels prop to the <Card /> if it exists", () => {
 });
 
 it("splits projects into months", () => {
-  const app = shallow(<App projects={projects} onFileDrop={handleFileDrop} />);
+  const app = renderApp({ projects });
   const monthColumns = app.find(".App-month");
   expect(monthColumns.length).toBe(2);
   expect(monthColumns.at(0).find(Card).length).toBe(1);
@@ -102,7 +109,7 @@ it("splits projects into months", () => {
 });
 
 it("renders month names at the top of the columns", () => {
-  const app = shallow(<App projects={projects} onFileDrop={handleFileDrop} />);
+  const app = renderApp({ projects });
   const monthColumns = app.find(".App-month .App-monthTitle");
   expect(monthColumns.at(0).text()).toBe("March");
   expect(monthColumns.at(1).text()).toBe("April");
@@ -110,18 +117,20 @@ it("renders month names at the top of the columns", () => {
 
 it("prevents default event handling on dragover", () => {
   const preventDefault = jest.fn();
-  app.simulate("dragover", { preventDefault });
+  defaultApp.simulate("dragover", { preventDefault });
   expect(preventDefault).toHaveBeenCalled();
 });
 
 it("prevents default event handling on drop", () => {
   const preventDefault = jest.fn();
-  app.simulate("drop", { preventDefault, dataTransfer: { files: [] } });
+  defaultApp.simulate("drop", { preventDefault, dataTransfer: { files: [] } });
   expect(preventDefault).toHaveBeenCalled();
 });
 
 it("calls drop handler when browser support the DataTransferItemList interface", () => {
   const mockFile = { MOCK: "FILE" };
+  const handleFileDrop = jest.fn();
+  const app = renderApp({ handleFileDrop });
   app.simulate("drop", {
     preventDefault: () => {},
     dataTransfer: {
@@ -133,6 +142,8 @@ it("calls drop handler when browser support the DataTransferItemList interface",
 
 it("calls drop handler when browser support the DataTransfer interface", () => {
   const mockFile = { MOCK: "FILE" };
+  const handleFileDrop = jest.fn();
+  const app = renderApp({ handleFileDrop });
   app.simulate("drop", {
     preventDefault: () => {},
     dataTransfer: {
@@ -143,6 +154,8 @@ it("calls drop handler when browser support the DataTransfer interface", () => {
 });
 
 it("doesn't call drop handler it wasn't a file that was dropped", () => {
+  const handleFileDrop = jest.fn();
+  const app = renderApp({ handleFileDrop });
   app.simulate("drop", {
     preventDefault: () => {},
     dataTransfer: {
@@ -153,18 +166,19 @@ it("doesn't call drop handler it wasn't a file that was dropped", () => {
 });
 
 it("displays errorMessage if it's passed as a prop", () => {
-  const app = shallow(
-    <App errorMessage="Error Name" onFileDrop={handleFileDrop} />
-  );
+  const app = renderApp({ errorMessage: "Error Name" });
   expect(app.find(".App-content").text()).toEqual("Error Name");
 });
 
 it("displays errors as a list if errorMessage prop is an array", () => {
   const errorMessage = ["Error 1", "Error 2"];
-  const app = shallow(
-    <App errorMessage={errorMessage} onFileDrop={handleFileDrop} />
-  );
+  const app = renderApp({ errorMessage });
   expect(app.find(".App-content li").length).toBe(2);
   expect(app.find(".App-content li").at(0).text()).toBe("Error 1");
   expect(app.find(".App-content li").at(1).text()).toBe("Error 2");
+});
+
+it("passes the selectedTab to the <SideMenu />", () => {
+  const app = renderApp({ selectedTab: "edit" });
+  expect(app.find(SideMenu).prop("selectedTab")).toBe("edit");
 });

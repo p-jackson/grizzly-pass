@@ -6,6 +6,7 @@ import {
   projects as demoProjects,
   labels as demoLabels
 } from "../../demo-data";
+import { tabIds } from "../../types";
 import App from "../App";
 
 const jsonFile = [
@@ -27,6 +28,11 @@ const jsonFile = [
     tags: ["Apple"]
   }
 ];
+
+function renderAppState(file = jsonFile) {
+  const readFileAsText = jest.fn(() => JSON.stringify(jsonFile));
+  return shallow(<AppState db={() => {}} readFileAsText={readFileAsText} />);
+}
 
 const db = jest.fn();
 const readFileAsText = jest.fn(() => JSON.stringify(jsonFile));
@@ -121,6 +127,24 @@ it("passes the title state to it's child <App />", () => {
 it("passess the errorMessage state to it's child <App />", () => {
   appState.setState({ errorMessage: "Error message" });
   expect(appState.find(App).prop("errorMessage")).toBe("Error message");
+});
+
+it("defaults to no tabs selected", () => {
+  const appState = renderAppState();
+  expect(appState.find(App).prop("selectedTab")).toBe(null);
+});
+
+it("passes the selectedTab state to it's child <App />", () => {
+  const appState = renderAppState();
+  appState.setState({ selectedTab: tabIds[0] });
+  expect(appState.find(App).prop("selectedTab")).toBe(tabIds[0]);
+});
+
+it("updates the selectedTab state", () => {
+  const appState = renderAppState();
+  expect(appState.find(App).prop("selectedTab")).not.toBe(tabIds[0]);
+  appState.instance().handleTabChange(tabIds[0]);
+  expect(appState.find(App).prop("selectedTab")).toBe(tabIds[0]);
 });
 
 it("updates the projects state if the dropped file is json", async function() {

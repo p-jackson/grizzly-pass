@@ -17,16 +17,18 @@ export default class AppState extends Component {
   constructor(props) {
     super(props);
     this.handleFileDrop = this.handleFileDrop.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
     this.state = {
       title: "Demo Dashboard",
       projects: demoProjects,
       labels: demoLabels,
-      errorMessage: null
+      errorMessage: null,
+      selectedTab: null
     };
   }
 
   render() {
-    const { title, projects, labels, errorMessage } = this.state;
+    const { title, projects, labels, errorMessage, selectedTab } = this.state;
 
     const labelInfo = generateLabelInfo(labels);
     const projectsWithLabels = projects.map(project => ({
@@ -39,7 +41,9 @@ export default class AppState extends Component {
         title={title}
         projects={projectsWithLabels}
         errorMessage={errorMessage}
+        selectedTab={selectedTab}
         onFileDrop={this.handleFileDrop}
+        onTabChange={this.handleTabChange}
       />
     );
   }
@@ -50,6 +54,10 @@ export default class AppState extends Component {
       .map(fileData => ({ ...fileData, errorMessage: null }))
       .orElse(errorMessage => Ok({ errorMessage }))
       .map(stateChange => this.setState(stateChange));
+  }
+
+  handleTabChange(selectedTab) {
+    this.setState({ selectedTab });
   }
 }
 

@@ -4,11 +4,18 @@ import Header from "../Header";
 import SideMenu from "../SideMenu";
 import Card from "../Card";
 import Legend from "../Legend";
-import { statusIds } from "../../types";
+import { statusIds, tabIds } from "../../types";
 import "./App.css";
 
 export default function App(
-  { onFileDrop, title = "", projects = [], errorMessage }
+  {
+    onFileDrop,
+    title = "",
+    projects = [],
+    errorMessage,
+    selectedTab,
+    onTabChange
+  }
 ) {
   const months = splitIntoMonths(projects).map(({ month, projects }) => {
     const cards = projects.map(project => (
@@ -41,7 +48,7 @@ export default function App(
       onDragOver={handleDragOver}
     >
       <div className="App-sideMenu">
-        <SideMenu />
+        <SideMenu onTabChange={onTabChange} selectedTab={selectedTab} />
       </div>
       <div className="App-header">
         <Header title={title} />
@@ -82,7 +89,9 @@ App.propTypes = {
   errorMessage: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string)
-  ])
+  ]),
+  onTabChange: PropTypes.func.isRequired,
+  selectedTab: PropTypes.oneOf(tabIds)
 };
 
 function splitIntoMonths(projects) {
