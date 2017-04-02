@@ -26,8 +26,10 @@ export default function Card(
         ))}
       </div>;
 
+  const className = ["Card", readonly && "isReadonly"].filter(f => f).join(" ");
+
   return (
-    <div className="Card">
+    <div className={className}>
       <div className="Card-title">
         {renderTextElement(project, "title", readonly, onProjectChange)}
       </div>

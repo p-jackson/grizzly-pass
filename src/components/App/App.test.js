@@ -33,7 +33,9 @@ function renderApp(
     handleFileDrop = jest.fn(),
     errorMessage = undefined,
     selectedTab = null,
-    handleTabChange = jest.fn()
+    handleTabChange = jest.fn(),
+    handleProjectsChange = jest.fn(),
+    editable = false
   } = {}
 ) {
   return shallow(
@@ -44,6 +46,8 @@ function renderApp(
       onTabChange={handleTabChange}
       errorMessage={errorMessage}
       selectedTab={selectedTab}
+      onProjectsChange={handleProjectsChange}
+      editable={editable}
     />
   );
 }
@@ -88,6 +92,16 @@ it("passes project props to the <Card />", () => {
       status: "ontrack"
     }
   });
+});
+
+it("makes cards readonly if app isn't editable", () => {
+  const app = renderApp({ projects: projects.slice(0, 1), editable: false });
+  expect(app.find(Card).props()).toMatchObject({ readonly: true });
+});
+
+it("makes cards not readonly if app is editable", () => {
+  const app = renderApp({ projects: projects.slice(0, 1), editable: true });
+  expect(app.find(Card).props()).toMatchObject({ readonly: false });
 });
 
 it("passes labels prop to the <Card /> if it exists", () => {
@@ -185,4 +199,40 @@ it("displays errors as a list if errorMessage prop is an array", () => {
 it("passes the selectedTab to the <SideMenu />", () => {
   const app = renderApp({ selectedTab: "edit" });
   expect(app.find(SideMenu).prop("selectedTab")).toBe("edit");
+});
+
+it("calls projects change handler when only card is edited", () => {
+  const handleProjectsChange = jest.fn();
+  const app = renderApp({
+    projects: projects.slice(0, 1),
+    handleProjectsChange
+  });
+  const projectChanger = app.find(Card).prop("onProjectChange");
+  projectChanger({
+    ...projects[0],
+    title: "New Title"
+  });
+  expect(handleProjectsChange).toHaveBeenCalledWith([
+    {
+      ...projects[0],
+      title: "New Title"
+    }
+  ]);
+});
+
+it("calls projects change handler when one of many cards is edited", () => {
+  const handleProjectsChange = jest.fn();
+  const app = renderApp({ projects, handleProjectsChange });
+  const projectChanger = app.find(Card).first().prop("onProjectChange");
+  projectChanger({
+    ...projects[1],
+    title: "New Title"
+  });
+  expect(handleProjectsChange).toHaveBeenCalledWith([
+    projects[0],
+    {
+      ...projects[1],
+      title: "New Title"
+    }
+  ]);
 });

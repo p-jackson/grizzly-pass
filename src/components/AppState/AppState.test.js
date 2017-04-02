@@ -129,6 +129,11 @@ it("passess the errorMessage state to it's child <App />", () => {
   expect(appState.find(App).prop("errorMessage")).toBe("Error message");
 });
 
+it("passes the editable state to it's child <App />", () => {
+  appState.setState({ selectedTab: "edit" });
+  expect(appState.find(App).prop("editable")).toBe(true);
+});
+
 it("defaults to no tabs selected", () => {
   const appState = renderAppState();
   expect(appState.find(App).prop("selectedTab")).toBe(null);
@@ -164,4 +169,52 @@ it("sets the errorMessage state if the dropped file is invalid", async function(
   await appState.instance().handleFileDrop(mockFile);
   expect(readFileAsText).toHaveBeenCalledWith(mockFile);
   expect(appState.state("errorMessage")).toMatchSnapshot();
+});
+
+it("updates the projects state when handleProjectsChange is called", () => {
+  const appState = renderAppState();
+  appState.instance().handleProjectsChange([
+    {
+      id: "1",
+      title: "Coffee Swirl",
+      person: "Joe Lemon",
+      time: "2017-03-15T10:54:04.445Z",
+      progress: 13,
+      status: "ontrack"
+    }
+  ]);
+  expect(appState.state("projects")).toEqual([
+    {
+      id: "1",
+      title: "Coffee Swirl",
+      person: "Joe Lemon",
+      time: "2017-03-15T10:54:04.445Z",
+      progress: 13,
+      status: "ontrack"
+    }
+  ]);
+});
+
+it("maps the project labels to the normalised form when handleProjectsChange is called", () => {
+  const appState = renderAppState();
+  appState.instance().handleProjectsChange([
+    {
+      ...demoProjects[0],
+      labels: [{ id: "113", title: "Apple", initial: "A", colour: "#ff0" }]
+    }
+  ]);
+  expect(appState.state("projects")).toEqual([
+    {
+      ...demoProjects[0],
+      labels: ["113"]
+    }
+  ]);
+});
+
+it("updates the editable prop when handleTabChange is called", () => {
+  const appState = renderAppState();
+  appState.instance().handleTabChange("edit");
+  expect(appState.find(App).prop("editable")).toBe(true);
+  appState.instance().handleTabChange(null);
+  expect(appState.find(App).prop("editable")).toBe(false);
 });

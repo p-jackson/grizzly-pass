@@ -14,13 +14,29 @@ export default function App(
     projects = [],
     errorMessage,
     selectedTab,
-    onTabChange
+    onTabChange,
+    onProjectsChange,
+    editable
   }
 ) {
+  function handleProjectChange(changedProject) {
+    const { id } = changedProject;
+    const index = projects.findIndex(p => p.id === id);
+    onProjectsChange([
+      ...projects.slice(0, index),
+      changedProject,
+      ...projects.slice(index + 1)
+    ]);
+  }
+
   const months = splitIntoMonths(projects).map(({ month, projects }) => {
     const cards = projects.map(project => (
       <div className="App-cardWrapper" key={project.id}>
-        <Card project={project} onProjectChange={() => {}} />
+        <Card
+          project={project}
+          onProjectChange={handleProjectChange}
+          readonly={!editable}
+        />
       </div>
     ));
     return (
@@ -72,7 +88,9 @@ App.propTypes = {
     PropTypes.arrayOf(PropTypes.string)
   ]),
   onTabChange: PropTypes.func.isRequired,
-  selectedTab: PropTypes.oneOf(tabIds)
+  onProjectsChange: PropTypes.func.isRequired,
+  selectedTab: PropTypes.oneOf(tabIds),
+  editable: PropTypes.bool.isRequired
 };
 
 function splitIntoMonths(projects) {

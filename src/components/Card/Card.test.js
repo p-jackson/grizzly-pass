@@ -15,7 +15,7 @@ function renderCard(
     status = "ontrack",
     labels,
     readonly,
-    onProjectChange = jest.fn()
+    handleProjectChange = jest.fn()
   } = {}
 ) {
   return shallow(
@@ -29,7 +29,7 @@ function renderCard(
         labels
       }}
       readonly={readonly}
-      onProjectChange={onProjectChange}
+      onProjectChange={handleProjectChange}
     />
   );
 }
@@ -106,23 +106,23 @@ it("passes label props down to <Label />", () => {
 });
 
 it("calls onProjectChange when the title field is changed", () => {
-  const onProjectChange = jest.fn();
-  renderCard({ onProjectChange, readonly: false })
+  const handleProjectChange = jest.fn();
+  renderCard({ handleProjectChange, readonly: false })
     .find(".Card-title input")
     .simulate("change", { target: { value: "New Text" } });
-  expect(onProjectChange).toHaveBeenCalled();
-  expect(onProjectChange.mock.calls[0][0]).toMatchObject({
+  expect(handleProjectChange).toHaveBeenCalled();
+  expect(handleProjectChange.mock.calls[0][0]).toMatchObject({
     title: "New Text"
   });
 });
 
 it("calls onProjectChange when the person field is changed", () => {
-  const onProjectChange = jest.fn();
-  renderCard({ onProjectChange, readonly: false })
+  const handleProjectChange = jest.fn();
+  renderCard({ handleProjectChange, readonly: false })
     .find(".Card-person input")
     .simulate("change", { target: { value: "New Text" } });
-  expect(onProjectChange).toHaveBeenCalled();
-  expect(onProjectChange.mock.calls[0][0]).toMatchObject({
+  expect(handleProjectChange).toHaveBeenCalled();
+  expect(handleProjectChange.mock.calls[0][0]).toMatchObject({
     person: "New Text"
   });
 });

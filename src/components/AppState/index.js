@@ -18,6 +18,7 @@ export default class AppState extends Component {
     super(props);
     this.handleFileDrop = this.handleFileDrop.bind(this);
     this.handleTabChange = this.handleTabChange.bind(this);
+    this.handleProjectsChange = this.handleProjectsChange.bind(this);
     this.state = {
       title: "Demo Dashboard",
       projects: demoProjects,
@@ -44,6 +45,8 @@ export default class AppState extends Component {
         selectedTab={selectedTab}
         onFileDrop={this.handleFileDrop}
         onTabChange={this.handleTabChange}
+        onProjectsChange={this.handleProjectsChange}
+        editable={selectedTab === "edit"}
       />
     );
   }
@@ -58,6 +61,17 @@ export default class AppState extends Component {
 
   handleTabChange(selectedTab) {
     this.setState({ selectedTab });
+  }
+
+  handleProjectsChange(projects) {
+    this.setState({
+      projects: projects.map(project => ({
+        ...project,
+        ...(!project.labels
+          ? {}
+          : { labels: project.labels.map(({ id }) => id) })
+      }))
+    });
   }
 }
 

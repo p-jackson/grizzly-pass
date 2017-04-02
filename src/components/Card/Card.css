@@ -9,11 +9,18 @@
 .Card-title {
   font-size: 20px;
   font-weight: 600;
+  padding-bottom: 2px;
 }
 
 .Card-person {
   font-weight: 600;
   color: #666;
+}
+
+.Card.isReadonly .Card-title,
+.Card.isReadonly .Card-person {
+  border-top: 1px solid transparent;
+  border-top: 1px solid transparent;
 }
 
 .Card-date {
