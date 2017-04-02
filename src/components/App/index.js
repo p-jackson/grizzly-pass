@@ -27,6 +27,8 @@ export default function App(
           progress={project.progress}
           status={project.status}
           labels={project.labels}
+          onTitleChange={() => {}}
+          onPersonChange={() => {}}
         />
       </div>
     ));

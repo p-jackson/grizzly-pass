@@ -79,7 +79,7 @@ it("shows a card for each project passed in", () => {
 
 it("passes project props to the <Card />", () => {
   const app = renderApp({ projects: projects.slice(0, 1) });
-  expect(app.find(Card).props()).toEqual({
+  expect(app.find(Card).props()).toMatchObject({
     title: "Coffee Swirl",
     person: "Joe Lemon",
     time: "2017-03-15T10:54:04.445Z",

@@ -6,8 +6,19 @@ import Label from "../Label";
 import { statusIds } from "../../types";
 import "./Card.css";
 
-export default function Card(props) {
-  const { title, person, time, progress, status, labels } = props;
+export default function Card(
+  {
+    title,
+    person,
+    time,
+    progress,
+    status,
+    labels,
+    readonly = true,
+    onTitleChange,
+    onPersonChange
+  }
+) {
   const date = moment(time).format("D MMMM");
 
   const labelsDiv = !labels
@@ -22,8 +33,12 @@ export default function Card(props) {
 
   return (
     <div className="Card">
-      <div className="Card-title"><Selectable>{title}</Selectable></div>
-      <div className="Card-person"><Selectable>{person}</Selectable></div>
+      <div className="Card-title">
+        {renderTextElement(title, readonly, onTitleChange)}
+      </div>
+      <div className="Card-person">
+        {renderTextElement(person, readonly, onPersonChange)}
+      </div>
       <div className="Card-date"><Selectable>{date}</Selectable></div>
       {labelsDiv}
       <div className="Card-progress">
@@ -39,11 +54,19 @@ Card.propTypes = {
   time: PropTypes.string.isRequired,
   progress: PropTypes.number.isRequired,
   status: PropTypes.oneOf(statusIds).isRequired,
+  readonly: PropTypes.bool,
   labels: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
       initial: PropTypes.string.isRequired,
       colour: PropTypes.string.isRequired
     })
-  )
+  ),
+  onTitleChange: PropTypes.func.isRequired,
+  onPersonChange: PropTypes.func.isRequired
 };
+
+function renderTextElement(text, readonly, onChange) {
+  if (readonly) return <Selectable>{text}</Selectable>;
+  else return <input value={text} onChange={e => onChange(e.target.value)} />;
+}
