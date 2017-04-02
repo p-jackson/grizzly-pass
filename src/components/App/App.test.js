@@ -80,23 +80,27 @@ it("shows a card for each project passed in", () => {
 it("passes project props to the <Card />", () => {
   const app = renderApp({ projects: projects.slice(0, 1) });
   expect(app.find(Card).props()).toMatchObject({
-    title: "Coffee Swirl",
-    person: "Joe Lemon",
-    time: "2017-03-15T10:54:04.445Z",
-    progress: 13,
-    status: "ontrack"
+    project: {
+      title: "Coffee Swirl",
+      person: "Joe Lemon",
+      time: "2017-03-15T10:54:04.445Z",
+      progress: 13,
+      status: "ontrack"
+    }
   });
 });
 
 it("passes labels prop to the <Card /> if it exists", () => {
   const app = renderApp({ projects: projects.slice(1, 2) });
   expect(app.find(Card).props()).toMatchObject({
-    title: "Rake Twister",
-    person: "Alex Apple",
-    time: "2017-04-12T10:54:04.445Z",
-    progress: 50,
-    status: "onhold",
-    labels: [{ id: "13", initial: "A", colour: "#ff0" }]
+    project: {
+      title: "Rake Twister",
+      person: "Alex Apple",
+      time: "2017-04-12T10:54:04.445Z",
+      progress: 50,
+      status: "onhold",
+      labels: [{ id: "13", initial: "A", colour: "#ff0" }]
+    }
   });
 });
 

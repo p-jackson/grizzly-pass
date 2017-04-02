@@ -1,11 +1,12 @@
 import React, { PropTypes } from "react";
+import { labelInfoShape } from "../../types";
 import "./Label.css";
 
-export default function Label({ initial, colour }) {
+export default function Label({ labelInfo }) {
+  const { initial, colour } = labelInfo;
   return <div className="Label" style={{ background: colour }}>{initial}</div>;
 }
 
 Label.propTypes = {
-  initial: PropTypes.string.isRequired,
-  colour: PropTypes.string.isRequired
+  labelInfo: PropTypes.shape(labelInfoShape).isRequired
 };

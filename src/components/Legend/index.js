@@ -1,5 +1,6 @@
 import React, { PropTypes } from "react";
 import Label from "../Label";
+import { labelInfoShape } from "../../types";
 import "./Legend.css";
 
 export default function Legend({ projects, labels }) {
@@ -7,12 +8,11 @@ export default function Legend({ projects, labels }) {
     projects.reduce((memo, { labels = [] }) => memo.concat(labels), [])
   );
 
-  const labelElems = allProjectLabels.map(label => {
-    const { id, colour, initial, title } = label;
+  const labelElems = allProjectLabels.map(labelInfo => {
     return (
-      <div className="Legend-labelWrapper" key={id}>
-        <Label colour={colour} initial={initial} />
-        <div className="Legend-labelTitle">{title}</div>
+      <div className="Legend-labelWrapper" key={labelInfo.id}>
+        <Label labelInfo={labelInfo} />
+        <div className="Legend-labelTitle">{labelInfo.title}</div>
       </div>
     );
   });
@@ -30,14 +30,7 @@ export default function Legend({ projects, labels }) {
 Legend.propTypes = {
   projects: PropTypes.arrayOf(
     PropTypes.shape({
-      labels: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          initial: PropTypes.string.isRequired,
-          colour: PropTypes.string.isRequired,
-          title: PropTypes.string.isRequired
-        })
-      )
+      labels: PropTypes.arrayOf(PropTypes.shape(labelInfoShape))
     })
   ).isRequired
 };

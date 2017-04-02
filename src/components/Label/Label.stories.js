@@ -13,6 +13,16 @@ storiesOf("Label", module)
   )
   .add("", () => {
     const initial = text("initial", "L");
+    const title = text("title", "Lemon");
     const colour = color("colour", "green");
-    return <Label initial={initial} colour={colour} />;
+    return (
+      <Label
+        labelInfo={{
+          id: "1",
+          initial,
+          colour,
+          title
+        }}
+      />
+    );
   });

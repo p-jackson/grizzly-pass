@@ -22,29 +22,31 @@ storiesOf("Card", module)
   )
   .add("project with no labels", () => (
     <Card
-      title={text("title", "Battle Bunny 2.0")}
-      person={text("person", "Alex Jenkins")}
-      progress={number("progress", 55)}
-      time={text("time", "2016-08-03T23:00:00Z")}
-      status={select("status", statusOptions, "ontrack")}
+      project={{
+        title: text("title", "Battle Bunny 2.0"),
+        person: text("person", "Alex Jenkins"),
+        progress: number("progress", 55),
+        time: text("time", "2016-08-03T23:00:00Z"),
+        status: select("status", statusOptions, "ontrack")
+      }}
       readonly={boolean("readonly", true)}
-      onTitleChange={action("title change")}
-      onPersonChange={action("person change")}
+      onProjectChange={action("project change")}
     />
   ))
   .add("project with labels", () => (
     <Card
-      title={text("title", "Battle Bunny 2.0")}
-      person={text("person", "Alex Jenkins")}
-      progress={number("progress", 55)}
-      time={text("time", "2016-08-03T23:00:00Z")}
-      status={select("status", statusOptions, "ontrack")}
-      labels={[
-        { id: "1", initial: "A", colour: "red" },
-        { id: "2", initial: "B", colour: "blue" }
-      ]}
+      project={{
+        title: text("title", "Battle Bunny 2.0"),
+        person: text("person", "Alex Jenkins"),
+        progress: number("progress", 55),
+        time: text("time", "2016-08-03T23:00:00Z"),
+        status: select("status", statusOptions, "ontrack"),
+        labels: [
+          { id: "1", initial: "A", colour: "red" },
+          { id: "2", initial: "B", colour: "blue" }
+        ]
+      }}
       readonly={boolean("readonly", true)}
-      onTitleChange={action("title change")}
-      onPersonChange={action("person change")}
+      onProjectChange={action("project change")}
     />
   ));

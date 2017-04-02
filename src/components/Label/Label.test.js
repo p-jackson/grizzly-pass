@@ -2,7 +2,11 @@ import React from "react";
 import { shallow } from "enzyme";
 import Label from "../Label";
 
-const label = shallow(<Label initial="A" colour="#f00" />);
+const label = shallow(
+  <Label
+    labelInfo={{ initial: "A", colour: "#f00", id: "1", title: "Apple" }}
+  />
+);
 
 it("renders the label's initial", () => {
   expect(label.text()).toBe("A");

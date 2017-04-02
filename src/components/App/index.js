@@ -4,7 +4,7 @@ import Header from "../Header";
 import SideMenu from "../SideMenu";
 import Card from "../Card";
 import Legend from "../Legend";
-import { statusIds, tabIds } from "../../types";
+import { tabIds, projectShape, labelInfoShape } from "../../types";
 import "./App.css";
 
 export default function App(
@@ -20,16 +20,7 @@ export default function App(
   const months = splitIntoMonths(projects).map(({ month, projects }) => {
     const cards = projects.map(project => (
       <div className="App-cardWrapper" key={project.id}>
-        <Card
-          title={project.title}
-          person={project.person}
-          time={project.time}
-          progress={project.progress}
-          status={project.status}
-          labels={project.labels}
-          onTitleChange={() => {}}
-          onPersonChange={() => {}}
-        />
+        <Card project={project} onProjectChange={() => {}} />
       </div>
     ));
     return (
@@ -71,20 +62,8 @@ App.propTypes = {
   onFileDrop: PropTypes.func.isRequired,
   projects: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      person: PropTypes.string.isRequired,
-      time: PropTypes.string.isRequired,
-      progress: PropTypes.number.isRequired,
-      status: PropTypes.oneOf(statusIds).isRequired,
-      labels: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.string.isRequired,
-          initial: PropTypes.string.isRequired,
-          colour: PropTypes.string.isRequired,
-          title: PropTypes.string.isRequired
-        })
-      )
+      ...projectShape,
+      labels: PropTypes.arrayOf(PropTypes.shape(labelInfoShape))
     })
   ),
   title: PropTypes.string,

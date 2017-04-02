@@ -42,11 +42,15 @@ it("contains a <Label /> and title for each used label", () => {
   expect(legend.find(".Legend-labelTitle").length).toBe(2);
 });
 
-it("passes label colour and initial to <Label /> props", () => {
+it("passes label into to <Label /> props", () => {
   const legend = shallow(<Legend projects={projects.slice(1, 2)} />);
   expect(legend.find(Label).props()).toEqual({
-    initial: "A",
-    colour: "#ff0"
+    labelInfo: {
+      id: "3",
+      initial: "A",
+      colour: "#ff0",
+      title: "Apple"
+    }
   });
 });
 
