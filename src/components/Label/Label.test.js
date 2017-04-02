@@ -17,3 +17,7 @@ it("applies the colour prop as a background style", () => {
     background: "#f00"
   });
 });
+
+it("has a tooltip with the label's title", () => {
+  expect(label.first().prop("title")).toBe("Apple");
+});
