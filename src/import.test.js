@@ -177,7 +177,12 @@ describe("importFile", () => {
       JSON.stringify(allProjects.slice(0, 1))
     ).unsafeUnwrap().projects[0];
 
-    expect(moment.parseZone(time).utcOffset()).toBe(moment().utcOffset());
+    // Timezone offsets change depending on the date (remember daylight savings)
+    // so get the local offset for the date in allProjects[0]
+    // (moment parses all dates in local time by default).
+    const offset = moment(allProjects[0].date, "YYYY-MM-DD").utcOffset();
+
+    expect(moment.parseZone(time).utcOffset()).toBe(offset);
     expect(moment(time).hour()).toBe(0);
     expect(moment(time).minute()).toBe(0);
     expect(moment(time).second()).toBe(0);
