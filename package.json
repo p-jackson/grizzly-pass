@@ -13,20 +13,27 @@
   "devDependencies": {
     "@kadira/storybook": "^2.35.3",
     "@kadira/storybook-addon-knobs": "^1.7.1",
+    "@types/debug": "^0.0.29",
+    "@types/enzyme": "^2.7.7",
+    "@types/jest": "^19.2.2",
+    "@types/lodash": "^4.14.61",
+    "@types/moment": "^2.13.0",
+    "@types/react": "^15.0.20",
+    "@types/react-dom": "^0.14.23",
     "coveralls": "^2.12.0",
     "cpx": "^1.5.0",
     "enzyme": "^2.7.1",
     "react-addons-test-utils": "^15.4.2",
-    "react-scripts": "0.9.5",
+    "react-scripts-ts": "^1.1.8",
     "storybook-host": "^1.0.14"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build && cpx CNAME build",
-    "test": "react-scripts test --collectCoverageFrom=src/**/*.js --collectCoverageFrom=!src/**/*.stories.js",
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build && cpx CNAME build",
+    "test": "react-scripts-ts test --collectCoverageFrom=src/**/*.js --collectCoverageFrom=!src/**/*.stories.js",
     "storybook": "start-storybook -p 9001 -c .storybook"
   }
 }

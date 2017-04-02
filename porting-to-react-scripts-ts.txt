@@ -1,0 +1,11 @@
+yarn remove react-scripts
+yarn add --dev react-scripts-ts @types/react @types/react-dom
+
+react-scripts => react-scripts-ts
+index.js => index.tsx
+import React from "react => import * as React from "react"
+Create tsconfig.json with compilerOptions: {
+   allowJs: true,
+   jsx: "react",
+   module: "commonjs"
+}
