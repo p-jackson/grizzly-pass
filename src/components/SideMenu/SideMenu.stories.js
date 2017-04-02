@@ -1,5 +1,5 @@
 import React from "react";
-import { storiesOf } from "@kadira/storybook";
+import { storiesOf, action } from "@kadira/storybook";
 import { select } from "@kadira/storybook-addon-knobs";
 import { host } from "storybook-host";
 import { tabIds } from "../../types";
@@ -18,7 +18,7 @@ storiesOf("SideMenu", module)
   )
   .add("", () => (
     <SideMenu
-      onTabChange={() => {}}
+      onTabChange={action("tab change")}
       selectedTab={select("selected", selectedOptions, null)}
     />
   ));
