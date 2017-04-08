@@ -53,13 +53,19 @@ export default function Card(
   );
 }
 
-function renderTextElement(wholeProject, attr, readonly, onChange) {
+function renderTextElement(
+  wholeProject: ProjectWithLabelInfo,
+  attr: "title" | "person",
+  readonly: boolean,
+  onChange: (ProjectWithLabelInfo) => void
+) {
   const text = wholeProject[attr];
 
   if (readonly) return <Selectable>{text}</Selectable>;
   else return (
       <input
         value={text}
+        placeholder={attr === "title" ? "Title" : "Person"}
         onChange={e => onChange({ ...wholeProject, [attr]: e.target.value })}
       />
     );

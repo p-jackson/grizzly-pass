@@ -61,6 +61,13 @@ it("renders the title as <input> text when not readonly", () => {
   );
 });
 
+it("adds a placeholder to the title <input>", () => {
+  const card = renderCard({ title: "", readonly: false });
+  expect(card.find(".Card-title").find("input").prop("placeholder")).toBe(
+    "Title"
+  );
+});
+
 it("renders the person as selectable text", () => {
   const card = renderCard({ person: "Joe Lemon" });
   expect(card.find(".Card-person").find(Selectable).prop("children")).toBe(
@@ -72,6 +79,13 @@ it("renders the person as <input> text when not readonly", () => {
   const card = renderCard({ person: "Joe Lemon", readonly: false });
   expect(card.find(".Card-person").find("input").prop("value")).toBe(
     "Joe Lemon"
+  );
+});
+
+it("adds a placeholder to the person <input>", () => {
+  const card = renderCard({ person: "", readonly: false });
+  expect(card.find(".Card-person").find("input").prop("placeholder")).toBe(
+    "Person"
   );
 });
 

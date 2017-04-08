@@ -54,4 +54,22 @@ storiesOf("Card", module)
       readonly={boolean("readonly", true)}
       onProjectChange={action("project change")}
     />
+  ))
+  .add("placeholder text when inputs are empty", () => (
+    <Card
+      project={{
+        id: "id113",
+        title: "",
+        person: "",
+        progress: number("progress", 55),
+        time: text("time", "2016-08-03T23:00:00Z"),
+        status: select("status", statusOptions, "ontrack"),
+        labels: [
+          { id: "1", initial: "A", colour: "red", title: "Apple" },
+          { id: "2", initial: "B", colour: "blue", title: "Bear" }
+        ]
+      }}
+      readonly={false}
+      onProjectChange={action("project change")}
+    />
   ));
