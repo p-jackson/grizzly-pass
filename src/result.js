@@ -25,7 +25,7 @@ export function unsafeUnwrap<T>(result: Result<T, any>): T {
   else if (typeof result.value === "string")
     throw new Error(`Unwrapped result with err: ${result.value}`);
   else if (result.value.toString)
-    throw new Error(`Unwrapped result with err: ${result.value.toString()}`);
+    throw new Error(`Unwrapped result with err: ${result.value}`);
   else
     throw new Error(`Unwrapped result with err`);
 }
@@ -61,12 +61,5 @@ export function fromList<T, E>(
     []
   );
   if (errs.length) return err(errs);
-  const values = listOfResults.reduce(
-    (memo, r) => {
-      if (r.type === "ok") return [...memo, r.value];
-      else return memo;
-    },
-    []
-  );
-  return ok(values);
+  else return ok(listOfResults.map(r => unsafeUnwrap(r)));
 }

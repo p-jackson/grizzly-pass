@@ -1,1 +1,5 @@
-exports[`test throws if an error result is unsafeUnwrap'd 1`] = `"Unwrapped result with err: bad"`;
+exports[`test throws if an error Result<_, []> is unsafeUnwrap'd 1`] = `"Unwrapped result with err: bad,bad"`;
+
+exports[`test throws if an error Result<_, T> is unsafeUnwrap'd (where T doesn't have a toString) 1`] = `"Unwrapped result with err"`;
+
+exports[`test throws if an error Result<_, string> is unsafeUnwrap'd 1`] = `"Unwrapped result with err: bad"`;

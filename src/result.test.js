@@ -4,6 +4,8 @@ import flow from "lodash/flow";
 import {
   err,
   ok,
+  isOk,
+  isErr,
   fromList,
   mapErr,
   map,
@@ -16,8 +18,18 @@ it("returns the value if an ok result is unsafeUnwrap'd", () => {
   expect(unsafeUnwrap(ok(113))).toBe(113);
 });
 
-it("throws if an error result is unsafeUnwrap'd", () => {
+it("throws if an error Result<_, string> is unsafeUnwrap'd", () => {
   expect(() => unsafeUnwrap(err("bad"))).toThrowErrorMatchingSnapshot();
+});
+
+it("throws if an error Result<_, []> is unsafeUnwrap'd", () => {
+  expect(() =>
+    unsafeUnwrap(err(["bad", "bad"]))).toThrowErrorMatchingSnapshot();
+});
+
+it("throws if an error Result<_, T> is unsafeUnwrap'd (where T doesn't have a toString)", () => {
+  const obj = Object.create(null);
+  expect(() => unsafeUnwrap(err(obj))).toThrowErrorMatchingSnapshot();
 });
 
 it("leaves an ok result unchanged when mapErr is called", () => {
@@ -50,6 +62,22 @@ it("uses the returned result when orElse is called", () => {
 
 it("leaves an ok result unchanged when orElse is called", () => {
   expect(flow(ok, orElse(i => err(i + 1)))(113)).toEqual(ok(113));
+});
+
+it("returns true from isOk when result is ok", () => {
+  expect(isOk(ok())).toBe(true);
+});
+
+it("returns false from isOk when result is err", () => {
+  expect(isOk(err())).toBe(false);
+});
+
+it("returns true from isErr when result is err", () => {
+  expect(isErr(err())).toBe(true);
+});
+
+it("returns false from isErr when result is ok", () => {
+  expect(isErr(ok())).toBe(false);
 });
 
 describe("fromList", () => {
