@@ -15,6 +15,7 @@
 .Card-person {
   font-weight: 600;
   color: #666;
+  padding-bottom: 2px;
 }
 
 .Card.isReadonly .Card-title,

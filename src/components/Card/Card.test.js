@@ -3,6 +3,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import moment from "moment";
+import DatePicker from "../DatePicker";
 import Card from "../Card";
 import Selectable from "../Selectable";
 import ProgressBar from "../ProgressBar";
@@ -96,6 +97,17 @@ it("renders the date as selectable text", () => {
   );
 });
 
+it("renders the date as a <DatePicker /> when not readonly", () => {
+  const card = renderCard({
+    time: "2017-03-15T10:47:10.562Z",
+    readonly: false
+  });
+  expect(card.find(".Card-date").find(DatePicker).props()).toMatchObject({
+    time: "2017-03-15T10:47:10.562Z",
+    readonly: false
+  });
+});
+
 it("passes the progress and status props to the <ProgressBar>", () => {
   const card = renderCard({ progress: 30, status: "ontrack" });
   expect(card.find(ProgressBar).props()).toEqual({
@@ -151,5 +163,18 @@ it("calls onProjectChange when the person field is changed", () => {
   expect(handleProjectChange).toHaveBeenCalled();
   expect(handleProjectChange.mock.calls[0][0]).toMatchObject({
     person: "New Text"
+  });
+});
+
+it("calls onProjectChange when the date field is changed", () => {
+  const handleProjectChange = jest.fn();
+  const onTimeChange = renderCard({ handleProjectChange, readonly: false })
+    .find(DatePicker)
+    .prop("onTimeChange");
+  const now = moment().format();
+  onTimeChange(now);
+  expect(handleProjectChange).toHaveBeenCalled();
+  expect(handleProjectChange.mock.calls[0][0]).toMatchObject({
+    time: now
   });
 });

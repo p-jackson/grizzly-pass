@@ -2,6 +2,7 @@
 
 import React from "react";
 import moment from "moment";
+import DatePicker from "../DatePicker";
 import Selectable from "../Selectable";
 import ProgressBar from "../ProgressBar";
 import Label from "../Label";
@@ -21,8 +22,7 @@ export default function Card(
     onProjectChange
   }: CardProps
 ) {
-  const { time, progress, status, labels } = project;
-  const date = moment(time).format("D MMMM");
+  const { progress, status, labels } = project;
 
   const labelsDiv = !labels.length
     ? null
@@ -44,7 +44,9 @@ export default function Card(
       <div className="Card-person">
         {renderTextElement(project, "person", readonly, onProjectChange)}
       </div>
-      <div className="Card-date"><Selectable>{date}</Selectable></div>
+      <div className="Card-date">
+        {renderDate(project, "time", readonly, onProjectChange)}
+      </div>
       {labelsDiv}
       <div className="Card-progress">
         <ProgressBar progress={progress} status={status} />
@@ -67,6 +69,25 @@ function renderTextElement(
         value={text}
         placeholder={attr === "title" ? "Title" : "Person"}
         onChange={e => onChange({ ...wholeProject, [attr]: e.target.value })}
+      />
+    );
+}
+
+function renderDate(
+  wholeProject: ProjectWithLabelInfo,
+  attr: "time",
+  readonly: boolean,
+  onChange: (ProjectWithLabelInfo) => void
+) {
+  const time = wholeProject[attr];
+  const date = moment(time).format("D MMMM");
+
+  if (readonly) return <Selectable>{date}</Selectable>;
+  else return (
+      <DatePicker
+        readonly={readonly}
+        time={time}
+        onTimeChange={time => onChange({ ...wholeProject, time })}
       />
     );
 }
