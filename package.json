@@ -6,7 +6,7 @@
   "dependencies": {
     "debug": "^2.6.3",
     "lodash": "^4.17.4",
-    "moment": "^2.17.1",
+    "moment": "^2.18.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   },
@@ -14,10 +14,10 @@
     "@kadira/storybook": "^2.35.3",
     "@kadira/storybook-addon-knobs": "^1.7.1",
     "@kadira/storybook-addons": "^1.6.1",
-    "coveralls": "^2.12.0",
+    "coveralls": "^2.13.0",
     "cpx": "^1.5.0",
-    "enzyme": "^2.7.1",
-    "flow-bin": "^0.42.0",
+    "enzyme": "^2.8.0",
+    "flow-bin": "^0.43.1",
     "react-addons-test-utils": "^15.4.2",
     "react-scripts": "0.9.5",
     "storybook-host": "^1.0.14"
