@@ -7,4 +7,12 @@ current state here:
 [https://grizzly-pass.surge.sh](https://grizzly-pass.surge.sh)
 
 If you drag drop a correctly formatted json file onto the page (you can find one
-[here](./example/example.json)) then it will display those projects.
+[here](./example/example.json)) then it will display those projects. Valid project
+fields are:
+
+- title (required, string)
+- person (required, string)
+- date (required, string in YYYY-MM-DD format)
+- progress (required, number representing a percentage)
+- health (required, one of "ontrack", "atrisk", "intervention" or "onhold")
+- tags (optional, array of strings to be used as free-form tags on projects)
