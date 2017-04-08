@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { shallow } from "enzyme";
 import Legend from "../Legend";
@@ -6,6 +8,7 @@ import Label from "../Label";
 const projects = [
   {
     // project with no labels
+    labels: []
   },
   {
     labels: [

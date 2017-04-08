@@ -1,3 +1,5 @@
+// @flow
+
 import { maxLabels, generateLabelInfo } from "./labels";
 
 describe("maxLabels", () => {

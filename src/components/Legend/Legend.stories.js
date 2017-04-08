@@ -1,10 +1,12 @@
+// @flow
+
 import React from "react";
 import { storiesOf } from "@kadira/storybook";
 import Legend from "../Legend";
 
 const projects = [
   {
-    // project with no labels
+    labels: []
   },
   {
     labels: [

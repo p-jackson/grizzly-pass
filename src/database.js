@@ -1,14 +1,21 @@
+// @flow
+
 import debugFactory from "debug";
 const debug = debugFactory("gp:database");
 
-export function init({ indexedDB }) {
+export function init(
+  { indexedDB }: { indexedDB?: IDBFactory }
+): Promise<IDBDatabase | null> {
   if (!indexedDB) {
     debug("Browser doesn't support indexedDB");
     return Promise.resolve(null);
   }
 
+  // Closure needed to satisfy type-checker
+  const factory = indexedDB;
+
   return new Promise((resolve, reject) => {
-    const request = indexedDB.open("GrizzlyPassDatabase", 1);
+    const request = factory.open("GrizzlyPassDatabase", 1);
 
     request.onerror = event => {
       const { error } = request;

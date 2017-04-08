@@ -1,8 +1,10 @@
-import React, { PropTypes } from "react";
-import { labelInfoShape } from "../../types";
+// @flow
+
+import React from "react";
+import type { LabelInfo } from "../../types";
 import "./Label.css";
 
-export default function Label({ labelInfo }) {
+export default function Label({ labelInfo }: { labelInfo: LabelInfo }) {
   const { initial, colour, title } = labelInfo;
   return (
     <div className="Label" title={title} style={{ background: colour }}>
@@ -10,7 +12,3 @@ export default function Label({ labelInfo }) {
     </div>
   );
 }
-
-Label.propTypes = {
-  labelInfo: PropTypes.shape(labelInfoShape).isRequired
-};

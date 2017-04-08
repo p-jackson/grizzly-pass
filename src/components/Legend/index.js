@@ -1,11 +1,19 @@
-import React, { PropTypes } from "react";
+// @flow
+
+import React from "react";
 import Label from "../Label";
-import { labelInfoShape } from "../../types";
+import type { LabelInfo } from "../../types";
 import "./Legend.css";
 
-export default function Legend({ projects, labels }) {
+type LegendProps = {
+  projects: {
+    labels: LabelInfo[]
+  }[]
+};
+
+export default function Legend({ projects }: LegendProps) {
   const allProjectLabels = removeDuplicateLabels(
-    projects.reduce((memo, { labels = [] }) => memo.concat(labels), [])
+    projects.reduce((memo, { labels }) => memo.concat(labels), [])
   );
 
   const labelElems = allProjectLabels.map(labelInfo => {
@@ -27,15 +35,7 @@ export default function Legend({ projects, labels }) {
   );
 }
 
-Legend.propTypes = {
-  projects: PropTypes.arrayOf(
-    PropTypes.shape({
-      labels: PropTypes.arrayOf(PropTypes.shape(labelInfoShape))
-    })
-  ).isRequired
-};
-
-function removeDuplicateLabels(labels) {
+function removeDuplicateLabels(labels: LabelInfo[]): LabelInfo[] {
   const foundLabels = [];
   return labels.filter(label => {
     if (foundLabels.indexOf(label.id) === -1) {

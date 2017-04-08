@@ -1,8 +1,15 @@
-import React, { PropTypes } from "react";
-import { statusIds } from "../../types";
+// @flow
+
+import React from "react";
+import type { Status } from "../../types";
 import "./ProgressBar.css";
 
-export default function ProgressBar({ progress, status }) {
+type ProgressBarProps = {
+  progress: number,
+  status: Status
+};
+
+export default function ProgressBar({ progress, status }: ProgressBarProps) {
   const className = ["ProgressBar", `isStatus-${status}`].join(" ");
 
   return (
@@ -13,15 +20,10 @@ export default function ProgressBar({ progress, status }) {
   );
 }
 
-ProgressBar.propTypes = {
-  progress: PropTypes.number.isRequired,
-  status: PropTypes.oneOf(statusIds).isRequired
-};
-
-function statusText(progress, statusId) {
+function statusText(progress: number, status: Status): string {
   if (progress >= 100) return "Done";
 
-  switch (statusId) {
+  switch (status) {
     case "ontrack":
       return "On Track";
     case "atrisk":
@@ -31,6 +33,6 @@ function statusText(progress, statusId) {
     case "onhold":
       return "On Hold";
     default:
-      throw new Error(`Invalid status prop: ${statusId}`);
+      throw new Error(`Invalid status prop: ${status}`);
   }
 }

@@ -1,4 +1,8 @@
-export const projects = [
+// @flow
+
+import type { Project, Label } from "./types";
+
+export const projects: Project[] = [
   {
     id: "1",
     title: "Coffee Swirl",
@@ -19,7 +23,7 @@ export const projects = [
   }
 ];
 
-export const labels = [
+export const labels: Label[] = [
   {
     id: "3",
     title: "Apple"

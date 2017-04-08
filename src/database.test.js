@@ -1,8 +1,10 @@
+// @flow
+
 import { init } from "./database";
 
 describe("init", () => {
   it("returns null if the browser doesn't support IndexedDB", async () => {
-    expect(await init({ indexedDB: null })).toBe(null);
+    expect(await init({})).toBe(null);
   });
 
   it("creates a schema in the GrizzlyPassDatabase with default data", async () => {
@@ -18,14 +20,16 @@ describe("init", () => {
       onsuccess: null,
       onupgradeneeded: null
     };
-    const indexedDB = {
+    const indexedDB: any = {
       open: jest.fn(() => {
         setTimeout(
           () => {
             expect(openRequest.onupgradeneeded).not.toBe(null);
-            openRequest.onupgradeneeded({ target: { result: db } });
+            if (openRequest.onupgradeneeded)
+              openRequest.onupgradeneeded({ target: { result: db } });
             expect(openRequest.onsuccess).not.toBe(null);
-            openRequest.onsuccess({ target: { result: db } });
+            if (openRequest.onsuccess)
+              openRequest.onsuccess({ target: { result: db } });
           },
           0
         );
@@ -58,12 +62,12 @@ describe("init", () => {
       onerror: null,
       error: { error: "error" }
     };
-    const indexedDB = {
+    const indexedDB: any = {
       open: jest.fn(() => {
         setTimeout(
           () => {
             expect(request.onerror).not.toBe(null);
-            request.onerror({ error: "error" });
+            if (request.onerror) request.onerror({ error: "error" });
           },
           0
         );
@@ -90,12 +94,13 @@ describe("init", () => {
     const request = {
       onupgradeneeded: null
     };
-    const indexedDB = {
+    const indexedDB: any = {
       open: jest.fn(() => {
         setTimeout(
           () => {
             expect(request.onupgradeneeded).not.toBe(null);
-            request.onupgradeneeded({ target: { result: db } });
+            if (request.onupgradeneeded)
+              request.onupgradeneeded({ target: { result: db } });
           },
           0
         );

@@ -1,22 +1,30 @@
-import React, { PropTypes } from "react";
+// @flow
+
+import React from "react";
 import moment from "moment";
 import Selectable from "../Selectable";
 import ProgressBar from "../ProgressBar";
 import Label from "../Label";
-import { projectShape, labelInfoShape } from "../../types";
+import type { ProjectWithLabelInfo } from "../../types";
 import "./Card.css";
+
+type CardProps = {
+  readonly?: boolean,
+  project: ProjectWithLabelInfo,
+  onProjectChange: (ProjectWithLabelInfo) => void
+};
 
 export default function Card(
   {
     readonly = true,
     project,
     onProjectChange
-  }
+  }: CardProps
 ) {
   const { time, progress, status, labels } = project;
   const date = moment(time).format("D MMMM");
 
-  const labelsDiv = !labels
+  const labelsDiv = !labels.length
     ? null
     : <div className="Card-labels">
         {labels.map(labelInfo => (
@@ -44,15 +52,6 @@ export default function Card(
     </div>
   );
 }
-
-Card.propTypes = {
-  readonly: PropTypes.bool,
-  project: PropTypes.shape({
-    ...projectShape,
-    labels: PropTypes.arrayOf(PropTypes.shape(labelInfoShape))
-  }).isRequired,
-  onProjectChange: PropTypes.func.isRequired
-};
 
 function renderTextElement(wholeProject, attr, readonly, onChange) {
   const text = wholeProject[attr];

@@ -1,10 +1,19 @@
-import React, { PropTypes } from "react";
-import { tabIds } from "../../types";
+// @flow
+
+import React from "react";
+import type { TabId } from "../../types";
 import "./SideMenu.css";
 
-const buttons = [{ tabId: "edit", text: "Edit" }];
+const buttons: { tabId: TabId, text: string }[] = [
+  { tabId: "edit", text: "Edit" }
+];
 
-export default function SideMenu({ selectedTab, onTabChange }) {
+type SideMenuProps = {
+  onTabChange: (?TabId) => void,
+  selectedTab: ?TabId
+};
+
+export default function SideMenu({ selectedTab, onTabChange }: SideMenuProps) {
   const buttonsElems = buttons.map(({ tabId, text }) => (
     <button
       key={tabId}
@@ -22,8 +31,3 @@ export default function SideMenu({ selectedTab, onTabChange }) {
     </div>
   );
 }
-
-SideMenu.propTypes = {
-  onTabChange: PropTypes.func.isRequired,
-  selectedTab: PropTypes.oneOf(tabIds)
-};

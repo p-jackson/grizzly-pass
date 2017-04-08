@@ -1,8 +1,11 @@
+// @flow
+
 import { importFile, validateProject } from "./import";
 import uniq from "lodash/uniq";
 import omit from "lodash/omit";
+import flow from "lodash/flow";
 import moment from "moment";
-import { Ok } from "./result";
+import { ok, isErr, orElse, unsafeUnwrap } from "./result";
 
 const untaggedProjects = [
   {
@@ -83,24 +86,22 @@ function utcTimes({ title, projects, labels }) {
 
 describe("importFile", () => {
   it("returns invalid if the file is not an array", () => {
-    expect(importFile().isErr()).toBe(true);
-    expect(importFile(3).isErr()).toBe(true);
-    expect(importFile("3").isErr()).toBe(true);
-    expect(importFile("{a:1}").isErr()).toBe(true);
-    expect(importFile(`"string"`).isErr()).toBe(true);
+    expect(isErr(importFile("3"))).toBe(true);
+    expect(isErr(importFile("{a:1}"))).toBe(true);
+    expect(isErr(importFile(`"string"`))).toBe(true);
   });
 
   // The import format doesn't support titles
   it("always returns null for the title", () => {
     expect(
-      importFile(JSON.stringify(allProjects)).unsafeUnwrap()
+      unsafeUnwrap(importFile(JSON.stringify(allProjects)))
     ).toMatchObject({
       title: null
     });
   });
 
   it("imports projects with no labels", () => {
-    const result = importFile(JSON.stringify(untaggedProjects)).unsafeUnwrap();
+    const result = unsafeUnwrap(importFile(JSON.stringify(untaggedProjects)));
     expect(result).toMatchObject({
       labels: [],
       projects: [
@@ -135,7 +136,11 @@ describe("importFile", () => {
   });
 
   it("imports projects with labels", () => {
-    const result = importFile(JSON.stringify(taggedProjects)).unsafeUnwrap();
+    const imported = importFile(JSON.stringify(taggedProjects));
+    expect(imported.type).toBe("ok");
+    if (imported.type !== "ok") return;
+
+    const result = imported.value;
     expect(result).toMatchObject({
       labels: [{ title: "Apple" }, { title: "Orange" }],
       projects: [
@@ -163,19 +168,16 @@ describe("importFile", () => {
       ...result.projects[0].labels,
       ...result.projects[1].labels
     ]);
-    expect(allLabelIds).toMatchObject([
-      result.labels[0].id,
-      result.labels[1].id
-    ]);
+    expect(allLabelIds).toEqual([result.labels[0].id, result.labels[1].id]);
 
     expect(uniqueIds(result)).toBe(true);
     expect(utcTimes(stripIds(result))).toMatchSnapshot();
   });
 
   it("interprets dates as midnight local time", () => {
-    const { time } = importFile(
-      JSON.stringify(allProjects.slice(0, 1))
-    ).unsafeUnwrap().projects[0];
+    const { time } = flow(JSON.stringify, importFile, unsafeUnwrap)(
+      allProjects.slice(0, 1)
+    ).projects[0];
 
     // Timezone offsets change depending on the date (remember daylight savings)
     // so get the local offset for the date in allProjects[0]
@@ -190,9 +192,12 @@ describe("importFile", () => {
   });
 
   it("returns an array of errors for invalid projects", () => {
-    const err = importFile(JSON.stringify([omit(allProjects[0], "title")]))
-      .orElse(e => Ok(e))
-      .unsafeUnwrap();
+    const err = flow(
+      JSON.stringify,
+      importFile,
+      orElse(e => ok(e)),
+      unsafeUnwrap
+    )([omit(allProjects[0], "title")]);
     expect(err.length).toBe(1);
   });
 });
@@ -200,40 +205,40 @@ describe("importFile", () => {
 describe("validateProject", () => {
   allProjects.forEach((project, i) => {
     it(`correctly validates an importable project ${i}`, () => {
-      expect(validateProject(project).unsafeUnwrap()).toEqual(project);
+      expect(unsafeUnwrap(validateProject(project))).toEqual(project);
     });
   });
 
   it("rejects when project is not an object", () => {
-    expect(validateProject().isErr()).toBe(true);
-    expect(validateProject("str").isErr()).toBe(true);
-    expect(validateProject(3).isErr()).toBe(true);
+    expect(isErr(validateProject())).toBe(true);
+    expect(isErr(validateProject("str"))).toBe(true);
+    expect(isErr(validateProject(3))).toBe(true);
   });
 
   const project = untaggedProjects[0];
   Object.keys(project).forEach(key => {
     it(`rejects project when ${key} field is missing`, () => {
-      expect(validateProject(omit(project, key)).isErr()).toBe(true);
+      expect(isErr(validateProject(omit(project, key)))).toBe(true);
     });
   });
 
   it("ignores unknown project properties", () => {
     const project = { ...allProjects[0], unknown: "prop" };
-    expect(validateProject(project).unsafeUnwrap()).toEqual(project);
+    expect(unsafeUnwrap(validateProject(project))).toEqual(project);
   });
 
   it("rejects a project with invalid tags field", () => {
     const project = { ...allProjects[0], tags: 3 };
-    expect(validateProject(project).isErr()).toBe(true);
+    expect(isErr(validateProject(project))).toBe(true);
   });
 
   it("reject a project with that uses non-string tags", () => {
     const project = { ...allProjects[0], tags: ["Tag", 3, "Tag2"] };
-    expect(validateProject(project).isErr()).toBe(true);
+    expect(isErr(validateProject(project))).toBe(true);
   });
 
   it("rejects invalid project `health` properties", () => {
     const project = { ...allProjects[0], health: "wrong" };
-    expect(validateProject(project).isErr()).toBe(true);
+    expect(isErr(validateProject(project))).toBe(true);
   });
 });

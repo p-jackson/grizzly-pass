@@ -1,3 +1,6 @@
+// @flow
+
+import type { ProjectWithLabelInfo, TabId } from "../../types";
 import App from "../App";
 import Card from "../Card";
 import Header from "../Header";
@@ -13,7 +16,8 @@ const projects = [
     person: "Joe Lemon",
     time: "2017-03-15T10:54:04.445Z",
     progress: 13,
-    status: "ontrack"
+    status: "ontrack",
+    labels: []
   },
   {
     id: "2",
@@ -28,14 +32,23 @@ const projects = [
 
 function renderApp(
   {
-    title = undefined,
-    projects = undefined,
+    title,
+    projects = [],
     handleFileDrop = jest.fn(),
-    errorMessage = undefined,
-    selectedTab = null,
+    errorMessage,
+    selectedTab,
     handleTabChange = jest.fn(),
     handleProjectsChange = jest.fn(),
     editable = false
+  }: {
+    title?: string,
+    projects?: ProjectWithLabelInfo[],
+    handleFileDrop?: (File) => void,
+    errorMessage?: string | string[],
+    selectedTab?: TabId,
+    handleTabChange?: (?TabId) => void,
+    handleProjectsChange?: (ProjectWithLabelInfo[]) => void,
+    editable?: boolean
   } = {}
 ) {
   return shallow(
@@ -67,9 +80,11 @@ it("shows no legend when there are no projects", () => {
   expect(defaultApp.find(Legend).length).toBe(0);
 });
 
-it("passes the `projects` prop to the <Legend /> when it exists", () => {
+it("strips non-label info from `projects` prop before passing it to <Legend />", () => {
   const app = renderApp({ projects });
-  expect(app.find(Legend).props()).toEqual({ projects });
+  expect(app.find(Legend).props()).toEqual({
+    projects: projects.map(({ labels }) => ({ labels }))
+  });
 });
 
 it("contains no cards when passed no projects", () => {

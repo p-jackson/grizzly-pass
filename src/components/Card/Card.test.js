@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { shallow } from "enzyme";
 import moment from "moment";
@@ -5,6 +7,7 @@ import Card from "../Card";
 import Selectable from "../Selectable";
 import ProgressBar from "../ProgressBar";
 import Label from "../Label";
+import type { ProjectWithLabelInfo, Status, LabelInfo } from "../../types";
 
 function renderCard(
   {
@@ -13,14 +16,24 @@ function renderCard(
     time = moment().toISOString(),
     progress = 0,
     status = "ontrack",
-    labels,
+    labels = [],
     readonly,
     handleProjectChange = jest.fn()
+  }: {
+    title?: string,
+    person?: string,
+    time?: string,
+    progress?: number,
+    status?: Status,
+    labels?: LabelInfo[],
+    readonly?: boolean,
+    handleProjectChange?: (ProjectWithLabelInfo) => void
   } = {}
 ) {
   return shallow(
     <Card
       project={{
+        id: "id113",
         title,
         person,
         time,

@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { shallow } from "enzyme";
 import Header from "../Header";
@@ -17,6 +19,6 @@ it("renders the document title in selectable text", () => {
 });
 
 it("doesn't have a header element when there's no title", () => {
-  const header = shallow(<Header />);
+  const header = shallow(<Header title={null} />);
   expect(header.find("h1").length).toBe(0);
 });

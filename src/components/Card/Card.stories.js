@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { storiesOf, action } from "@kadira/storybook";
 import { text, number, select, boolean } from "@kadira/storybook-addon-knobs";
@@ -23,11 +25,13 @@ storiesOf("Card", module)
   .add("project with no labels", () => (
     <Card
       project={{
+        id: "id113",
         title: text("title", "Battle Bunny 2.0"),
         person: text("person", "Alex Jenkins"),
         progress: number("progress", 55),
         time: text("time", "2016-08-03T23:00:00Z"),
-        status: select("status", statusOptions, "ontrack")
+        status: select("status", statusOptions, "ontrack"),
+        labels: []
       }}
       readonly={boolean("readonly", true)}
       onProjectChange={action("project change")}
@@ -36,14 +40,15 @@ storiesOf("Card", module)
   .add("project with labels", () => (
     <Card
       project={{
+        id: "id113",
         title: text("title", "Battle Bunny 2.0"),
         person: text("person", "Alex Jenkins"),
         progress: number("progress", 55),
         time: text("time", "2016-08-03T23:00:00Z"),
         status: select("status", statusOptions, "ontrack"),
         labels: [
-          { id: "1", initial: "A", colour: "red" },
-          { id: "2", initial: "B", colour: "blue" }
+          { id: "1", initial: "A", colour: "red", title: "Apple" },
+          { id: "2", initial: "B", colour: "blue", title: "Bear" }
         ]
       }}
       readonly={boolean("readonly", true)}

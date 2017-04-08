@@ -1,3 +1,5 @@
+// @flow
+
 import React from "react";
 import { render } from "react-dom";
 import AppState from "./components/AppState";
@@ -13,6 +15,10 @@ const { version: appVersion } = require("../package.json");
 async function run() {
   console.log(appVersion);
   const db = await initDatabase(window);
+  if (db === null) {
+    console.log("Browser doesn't support indexdb");
+    return;
+  }
 
   render(
     <AppState db={() => db} readFileAsText={readFileAsText(FileReader)} />,

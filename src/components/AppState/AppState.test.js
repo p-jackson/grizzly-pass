@@ -1,6 +1,7 @@
+// @flow
+
 import React from "react";
 import { shallow } from "enzyme";
-import omit from "lodash/omit";
 import AppState from "../AppState";
 import {
   projects as demoProjects,
@@ -29,26 +30,29 @@ const jsonFile = [
   }
 ];
 
-function renderAppState(file = jsonFile) {
-  const readFileAsText = jest.fn(() => JSON.stringify(jsonFile));
-  return shallow(<AppState db={() => {}} readFileAsText={readFileAsText} />);
+function renderAppState(
+  {
+    readFileAsText = jest.fn(() => JSON.stringify(jsonFile))
+  }: { readFileAsText?: (File) => Promise<string> } = {}
+) {
+  const db = jest.fn();
+  return shallow(<AppState db={db} readFileAsText={readFileAsText} />);
 }
 
-const db = jest.fn();
-const readFileAsText = jest.fn(() => JSON.stringify(jsonFile));
-const appState = shallow(<AppState db={db} readFileAsText={readFileAsText} />);
-
 it("uses the demo data as it's default projects state", () => {
+  const appState = renderAppState();
   expect(appState.state("title")).toBe("Demo Dashboard");
   expect(appState.state("projects")).toMatchSnapshot();
   expect(appState.state("labels")).toMatchSnapshot();
 });
 
 it("has no error message by default", () => {
+  const appState = renderAppState();
   expect(appState.state("errorMessage")).toBeFalsy();
 });
 
 it("passes the projects (with embedded label info) to it's child <App />", () => {
+  const appState = renderAppState();
   appState.setState({
     projects: demoProjects,
     labels: demoLabels
@@ -95,9 +99,10 @@ it("passes the projects (with embedded label info) to it's child <App />", () =>
   ]);
 });
 
-it("passes no label info with projects (if there's no labels) to it's child <App />", () => {
+it("passes empty label info with projects (if there's no labels) to it's child <App />", () => {
+  const appState = renderAppState();
   appState.setState({
-    projects: demoProjects.map(project => omit(project, "labels"))
+    projects: demoProjects.map(project => ({ ...project, labels: [] }))
   });
   expect(appState.find(App).prop("projects")).toEqual([
     {
@@ -106,7 +111,8 @@ it("passes no label info with projects (if there's no labels) to it's child <App
       person: "Joe Lemon",
       time: "2017-03-15T10:54:04.445Z",
       progress: 13,
-      status: "ontrack"
+      status: "ontrack",
+      labels: []
     },
     {
       id: "2",
@@ -114,22 +120,26 @@ it("passes no label info with projects (if there's no labels) to it's child <App
       person: "Alex Apple",
       time: "2017-04-12T10:54:04.445Z",
       progress: 50,
-      status: "onhold"
+      status: "onhold",
+      labels: []
     }
   ]);
 });
 
 it("passes the title state to it's child <App />", () => {
+  const appState = renderAppState();
   const title = appState.state("title");
   expect(appState.find(App).prop("title")).toBe(title);
 });
 
 it("passess the errorMessage state to it's child <App />", () => {
+  const appState = renderAppState();
   appState.setState({ errorMessage: "Error message" });
   expect(appState.find(App).prop("errorMessage")).toBe("Error message");
 });
 
 it("passes the editable state to it's child <App />", () => {
+  const appState = renderAppState();
   appState.setState({ selectedTab: "edit" });
   expect(appState.find(App).prop("editable")).toBe(true);
 });
@@ -153,6 +163,9 @@ it("updates the selectedTab state", () => {
 });
 
 it("updates the projects state if the dropped file is json", async function() {
+  const readFileAsText = jest.fn(() =>
+    Promise.resolve(JSON.stringify(jsonFile)));
+  const appState = renderAppState({ readFileAsText });
   const mockFile = { MOCK: "FILE" };
   await appState.instance().handleFileDrop(mockFile);
   expect(readFileAsText).toHaveBeenCalledWith(mockFile);
@@ -163,9 +176,10 @@ it("updates the projects state if the dropped file is json", async function() {
 });
 
 it("sets the errorMessage state if the dropped file is invalid", async function() {
+  const readFileAsText = jest.fn(() =>
+    Promise.resolve(JSON.stringify("this is not a projects file")));
+  const appState = renderAppState({ readFileAsText });
   const mockFile = { MOCK: "FILE" };
-  readFileAsText.mockImplementationOnce(() =>
-    JSON.stringify("this is not a projects file"));
   await appState.instance().handleFileDrop(mockFile);
   expect(readFileAsText).toHaveBeenCalledWith(mockFile);
   expect(appState.state("errorMessage")).toMatchSnapshot();
@@ -180,7 +194,8 @@ it("updates the projects state when handleProjectsChange is called", () => {
       person: "Joe Lemon",
       time: "2017-03-15T10:54:04.445Z",
       progress: 13,
-      status: "ontrack"
+      status: "ontrack",
+      labels: []
     }
   ]);
   expect(appState.state("projects")).toEqual([
@@ -190,7 +205,8 @@ it("updates the projects state when handleProjectsChange is called", () => {
       person: "Joe Lemon",
       time: "2017-03-15T10:54:04.445Z",
       progress: 13,
-      status: "ontrack"
+      status: "ontrack",
+      labels: []
     }
   ]);
 });

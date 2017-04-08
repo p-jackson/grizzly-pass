@@ -1,25 +1,38 @@
-import React, { PropTypes } from "react";
+// @flow
+
+import React from "react";
 import moment from "moment";
 import Header from "../Header";
 import SideMenu from "../SideMenu";
 import Card from "../Card";
 import Legend from "../Legend";
-import { tabIds, projectShape, labelInfoShape } from "../../types";
+import type { ProjectWithLabelInfo, TabId } from "../../types";
 import "./App.css";
+
+type AppProps = {
+  title: ?string,
+  projects: ProjectWithLabelInfo[],
+  errorMessage: ?(string | string[]),
+  selectedTab: ?TabId,
+  editable: boolean,
+  onFileDrop: (File) => void,
+  onTabChange: (?TabId) => void,
+  onProjectsChange: (ProjectWithLabelInfo[]) => void
+};
 
 export default function App(
   {
     onFileDrop,
-    title = "",
-    projects = [],
+    title,
+    projects,
     errorMessage,
     selectedTab,
     onTabChange,
     onProjectsChange,
     editable
-  }
+  }: AppProps
 ) {
-  function handleProjectChange(changedProject) {
+  function handleProjectChange(changedProject: ProjectWithLabelInfo) {
     const { id } = changedProject;
     const index = projects.findIndex(p => p.id === id);
     onProjectsChange([
@@ -47,8 +60,7 @@ export default function App(
     );
   });
 
-  const hasProjects = projects && projects.length;
-  const noErrors = !errorMessage;
+  const hasProjects = projects.length;
 
   return (
     <div
@@ -63,37 +75,18 @@ export default function App(
         <Header title={title} />
       </div>
       <div className="App-content">
-        {noErrors ? months : formatErrors(errorMessage)}
+        {errorMessage != null ? formatErrors(errorMessage) : months}
       </div>
       {hasProjects &&
-        noErrors &&
+        errorMessage === undefined &&
         <div className="App-footer">
-          <Legend projects={projects} />
+          <Legend projects={projects.map(({ labels }) => ({ labels }))} />
         </div>}
     </div>
   );
 }
 
-App.propTypes = {
-  onFileDrop: PropTypes.func.isRequired,
-  projects: PropTypes.arrayOf(
-    PropTypes.shape({
-      ...projectShape,
-      labels: PropTypes.arrayOf(PropTypes.shape(labelInfoShape))
-    })
-  ),
-  title: PropTypes.string,
-  errorMessage: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string)
-  ]),
-  onTabChange: PropTypes.func.isRequired,
-  onProjectsChange: PropTypes.func.isRequired,
-  selectedTab: PropTypes.oneOf(tabIds),
-  editable: PropTypes.bool.isRequired
-};
-
-function splitIntoMonths(projects) {
+function splitIntoMonths(projects: ProjectWithLabelInfo[]) {
   const monthIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   return monthIndexes
     .map(monthIndex =>
@@ -105,25 +98,25 @@ function splitIntoMonths(projects) {
     }));
 }
 
-function handleDragOver(e) {
+function handleDragOver(e: Event) {
   e.preventDefault();
 }
 
-function handleDrop(onFileDrop, e) {
+function handleDrop(onFileDrop: (File) => void, e: DragEvent) {
   e.preventDefault();
   const dt = e.dataTransfer;
-  if (dt.items) {
+  if (dt && dt.items) {
     const item = Array.prototype.find.call(
       dt.items,
       ({ kind }) => kind === "file"
     );
     if (item) onFileDrop(item.getAsFile());
-  } else if (dt.files.length) {
+  } else if (dt && dt.files.length) {
     onFileDrop(dt.files[0]);
   }
 }
 
-function formatErrors(errorMessage) {
+function formatErrors(errorMessage: string | string[]) {
   if (typeof errorMessage === "string") return errorMessage;
 
   return (
