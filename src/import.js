@@ -58,29 +58,6 @@ export function importFile(
       labels
     }))
   )(fileContents);
-
-  // return parseFile(fileContents)
-  //   .mapErr(e => `File ${e}`)
-  //   .andThen(data =>
-  //     fromList(data.map(validateProject)).mapErr(badProjects =>
-  //       badProjects.map((badProject, i) => `Project ${i + 1} ${badProject}`)))
-  //   .map(projects => [projects, generateLabels(projects)])
-  //   .map(([projects, labels]) => ({
-  //     title: null,
-  //     projects: projects.map(project => {
-  //       const { title, person, health, progress, date, tags = [] } = project;
-  //       return {
-  //         id: uniqueId(),
-  //         title,
-  //         person,
-  //         status: health,
-  //         progress,
-  //         time: moment(date, "YYYY-MM-DD").format(),
-  //         labels: findLabelIds(labels, tags)
-  //       };
-  //     }),
-  //     labels
-  //   }));
 }
 
 export function validateProject(project: any): Result<ImportProject, string> {
