@@ -36,16 +36,18 @@ export default class DatePicker extends Component<void, Props, State> {
     const { focused, date } = this.state;
 
     return (
-      <SingleDatePicker
-        date={date}
-        onDateChange={handleChange}
-        focused={focused}
-        onFocusChange={({ focused }) => this.setState({ focused })}
-        disabled={this.props.readonly}
-        numberOfMonths={1}
-        isOutsideRange={() => false}
-        displayFormat="D MMMM"
-      />
+      <div className="DatePicker">
+        <SingleDatePicker
+          date={date}
+          onDateChange={handleChange}
+          focused={focused}
+          onFocusChange={({ focused }) => this.setState({ focused })}
+          disabled={this.props.readonly}
+          numberOfMonths={1}
+          isOutsideRange={() => false}
+          displayFormat="D MMMM"
+        />
+      </div>
     );
   }
 }

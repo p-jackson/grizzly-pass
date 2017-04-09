@@ -1,4 +1,29 @@
-$react-dates-color-primary: #f00;
-$react-dates-color-primary-dark: #00f;
+$react-dates-color-border: #c3c3c3;
+$react-dates-width-input: 100%;
+$react-dates-spacing-vertical-picker: 30px;
+$react-dates-color-text: #666;
 @import "../../../node_modules/react-dates/css/variables.scss";
 @import "../../../node_modules/react-dates/css/styles.scss";
+
+.DatePicker {
+  .SingleDatePicker {
+    display: block;
+  }
+
+  .DateInput {
+    font-size: 14px;
+    color: #666;
+    font-weight: normal;
+    line-height: normal;
+    padding: 0;
+    display: block;
+
+    input {
+      cursor: pointer;
+    }
+  }
+
+  .DateInput__display-text {
+    padding: 0 4px;
+  }
+}
