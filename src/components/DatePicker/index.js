@@ -3,8 +3,7 @@
 import React, { Component } from "react";
 import { SingleDatePicker } from "react-dates";
 import moment from "moment";
-import "./DatePicker.css";
-import "react-dates/lib/css/_datepicker.css";
+import "./build/DatePicker.css";
 
 type Props = {
   readonly: boolean,

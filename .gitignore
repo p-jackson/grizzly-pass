@@ -9,10 +9,12 @@
 # production
 /build
 
+# sass build output
+/src/components/DatePicker/build
+
 # misc
 .DS_Store
 .env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
