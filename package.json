@@ -9,6 +9,7 @@
     "moment": "^2.18.1",
     "react": "^15.4.2",
     "react-addons-shallow-compare": "^15.5.1",
+    "react-aria-menubutton": "^4.3.0",
     "react-dates": "^10.0.0",
     "react-dom": "^15.4.2"
   },

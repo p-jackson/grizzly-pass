@@ -47,7 +47,7 @@ it("contains a <Label /> and title for each used label", () => {
 
 it("passes label into to <Label /> props", () => {
   const legend = shallow(<Legend projects={projects.slice(1, 2)} />);
-  expect(legend.find(Label).props()).toEqual({
+  expect(legend.find(Label).props()).toMatchObject({
     labelInfo: {
       id: "3",
       initial: "A",
@@ -55,6 +55,11 @@ it("passes label into to <Label /> props", () => {
       title: "Apple"
     }
   });
+});
+
+it("uses readonly <Label />s", () => {
+  const legend = shallow(<Legend projects={projects.slice(1, 2)} />);
+  expect(legend.find(Label).prop("readonly")).toBe(true);
 });
 
 it("displays the labels title", () => {

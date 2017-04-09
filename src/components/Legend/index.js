@@ -19,7 +19,7 @@ export default function Legend({ projects }: LegendProps) {
   const labelElems = allProjectLabels.map(labelInfo => {
     return (
       <div className="Legend-labelWrapper" key={labelInfo.id}>
-        <Label labelInfo={labelInfo} />
+        <Label labelInfo={labelInfo} readonly={true} />
         <div className="Legend-labelTitle">{labelInfo.title}</div>
       </div>
     );

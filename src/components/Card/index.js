@@ -29,7 +29,7 @@ export default function Card(
     : <div className="Card-labels">
         {labels.map(labelInfo => (
           <div key={labelInfo.id} className="Card-label">
-            <Label labelInfo={labelInfo} />
+            <Label labelInfo={labelInfo} readonly={readonly} />
           </div>
         ))}
       </div>;

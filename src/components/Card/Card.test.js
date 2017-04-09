@@ -134,7 +134,7 @@ it("renders a <Label /> for each labels prop", () => {
 it("passes label props down to <Label />", () => {
   const labels = [{ id: "1", initial: "A", colour: "#f00", title: "Apple" }];
   const card = renderCard({ labels });
-  expect(card.find(Label).props()).toEqual({
+  expect(card.find(Label).props()).toMatchObject({
     labelInfo: {
       id: "1",
       initial: "A",
