@@ -16,3 +16,11 @@ fields are:
 - progress (required, number representing a percentage)
 - health (required, one of "ontrack", "atrisk", "intervention" or "onhold")
 - tags (optional, array of strings to be used as free-form tags on projects)
+
+## Staging Server
+
+You can see a recent build at
+[https://grizzly-pass-staging.surge.sh/](https://grizzly-pass-staging.surge.sh/).
+
+> The staging server doesn't show a good beta you can depend on, it just
+> shows a recent development build from `master`.

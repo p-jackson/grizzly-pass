@@ -18,6 +18,7 @@
     "@kadira/storybook-addon-knobs": "^1.7.1",
     "@kadira/storybook-addons": "^1.6.1",
     "coveralls": "^2.13.0",
+    "cross-env": "^4.0.0",
     "enzyme": "^2.8.0",
     "flow-bin": "^0.43.1",
     "ncp": "^2.0.0",
@@ -33,7 +34,8 @@
   "scripts": {
     "start": "npm-run-all -p watch-css start-js",
     "start-js": "react-scripts start",
-    "build": "npm run build-css && react-scripts build && ncp CNAME build/CNAME",
+    "build": "npm run build-css && cross-env PUBLIC_URL=/ react-scripts build && ncp CNAME.staging.txt build/CNAME",
+    "build-production": "npm run build-css && cross-env PUBLIC_URL=/ react-scripts build && ncp CNAME.prod.txt build/CNAME",
     "test": "react-scripts test --collectCoverageFrom=src/**/*.js --collectCoverageFrom=!src/**/*.stories.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "build-css": "node-sass src/components/DatePicker/ -o src/components/DatePicker/build/",
