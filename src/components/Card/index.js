@@ -1,33 +1,39 @@
 // @flow
 
 import React from "react";
+import { connect } from "react-redux";
 import moment from "moment";
 import DatePicker from "../DatePicker";
 import Selectable from "../Selectable";
 import ProgressBar from "../ProgressBar";
 import Label from "../Label";
-import type { ProjectWithLabelInfo } from "../../types";
+import type { Project, LabelInfo } from "../../types";
+import type { State } from "../../reducer";
+import { getEditable, getProject, getLabelInfo } from "../../reducer";
+import { updateProject } from "../../actions";
 import "./Card.css";
 
 type CardProps = {
-  readonly?: boolean,
-  project: ProjectWithLabelInfo,
-  onProjectChange: (ProjectWithLabelInfo) => void
+  readonly: boolean,
+  project: Project,
+  labelInfo: LabelInfo[],
+  updateProject: (Project) => void
 };
 
-export default function Card(
+export function Card(
   {
-    readonly = true,
+    readonly,
     project,
-    onProjectChange
+    labelInfo,
+    updateProject
   }: CardProps
 ) {
-  const { progress, status, labels } = project;
+  const { progress, status } = project;
 
-  const labelsDiv = !labels.length
+  const labelsDiv = !labelInfo.length
     ? null
     : <div className="Card-labels">
-        {labels.map(labelInfo => (
+        {labelInfo.map(labelInfo => (
           <div key={labelInfo.id} className="Card-label">
             <Label labelInfo={labelInfo} readonly={readonly} />
           </div>
@@ -39,13 +45,13 @@ export default function Card(
   return (
     <div className={className}>
       <div className="Card-title">
-        {renderTextElement(project, "title", readonly, onProjectChange)}
+        {renderTextElement(project, "title", readonly, updateProject)}
       </div>
       <div className="Card-person">
-        {renderTextElement(project, "person", readonly, onProjectChange)}
+        {renderTextElement(project, "person", readonly, updateProject)}
       </div>
       <div className="Card-date">
-        {renderDate(project, "time", readonly, onProjectChange)}
+        {renderDate(project, "time", readonly, updateProject)}
       </div>
       {labelsDiv}
       <div className="Card-progress">
@@ -56,10 +62,10 @@ export default function Card(
 }
 
 function renderTextElement(
-  wholeProject: ProjectWithLabelInfo,
+  wholeProject: Project,
   attr: "title" | "person",
   readonly: boolean,
-  onChange: (ProjectWithLabelInfo) => void
+  onChange: (Project) => void
 ) {
   const text = wholeProject[attr];
 
@@ -74,10 +80,10 @@ function renderTextElement(
 }
 
 function renderDate(
-  wholeProject: ProjectWithLabelInfo,
+  wholeProject: Project,
   attr: "time",
   readonly: boolean,
-  onChange: (ProjectWithLabelInfo) => void
+  onChange: (Project) => void
 ) {
   const time = wholeProject[attr];
   const date = moment(time).format("D MMMM");
@@ -91,3 +97,22 @@ function renderDate(
       />
     );
 }
+
+function mapStateToProps(state: State, { projectId }) {
+  const project = getProject(state, projectId);
+  if (project == null) return {};
+
+  return {
+    readonly: !getEditable(state),
+    project,
+    labelInfo: project.labels.map(id => getLabelInfo(state, id))
+  };
+}
+
+const mapDispatchToProps = {
+  updateProject
+};
+
+const CardState = connect(mapStateToProps, mapDispatchToProps)(Card);
+
+export default CardState;

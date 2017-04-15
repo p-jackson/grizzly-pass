@@ -1,66 +1,53 @@
 // @flow
 
-import type { ProjectWithLabelInfo, TabId } from "../../types";
-import App from "../App";
+import type { Project, TabId } from "../../types";
+import { App, mapStateToProps } from "../App";
 import Card from "../Card";
 import Header from "../Header";
 import Legend from "../Legend";
 import React from "react";
-import SideMenu from "../SideMenu";
 import { shallow } from "enzyme";
+import reducer from "../../reducer";
 
-const projects = [
+const projectsByMonth: { month: string, projectIds: string[] }[] = [
   {
-    id: "1",
-    title: "Coffee Swirl",
-    person: "Joe Lemon",
-    time: "2017-03-15T10:54:04.445Z",
-    progress: 13,
-    status: "ontrack",
-    labels: []
+    month: "March",
+    projectIds: ["1"]
   },
   {
-    id: "2",
-    title: "Rake Twister",
-    person: "Alex Apple",
-    time: "2017-04-12T10:54:04.445Z",
-    progress: 50,
-    status: "onhold",
-    labels: [{ id: "13", initial: "A", colour: "#ff0", title: "Apple" }]
+    month: "April",
+    projectIds: ["2"]
   }
 ];
 
 function renderApp(
   {
     title,
-    projects = [],
-    handleFileDrop = jest.fn(),
+    projectsByMonth = [],
+    importFile = jest.fn(),
     errorMessage,
     selectedTab,
-    handleTabChange = jest.fn(),
-    handleProjectsChange = jest.fn(),
-    editable = false
+    selectTab = jest.fn(),
+    updateProject = jest.fn()
   }: {
     title?: string,
-    projects?: ProjectWithLabelInfo[],
-    handleFileDrop?: (File) => void,
+    projectsByMonth?: { month: string, projectIds: string[] }[],
+    importFile?: (File) => void,
     errorMessage?: string | string[],
     selectedTab?: TabId,
-    handleTabChange?: (?TabId) => void,
-    handleProjectsChange?: (ProjectWithLabelInfo[]) => void,
-    editable?: boolean
+    selectTab?: (?TabId) => void,
+    updateProject?: (Project) => void
   } = {}
 ) {
   return shallow(
     <App
-      projects={projects}
+      projectsByMonth={projectsByMonth}
       title={title}
-      onFileDrop={handleFileDrop}
-      onTabChange={handleTabChange}
+      importFile={importFile}
+      selectTab={selectTab}
       errorMessage={errorMessage}
       selectedTab={selectedTab}
-      onProjectsChange={handleProjectsChange}
-      editable={editable}
+      updateProject={updateProject}
     />
   );
 }
@@ -71,20 +58,14 @@ it("shows a header", () => {
   expect(defaultApp.find(Header).length).toBe(1);
 });
 
-it("passes the dummy document title to the header", () => {
-  const app = renderApp({ title: "Dummy Projects 2020" });
-  expect(app.find(Header).prop("title")).toBe("Dummy Projects 2020");
+it("shows a <Legend /> when there are projects", () => {
+  const app = renderApp({ projectsByMonth });
+  expect(app.find(Legend).length).toBe(1);
 });
 
-it("shows no legend when there are no projects", () => {
-  expect(defaultApp.find(Legend).length).toBe(0);
-});
-
-it("strips non-label info from `projects` prop before passing it to <Legend />", () => {
-  const app = renderApp({ projects });
-  expect(app.find(Legend).props()).toEqual({
-    projects: projects.map(({ labels }) => ({ labels }))
-  });
+it("doesn't show a <Legend /> when there are no projects", () => {
+  const app = renderApp();
+  expect(app.find(Legend).length).toBe(0);
 });
 
 it("contains no cards when passed no projects", () => {
@@ -92,49 +73,21 @@ it("contains no cards when passed no projects", () => {
 });
 
 it("shows a card for each project passed in", () => {
-  const app = renderApp({ projects });
-  expect(app.find(Card).length).toBe(projects.length);
+  const app = renderApp({ projectsByMonth });
+  const projectIds = projectsByMonth.reduce(
+    (memo, { projectIds }) => [...memo, ...projectIds],
+    []
+  );
+  expect(app.find(Card).length).toBe(projectIds.length);
 });
 
-it("passes project props to the <Card />", () => {
-  const app = renderApp({ projects: projects.slice(0, 1) });
-  expect(app.find(Card).props()).toMatchObject({
-    project: {
-      title: "Coffee Swirl",
-      person: "Joe Lemon",
-      time: "2017-03-15T10:54:04.445Z",
-      progress: 13,
-      status: "ontrack"
-    }
-  });
+it("passes the project id to the <Card />", () => {
+  const app = renderApp({ projectsByMonth: projectsByMonth.slice(0, 1) });
+  expect(app.find(Card).props()).toEqual({ projectId: "1" });
 });
 
-it("makes cards readonly if app isn't editable", () => {
-  const app = renderApp({ projects: projects.slice(0, 1), editable: false });
-  expect(app.find(Card).props()).toMatchObject({ readonly: true });
-});
-
-it("makes cards not readonly if app is editable", () => {
-  const app = renderApp({ projects: projects.slice(0, 1), editable: true });
-  expect(app.find(Card).props()).toMatchObject({ readonly: false });
-});
-
-it("passes labels prop to the <Card /> if it exists", () => {
-  const app = renderApp({ projects: projects.slice(1, 2) });
-  expect(app.find(Card).props()).toMatchObject({
-    project: {
-      title: "Rake Twister",
-      person: "Alex Apple",
-      time: "2017-04-12T10:54:04.445Z",
-      progress: 50,
-      status: "onhold",
-      labels: [{ id: "13", initial: "A", colour: "#ff0" }]
-    }
-  });
-});
-
-it("splits projects into months", () => {
-  const app = renderApp({ projects });
+it("splits months into different divs", () => {
+  const app = renderApp({ projectsByMonth });
   const monthColumns = app.find(".App-month");
   expect(monthColumns.length).toBe(2);
   expect(monthColumns.at(0).find(Card).length).toBe(1);
@@ -142,7 +95,7 @@ it("splits projects into months", () => {
 });
 
 it("renders month names at the top of the columns", () => {
-  const app = renderApp({ projects });
+  const app = renderApp({ projectsByMonth });
   const monthColumns = app.find(".App-month .App-monthTitle");
   expect(monthColumns.at(0).text()).toBe("March");
   expect(monthColumns.at(1).text()).toBe("April");
@@ -162,28 +115,28 @@ it("prevents default event handling on drop", () => {
 
 it("calls drop handler when browser support the DataTransferItemList interface", () => {
   const mockFile = { MOCK: "FILE" };
-  const handleFileDrop = jest.fn();
-  const app = renderApp({ handleFileDrop });
+  const importFile = jest.fn();
+  const app = renderApp({ importFile });
   app.simulate("drop", {
     preventDefault: () => {},
     dataTransfer: {
       items: [{ kind: "file", getAsFile: () => mockFile }]
     }
   });
-  expect(handleFileDrop).toHaveBeenCalledWith(mockFile);
+  expect(importFile).toHaveBeenCalledWith(mockFile);
 });
 
 it("calls drop handler when browser support the DataTransfer interface", () => {
   const mockFile = { MOCK: "FILE" };
-  const handleFileDrop = jest.fn();
-  const app = renderApp({ handleFileDrop });
+  const importFile = jest.fn();
+  const app = renderApp({ importFile });
   app.simulate("drop", {
     preventDefault: () => {},
     dataTransfer: {
       files: [mockFile]
     }
   });
-  expect(handleFileDrop).toHaveBeenCalledWith(mockFile);
+  expect(importFile).toHaveBeenCalledWith(mockFile);
 });
 
 it("doesn't call drop handler it wasn't a file that was dropped", () => {
@@ -211,43 +164,7 @@ it("displays errors as a list if errorMessage prop is an array", () => {
   expect(app.find(".App-content li").at(1).text()).toBe("Error 2");
 });
 
-it("passes the selectedTab to the <SideMenu />", () => {
-  const app = renderApp({ selectedTab: "edit" });
-  expect(app.find(SideMenu).prop("selectedTab")).toBe("edit");
-});
-
-it("calls projects change handler when only card is edited", () => {
-  const handleProjectsChange = jest.fn();
-  const app = renderApp({
-    projects: projects.slice(0, 1),
-    handleProjectsChange
-  });
-  const projectChanger = app.find(Card).prop("onProjectChange");
-  projectChanger({
-    ...projects[0],
-    title: "New Title"
-  });
-  expect(handleProjectsChange).toHaveBeenCalledWith([
-    {
-      ...projects[0],
-      title: "New Title"
-    }
-  ]);
-});
-
-it("calls projects change handler when one of many cards is edited", () => {
-  const handleProjectsChange = jest.fn();
-  const app = renderApp({ projects, handleProjectsChange });
-  const projectChanger = app.find(Card).first().prop("onProjectChange");
-  projectChanger({
-    ...projects[1],
-    title: "New Title"
-  });
-  expect(handleProjectsChange).toHaveBeenCalledWith([
-    projects[0],
-    {
-      ...projects[1],
-      title: "New Title"
-    }
-  ]);
+it("can map default state to props", () => {
+  const state = reducer(undefined, {});
+  expect(mapStateToProps(state)).toMatchSnapshot();
 });

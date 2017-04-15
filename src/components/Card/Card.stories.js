@@ -4,7 +4,7 @@ import React from "react";
 import { storiesOf, action } from "@kadira/storybook";
 import { text, number, select, boolean } from "@kadira/storybook-addon-knobs";
 import { host } from "storybook-host";
-import Card from "../Card";
+import { Card } from "../Card";
 import { statusIds } from "../../types";
 
 const statusOptions = statusIds.reduce(
@@ -33,8 +33,9 @@ storiesOf("Card", module)
         status: select("status", statusOptions, "ontrack"),
         labels: []
       }}
+      labelInfo={[]}
       readonly={boolean("readonly", true)}
-      onProjectChange={action("project change")}
+      updateProject={action("update project")}
     />
   ))
   .add("project with labels", () => (
@@ -46,13 +47,14 @@ storiesOf("Card", module)
         progress: number("progress", 55),
         time: text("time", "2016-08-03T23:00:00Z"),
         status: select("status", statusOptions, "ontrack"),
-        labels: [
-          { id: "1", initial: "A", colour: "red", title: "Apple" },
-          { id: "2", initial: "B", colour: "blue", title: "Bear" }
-        ]
+        labels: ["1", "2"]
       }}
+      labelInfo={[
+        { id: "1", initial: "A", colour: "red", title: "Apple" },
+        { id: "2", initial: "B", colour: "blue", title: "Bear" }
+      ]}
       readonly={boolean("readonly", true)}
-      onProjectChange={action("project change")}
+      updateProject={action("update project")}
     />
   ))
   .add("placeholder text when inputs are empty", () => (
@@ -64,12 +66,13 @@ storiesOf("Card", module)
         progress: number("progress", 55),
         time: text("time", "2016-08-03T23:00:00Z"),
         status: select("status", statusOptions, "ontrack"),
-        labels: [
-          { id: "1", initial: "A", colour: "red", title: "Apple" },
-          { id: "2", initial: "B", colour: "blue", title: "Bear" }
-        ]
+        labels: ["1", "2"]
       }}
+      labelInfo={[
+        { id: "1", initial: "A", colour: "red", title: "Apple" },
+        { id: "2", initial: "B", colour: "blue", title: "Bear" }
+      ]}
       readonly={false}
-      onProjectChange={action("project change")}
+      updateProject={action("update project")}
     />
   ));

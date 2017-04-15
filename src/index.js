@@ -1,10 +1,13 @@
 // @flow
 
 import React from "react";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
 import { render } from "react-dom";
-import AppState from "./components/AppState";
-import { init as initDatabase } from "./database";
+import App from "./components/App";
 import { readFileAsText } from "./file-utils";
+import { loadDemoData } from "./actions";
+import reducer from "./reducer";
 import "./index.css";
 import debugFactory from "debug";
 const debug = debugFactory("gp:main");
@@ -14,14 +17,17 @@ const { version: appVersion } = require("../package.json");
 
 async function run() {
   console.log(appVersion);
-  const db = await initDatabase(window);
-  if (db === null) {
-    console.log("Browser doesn't support indexdb");
-    return;
-  }
+
+  const store = createStore(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
+  store.dispatch(loadDemoData());
 
   render(
-    <AppState db={() => db} readFileAsText={readFileAsText(FileReader)} />,
+    <Provider store={store}>
+      <App readFileAsText={readFileAsText(FileReader)} />
+    </Provider>,
     document.getElementById("root")
   );
 }

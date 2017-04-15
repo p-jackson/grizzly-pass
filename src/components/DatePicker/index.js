@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { SingleDatePicker } from "react-dates";
 import moment from "moment";
 import "./build/DatePicker.css";
@@ -16,7 +16,7 @@ type State = {
   date: moment$Moment
 };
 
-export default class DatePicker extends Component<void, Props, State> {
+export default class DatePicker extends PureComponent<void, Props, State> {
   state: State;
 
   constructor(props: Props) {

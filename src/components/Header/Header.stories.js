@@ -4,7 +4,7 @@ import React from "react";
 import { storiesOf } from "@kadira/storybook";
 import { text } from "@kadira/storybook-addon-knobs";
 import { host } from "storybook-host";
-import Header from "../Header";
+import { Header } from "../Header";
 
 storiesOf("Header", module)
   .addDecorator(

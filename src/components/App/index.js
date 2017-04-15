@@ -1,55 +1,50 @@
 // @flow
 
 import React from "react";
-import moment from "moment";
+import { flow } from "lodash";
+import type { Dispatch } from "redux";
+import { connect } from "react-redux";
 import Header from "../Header";
 import SideMenu from "../SideMenu";
 import Card from "../Card";
 import Legend from "../Legend";
-import type { ProjectWithLabelInfo, TabId } from "../../types";
+import type { State } from "../../reducer";
+import { getProjectIdsByMonth } from "../../reducer";
+import { loadProjectJsonSuccess, loadProjectJsonFailure } from "../../actions";
+import type { TabId } from "../../types";
+import { importFile } from "../../import";
+import { map, mapErr } from "../../result";
 import "./App.css";
 
+const importProject = (readFileAsText: (File) => Promise<string>, file: File) =>
+  async (dispatch: Dispatch<*>) => {
+    const asText = await readFileAsText(file);
+    flow(
+      importFile,
+      map(fileData => dispatch(loadProjectJsonSuccess(fileData))),
+      mapErr(errorMessage => dispatch(loadProjectJsonFailure(errorMessage)))
+    )(asText);
+  };
+
 type AppProps = {
-  title: ?string,
-  projects: ProjectWithLabelInfo[],
+  projectsByMonth: { month: string, projectIds: string[] }[],
   errorMessage: ?(string | string[]),
   selectedTab: ?TabId,
-  editable: boolean,
-  onFileDrop: (File) => void,
-  onTabChange: (?TabId) => void,
-  onProjectsChange: (ProjectWithLabelInfo[]) => void
+  importFile: (File) => void
 };
 
-export default function App(
+export function App(
   {
-    onFileDrop,
-    title,
-    projects,
+    projectsByMonth,
     errorMessage,
     selectedTab,
-    onTabChange,
-    onProjectsChange,
-    editable
+    importFile
   }: AppProps
 ) {
-  function handleProjectChange(changedProject: ProjectWithLabelInfo) {
-    const { id } = changedProject;
-    const index = projects.findIndex(p => p.id === id);
-    onProjectsChange([
-      ...projects.slice(0, index),
-      changedProject,
-      ...projects.slice(index + 1)
-    ]);
-  }
-
-  const months = splitIntoMonths(projects).map(({ month, projects }) => {
-    const cards = projects.map(project => (
-      <div className="App-cardWrapper" key={project.id}>
-        <Card
-          project={project}
-          onProjectChange={handleProjectChange}
-          readonly={!editable}
-        />
+  const months = projectsByMonth.map(({ month, projectIds }) => {
+    const cards = projectIds.map(projectId => (
+      <div className="App-cardWrapper" key={projectId}>
+        <Card projectId={projectId} />
       </div>
     ));
     return (
@@ -60,19 +55,19 @@ export default function App(
     );
   });
 
-  const hasProjects = projects.length;
+  const hasProjects = !!projectsByMonth.length;
 
   return (
     <div
       className="App"
-      onDrop={e => handleDrop(onFileDrop, e)}
+      onDrop={e => handleDrop(importFile, e)}
       onDragOver={handleDragOver}
     >
       <div className="App-sideMenu">
-        <SideMenu onTabChange={onTabChange} selectedTab={selectedTab} />
+        <SideMenu />
       </div>
       <div className="App-header">
-        <Header title={title} />
+        <Header />
       </div>
       <div className="App-content">
         {errorMessage != null ? formatErrors(errorMessage) : months}
@@ -80,29 +75,35 @@ export default function App(
       {hasProjects &&
         errorMessage === undefined &&
         <div className="App-footer">
-          <Legend projects={projects.map(({ labels }) => ({ labels }))} />
+          <Legend />
         </div>}
     </div>
   );
 }
 
-function splitIntoMonths(projects: ProjectWithLabelInfo[]) {
-  const monthIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-  return monthIndexes
-    .map(monthIndex =>
-      projects.filter(project => moment(project.time).month() === monthIndex))
-    .filter(month => month.length > 0)
-    .map(month => ({
-      month: moment(month[0].time).format("MMMM"),
-      projects: month
-    }));
+export function mapStateToProps(state: State) {
+  return {
+    projectsByMonth: getProjectIdsByMonth(state)
+  };
 }
+
+function mapDispatchToProps(
+  dispatch: Dispatch<*>,
+  { readFileAsText }: { readFileAsText: (File) => Promise<string> }
+) {
+  return {
+    importProject: (file: File) => dispatch(importProject(readFileAsText, file))
+  };
+}
+
+const AppState = connect(mapStateToProps, mapDispatchToProps)(App);
+export default AppState;
 
 function handleDragOver(e: Event) {
   e.preventDefault();
 }
 
-function handleDrop(onFileDrop: (File) => void, e: DragEvent) {
+function handleDrop(importFile: (File) => void, e: DragEvent) {
   e.preventDefault();
   const dt = e.dataTransfer;
   if (dt && dt.items) {
@@ -110,9 +111,9 @@ function handleDrop(onFileDrop: (File) => void, e: DragEvent) {
       dt.items,
       ({ kind }) => kind === "file"
     );
-    if (item) onFileDrop(item.getAsFile());
+    if (item) importFile(item.getAsFile());
   } else if (dt && dt.files.length) {
-    onFileDrop(dt.files[0]);
+    importFile(dt.files[0]);
   }
 }
 

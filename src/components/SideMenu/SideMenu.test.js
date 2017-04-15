@@ -4,7 +4,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import type { TabId } from "../../types";
 import { tabIds } from "../../types";
-import SideMenu from "../SideMenu";
+import { SideMenu } from "../SideMenu";
 
 function renderSideMenu(
   {
@@ -13,7 +13,7 @@ function renderSideMenu(
   }: { handleTabChange?: (?TabId) => void, selectedTab?: ?TabId } = {}
 ) {
   return shallow(
-    <SideMenu onTabChange={handleTabChange} selectedTab={selectedTab} />
+    <SideMenu selectTab={handleTabChange} selectedTab={selectedTab} />
   );
 }
 

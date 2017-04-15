@@ -7,8 +7,8 @@ export const tabIds = ["edit"];
 export type TabId = "edit";
 
 export type Label = {
-  id: string,
-  title: string
+  +id: string,
+  +title: string
 };
 
 export type LabelInfo = {
@@ -26,14 +26,4 @@ export type Project = {
   progress: number,
   status: Status,
   labels: string[]
-};
-
-export type ProjectWithLabelInfo = {
-  id: string,
-  title: string,
-  person: string,
-  time: string,
-  progress: number,
-  status: Status,
-  labels: LabelInfo[]
 };

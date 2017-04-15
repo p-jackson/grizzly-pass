@@ -1,0 +1,5 @@
+exports[`test can map default state to props 1`] = `
+Object {
+  "projectsByMonth": Array [],
+}
+`;

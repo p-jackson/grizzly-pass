@@ -4,11 +4,11 @@ import React from "react";
 import { shallow } from "enzyme";
 import moment from "moment";
 import DatePicker from "../DatePicker";
-import Card from "../Card";
+import { Card } from "../Card";
 import Selectable from "../Selectable";
 import ProgressBar from "../ProgressBar";
 import Label from "../Label";
-import type { ProjectWithLabelInfo, Status, LabelInfo } from "../../types";
+import type { Project, Status, LabelInfo } from "../../types";
 
 function renderCard(
   {
@@ -18,7 +18,7 @@ function renderCard(
     progress = 0,
     status = "ontrack",
     labels = [],
-    readonly,
+    readonly = true,
     handleProjectChange = jest.fn()
   }: {
     title?: string,
@@ -28,7 +28,7 @@ function renderCard(
     status?: Status,
     labels?: LabelInfo[],
     readonly?: boolean,
-    handleProjectChange?: (ProjectWithLabelInfo) => void
+    handleProjectChange?: (Project) => void
   } = {}
 ) {
   return shallow(
@@ -40,10 +40,11 @@ function renderCard(
         time,
         progress,
         status,
-        labels
+        labels: labels.map(({ id }) => id)
       }}
+      labelInfo={labels}
       readonly={readonly}
-      onProjectChange={handleProjectChange}
+      updateProject={handleProjectChange}
     />
   );
 }
