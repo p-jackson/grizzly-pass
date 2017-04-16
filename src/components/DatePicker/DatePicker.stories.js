@@ -1,8 +1,8 @@
 // @flow
 
-import React from "react";
 import { storiesOf } from "@kadira/storybook";
 import { boolean } from "@kadira/storybook-addon-knobs";
+import React from "react";
 import { host } from "storybook-host";
 import DatePicker from "../DatePicker";
 

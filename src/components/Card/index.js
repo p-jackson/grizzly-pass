@@ -1,33 +1,31 @@
 // @flow
 
+import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
-import moment from "moment";
-import DatePicker from "../DatePicker";
-import Selectable from "../Selectable";
-import ProgressBar from "../ProgressBar";
-import Label from "../Label";
-import type { Project, LabelInfo } from "../../types";
+import { updateProject } from "../../actions";
 import type { State } from "../../reducer";
 import { getEditable, getProject, getLabelInfo } from "../../reducer";
-import { updateProject } from "../../actions";
+import type { Project, LabelInfo } from "../../types";
+import DatePicker from "../DatePicker";
+import Label from "../Label";
+import ProgressBar from "../ProgressBar";
+import Selectable from "../Selectable";
 import "./Card.css";
 
 type CardProps = {
   readonly: boolean,
   project: Project,
   labelInfo: LabelInfo[],
-  updateProject: (Project) => void
+  updateProject: Project => void
 };
 
-export function Card(
-  {
-    readonly,
-    project,
-    labelInfo,
-    updateProject
-  }: CardProps
-) {
+export function CardPresentation({
+  readonly,
+  project,
+  labelInfo,
+  updateProject
+}: CardProps) {
   const { progress, status } = project;
 
   const labelsDiv = !labelInfo.length
@@ -65,12 +63,13 @@ function renderTextElement(
   wholeProject: Project,
   attr: "title" | "person",
   readonly: boolean,
-  onChange: (Project) => void
+  onChange: Project => void
 ) {
   const text = wholeProject[attr];
 
   if (readonly) return <Selectable>{text}</Selectable>;
-  else return (
+  else
+    return (
       <input
         value={text}
         placeholder={attr === "title" ? "Title" : "Person"}
@@ -83,13 +82,14 @@ function renderDate(
   wholeProject: Project,
   attr: "time",
   readonly: boolean,
-  onChange: (Project) => void
+  onChange: Project => void
 ) {
   const time = wholeProject[attr];
   const date = moment(time).format("D MMMM");
 
   if (readonly) return <Selectable>{date}</Selectable>;
-  else return (
+  else
+    return (
       <DatePicker
         readonly={readonly}
         time={time}
@@ -113,6 +113,6 @@ const mapDispatchToProps = {
   updateProject
 };
 
-const CardState = connect(mapStateToProps, mapDispatchToProps)(Card);
+const Card = connect(mapStateToProps, mapDispatchToProps)(CardPresentation);
 
-export default CardState;
+export default Card;

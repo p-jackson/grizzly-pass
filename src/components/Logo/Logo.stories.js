@@ -1,7 +1,7 @@
 // @flow
 
-import React from "react";
 import { storiesOf } from "@kadira/storybook";
+import React from "react";
 import { host } from "storybook-host";
 import Logo from "../Logo";
 

@@ -1,14 +1,14 @@
 // @flow
 
+import moment from "moment";
 import React, { PureComponent } from "react";
 import { SingleDatePicker } from "react-dates";
-import moment from "moment";
 import "./build/DatePicker.css";
 
 type Props = {
   readonly: boolean,
   time: string,
-  onTimeChange: (string) => void
+  onTimeChange: string => void
 };
 
 type State = {

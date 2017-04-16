@@ -1,7 +1,7 @@
 // @flow
 
-import React from "react";
 import { shallow } from "enzyme";
+import React from "react";
 import Selectable from "../Selectable";
 
 const selectable = shallow(<Selectable>child text</Selectable>);

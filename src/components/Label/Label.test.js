@@ -1,7 +1,7 @@
 // @flow
 
-import React from "react";
 import { shallow } from "enzyme";
+import React from "react";
 import { Button } from "react-aria-menubutton";
 import Label from "../Label";
 

@@ -1,9 +1,9 @@
 // @flow
 
-import React from "react";
-import { SingleDatePicker } from "react-dates";
 import { shallow } from "enzyme";
 import moment from "moment";
+import React from "react";
+import { SingleDatePicker } from "react-dates";
 import DatePicker from "../DatePicker";
 
 function renderDatePicker(
@@ -14,7 +14,7 @@ function renderDatePicker(
   }: {
     readonly?: boolean,
     time?: string,
-    handleTimeChange?: (string) => void
+    handleTimeChange?: string => void
   } = {}
 ) {
   return shallow(

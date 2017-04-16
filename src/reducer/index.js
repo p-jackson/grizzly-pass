@@ -1,11 +1,11 @@
 // @flow
 
-import { combineReducers } from "redux";
 import moment from "moment";
-import type { Label, Project, LabelInfo, TabId } from "../types";
-import { generateLabelInfo } from "../labels";
+import { combineReducers } from "redux";
 import type { Action } from "../actions";
 import { projects as demoProjects, labels as demoLabels } from "../demo-data";
+import { generateLabelInfo } from "../labels";
+import type { Label, Project, LabelInfo, TabId } from "../types";
 
 export type { Label, Project };
 
@@ -47,7 +47,8 @@ function projects(projects: Project[] = [], action: Action): Project[] {
       const project = action.project;
       const index = projects.findIndex(({ id }) => id === project.id);
       if (index === -1) return projects;
-      else return [
+      else
+        return [
           ...projects.slice(0, index),
           action.project,
           ...projects.slice(index + 1)
@@ -106,7 +107,8 @@ export function getProjectIdsByMonth(
     .map(monthIndex =>
       state.projects.filter(
         project => moment(project.time).month() === monthIndex
-      ))
+      )
+    )
     .filter(month => month.length > 0)
     .map(month => ({
       month: moment(month[0].time).format("MMMM"),

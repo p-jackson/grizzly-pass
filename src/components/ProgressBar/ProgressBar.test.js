@@ -1,9 +1,9 @@
 // @flow
 
-import React from "react";
 import { shallow } from "enzyme";
-import ProgressBar from "../ProgressBar";
+import React from "react";
 import { statusIds } from "../../types";
+import ProgressBar from "../ProgressBar";
 
 const progressBar = shallow(<ProgressBar progress={30} status="ontrack" />);
 

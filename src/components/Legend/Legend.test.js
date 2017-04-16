@@ -1,9 +1,9 @@
 // @flow
 
-import React from "react";
 import { shallow } from "enzyme";
-import { Legend } from "../Legend";
+import React from "react";
 import Label from "../Label";
+import { LegendPresentation } from "../Legend";
 
 const labels = [
   {
@@ -20,7 +20,7 @@ const labels = [
   }
 ];
 
-const legend = shallow(<Legend labels={labels} />);
+const legend = shallow(<LegendPresentation labels={labels} />);
 
 it("contains a <Label /> and title for each used label", () => {
   expect(legend.find(Label).length).toBe(2);
@@ -28,7 +28,7 @@ it("contains a <Label /> and title for each used label", () => {
 });
 
 it("passes label into to <Label /> props", () => {
-  const legend = shallow(<Legend labels={labels.slice(0, 1)} />);
+  const legend = shallow(<LegendPresentation labels={labels.slice(0, 1)} />);
   expect(legend.find(Label).props()).toMatchObject({
     labelInfo: {
       id: "3",
@@ -40,11 +40,11 @@ it("passes label into to <Label /> props", () => {
 });
 
 it("uses readonly <Label />s", () => {
-  const legend = shallow(<Legend labels={labels.slice(0, 1)} />);
+  const legend = shallow(<LegendPresentation labels={labels.slice(0, 1)} />);
   expect(legend.find(Label).prop("readonly")).toBe(true);
 });
 
 it("displays the labels title", () => {
-  const legend = shallow(<Legend labels={labels.slice(0, 1)} />);
+  const legend = shallow(<LegendPresentation labels={labels.slice(0, 1)} />);
   expect(legend.find(".Legend-labelTitle").text()).toBe("Apple");
 });

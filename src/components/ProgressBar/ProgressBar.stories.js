@@ -1,11 +1,11 @@
 // @flow
 
-import React from "react";
 import { storiesOf } from "@kadira/storybook";
 import { number, select } from "@kadira/storybook-addon-knobs";
+import React from "react";
 import { host } from "storybook-host";
-import ProgressBar from "../ProgressBar";
 import { statusIds } from "../../types";
+import ProgressBar from "../ProgressBar";
 
 const statusOptions = statusIds.reduce(
   (memo, status) => ({

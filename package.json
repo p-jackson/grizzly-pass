@@ -23,6 +23,8 @@
     "coveralls": "^2.13.0",
     "cross-env": "^4.0.0",
     "enzyme": "^2.8.0",
+    "eslint": "^3.19.0",
+    "eslint-plugin-import": "^2.2.0",
     "flow-bin": "^0.43.1",
     "ncp": "^2.0.0",
     "node-sass": "^4.5.2",
@@ -32,7 +34,14 @@
     "storybook-host": "^1.0.14"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "plugin:import/warnings",
+      "plugin:import/errors"
+    ],
+    "rules": {
+      "import/order": 1
+    }
   },
   "scripts": {
     "start": "npm-run-all -p watch-css start-js",
@@ -42,6 +51,7 @@
     "test": "react-scripts test --collectCoverageFrom=src/**/*.js --collectCoverageFrom=!src/**/*.stories.js",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "build-css": "node-sass src/components/DatePicker/ -o src/components/DatePicker/build/",
-    "watch-css": "npm run build-css && node-sass src/components/DatePicker/ -o src/components/DatePicker/build/ --watch"
+    "watch-css": "npm run build-css && node-sass src/components/DatePicker/ -o src/components/DatePicker/build/ --watch",
+    "lint": "eslint src"
   }
 }

@@ -1,19 +1,22 @@
 // @flow
 
-import React from "react";
 import { shallow } from "enzyme";
+import React from "react";
 import type { TabId } from "../../types";
 import { tabIds } from "../../types";
-import { SideMenu } from "../SideMenu";
+import { SideMenuPresentation } from "../SideMenu";
 
 function renderSideMenu(
   {
     handleTabChange = jest.fn(),
     selectedTab
-  }: { handleTabChange?: (?TabId) => void, selectedTab?: ?TabId } = {}
+  }: { handleTabChange?: ?TabId => void, selectedTab?: ?TabId } = {}
 ) {
   return shallow(
-    <SideMenu selectTab={handleTabChange} selectedTab={selectedTab} />
+    <SideMenuPresentation
+      selectTab={handleTabChange}
+      selectedTab={selectedTab}
+    />
   );
 }
 

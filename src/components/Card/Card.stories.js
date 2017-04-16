@@ -1,11 +1,11 @@
 // @flow
 
-import React from "react";
 import { storiesOf, action } from "@kadira/storybook";
 import { text, number, select, boolean } from "@kadira/storybook-addon-knobs";
+import React from "react";
 import { host } from "storybook-host";
-import { Card } from "../Card";
 import { statusIds } from "../../types";
+import { CardPresentation } from "../Card";
 
 const statusOptions = statusIds.reduce(
   (memo, status) => ({
@@ -23,7 +23,7 @@ storiesOf("Card", module)
     })
   )
   .add("project with no labels", () => (
-    <Card
+    <CardPresentation
       project={{
         id: "id113",
         title: text("title", "Battle Bunny 2.0"),
@@ -39,7 +39,7 @@ storiesOf("Card", module)
     />
   ))
   .add("project with labels", () => (
-    <Card
+    <CardPresentation
       project={{
         id: "id113",
         title: text("title", "Battle Bunny 2.0"),
@@ -58,7 +58,7 @@ storiesOf("Card", module)
     />
   ))
   .add("placeholder text when inputs are empty", () => (
-    <Card
+    <CardPresentation
       project={{
         id: "id113",
         title: "",

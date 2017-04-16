@@ -1,10 +1,10 @@
 // @flow
 
-import React from "react";
 import { storiesOf } from "@kadira/storybook";
 import { text } from "@kadira/storybook-addon-knobs";
+import React from "react";
 import { host } from "storybook-host";
-import { Header } from "../Header";
+import { HeaderPresentation } from "../Header";
 
 storiesOf("Header", module)
   .addDecorator(
@@ -16,6 +16,6 @@ storiesOf("Header", module)
     })
   )
   .add("with document title", () => (
-    <Header title={text("title", "Top Projects 2017")} />
+    <HeaderPresentation title={text("title", "Top Projects 2017")} />
   ))
-  .add("without document title", () => <Header title={null} />);
+  .add("without document title", () => <HeaderPresentation title={null} />);

@@ -1,14 +1,14 @@
 // @flow
 
-import React from "react";
 import { shallow } from "enzyme";
 import moment from "moment";
-import DatePicker from "../DatePicker";
-import { Card } from "../Card";
-import Selectable from "../Selectable";
-import ProgressBar from "../ProgressBar";
-import Label from "../Label";
+import React from "react";
 import type { Project, Status, LabelInfo } from "../../types";
+import { CardPresentation } from "../Card";
+import DatePicker from "../DatePicker";
+import Label from "../Label";
+import ProgressBar from "../ProgressBar";
+import Selectable from "../Selectable";
 
 function renderCard(
   {
@@ -28,11 +28,11 @@ function renderCard(
     status?: Status,
     labels?: LabelInfo[],
     readonly?: boolean,
-    handleProjectChange?: (Project) => void
+    handleProjectChange?: Project => void
   } = {}
 ) {
   return shallow(
-    <Card
+    <CardPresentation
       project={{
         id: "id113",
         title,

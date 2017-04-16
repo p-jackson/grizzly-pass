@@ -1,15 +1,15 @@
 // @flow
 
-import isArray from "lodash/isArray";
 import flow from "lodash/flow";
+import isArray from "lodash/isArray";
 import isPlainObject from "lodash/isPlainObject";
-import uniqueId from "lodash/uniqueId";
 import uniqBy from "lodash/uniqBy";
+import uniqueId from "lodash/uniqueId";
 import moment from "moment";
-import type { Project, Label, Status } from "./types";
-import { statusIds } from "./types";
 import type { Result } from "./result";
 import { ok, err, mapErr, map, andThen, fromList } from "./result";
+import type { Project, Label, Status } from "./types";
+import { statusIds } from "./types";
 
 type ImportProject = {
   title: string,
@@ -37,7 +37,8 @@ export function importFile(
         data => data.map(validateProject),
         fromList,
         mapErr(badProjects =>
-          badProjects.map((badProject, i) => `Project ${i + 1} ${badProject}`))
+          badProjects.map((badProject, i) => `Project ${i + 1} ${badProject}`)
+        )
       )
     ),
     map(projects => [projects, generateLabels(projects)]),

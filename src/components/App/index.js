@@ -1,46 +1,46 @@
 // @flow
 
-import React from "react";
 import { flow } from "lodash";
-import type { Dispatch } from "redux";
+import React from "react";
 import { connect } from "react-redux";
-import Header from "../Header";
-import SideMenu from "../SideMenu";
-import Card from "../Card";
-import Legend from "../Legend";
+import type { Dispatch } from "redux";
+import { loadProjectJsonSuccess, loadProjectJsonFailure } from "../../actions";
+import { importFile } from "../../import";
 import type { State } from "../../reducer";
 import { getProjectIdsByMonth } from "../../reducer";
-import { loadProjectJsonSuccess, loadProjectJsonFailure } from "../../actions";
-import type { TabId } from "../../types";
-import { importFile } from "../../import";
 import { map, mapErr } from "../../result";
+import type { TabId } from "../../types";
+import Card from "../Card";
+import Header from "../Header";
+import Legend from "../Legend";
+import SideMenu from "../SideMenu";
 import "./App.css";
 
-const importProject = (readFileAsText: (File) => Promise<string>, file: File) =>
-  async (dispatch: Dispatch<*>) => {
-    const asText = await readFileAsText(file);
-    flow(
-      importFile,
-      map(fileData => dispatch(loadProjectJsonSuccess(fileData))),
-      mapErr(errorMessage => dispatch(loadProjectJsonFailure(errorMessage)))
-    )(asText);
-  };
+const importProject = (
+  readFileAsText: File => Promise<string>,
+  file: File
+) => async (dispatch: Dispatch<*>) => {
+  const asText = await readFileAsText(file);
+  flow(
+    importFile,
+    map(fileData => dispatch(loadProjectJsonSuccess(fileData))),
+    mapErr(errorMessage => dispatch(loadProjectJsonFailure(errorMessage)))
+  )(asText);
+};
 
 type AppProps = {
   projectsByMonth: { month: string, projectIds: string[] }[],
   errorMessage: ?(string | string[]),
   selectedTab: ?TabId,
-  importFile: (File) => void
+  importFile: File => void
 };
 
-export function App(
-  {
-    projectsByMonth,
-    errorMessage,
-    selectedTab,
-    importFile
-  }: AppProps
-) {
+export function AppPresentation({
+  projectsByMonth,
+  errorMessage,
+  selectedTab,
+  importFile
+}: AppProps) {
   const months = projectsByMonth.map(({ month, projectIds }) => {
     const cards = projectIds.map(projectId => (
       <div className="App-cardWrapper" key={projectId}>
@@ -89,21 +89,21 @@ export function mapStateToProps(state: State) {
 
 function mapDispatchToProps(
   dispatch: Dispatch<*>,
-  { readFileAsText }: { readFileAsText: (File) => Promise<string> }
+  { readFileAsText }: { readFileAsText: File => Promise<string> }
 ) {
   return {
     importProject: (file: File) => dispatch(importProject(readFileAsText, file))
   };
 }
 
-const AppState = connect(mapStateToProps, mapDispatchToProps)(App);
-export default AppState;
+const App = connect(mapStateToProps, mapDispatchToProps)(AppPresentation);
+export default App;
 
 function handleDragOver(e: Event) {
   e.preventDefault();
 }
 
-function handleDrop(importFile: (File) => void, e: DragEvent) {
+function handleDrop(importFile: File => void, e: DragEvent) {
   e.preventDefault();
   const dt = e.dataTransfer;
   if (dt && dt.items) {

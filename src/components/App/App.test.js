@@ -1,13 +1,13 @@
 // @flow
 
+import { shallow } from "enzyme";
+import React from "react";
+import reducer from "../../reducer";
 import type { Project, TabId } from "../../types";
-import { App, mapStateToProps } from "../App";
+import { AppPresentation, mapStateToProps } from "../App";
 import Card from "../Card";
 import Header from "../Header";
 import Legend from "../Legend";
-import React from "react";
-import { shallow } from "enzyme";
-import reducer from "../../reducer";
 
 const projectsByMonth: { month: string, projectIds: string[] }[] = [
   {
@@ -32,15 +32,15 @@ function renderApp(
   }: {
     title?: string,
     projectsByMonth?: { month: string, projectIds: string[] }[],
-    importFile?: (File) => void,
+    importFile?: File => void,
     errorMessage?: string | string[],
     selectedTab?: TabId,
-    selectTab?: (?TabId) => void,
-    updateProject?: (Project) => void
+    selectTab?: ?TabId => void,
+    updateProject?: Project => void
   } = {}
 ) {
   return shallow(
-    <App
+    <AppPresentation
       projectsByMonth={projectsByMonth}
       title={title}
       importFile={importFile}

@@ -2,17 +2,17 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import Label from "../Label";
 import type { State } from "../../reducer";
 import { getUsedLabels, getLabelInfo } from "../../reducer";
 import type { LabelInfo } from "../../types";
+import Label from "../Label";
 import "./Legend.css";
 
 type LegendProps = {
   labels: LabelInfo[]
 };
 
-export function Legend({ labels }: LegendProps) {
+export function LegendPresentation({ labels }: LegendProps) {
   const labelElems = labels.map(labelInfo => {
     return (
       <div className="Legend-labelWrapper" key={labelInfo.id}>
@@ -32,8 +32,8 @@ export function Legend({ labels }: LegendProps) {
   );
 }
 
-const LegendState = connect(mapStateToProps)(Legend);
-export default LegendState;
+const Legend = connect(mapStateToProps)(LegendPresentation);
+export default Legend;
 
 function mapStateToProps(state: State) {
   const usedLabels = getUsedLabels(state);

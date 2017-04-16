@@ -1,15 +1,16 @@
 // @flow
 
+import debugFactory from "debug";
 import React from "react";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
 import { render } from "react-dom";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import { loadDemoData } from "./actions";
 import App from "./components/App";
 import { readFileAsText } from "./file-utils";
-import { loadDemoData } from "./actions";
 import reducer from "./reducer";
 import "./index.css";
-import debugFactory from "debug";
+
 const debug = debugFactory("gp:main");
 debugFactory.log = console.log.bind(console);
 

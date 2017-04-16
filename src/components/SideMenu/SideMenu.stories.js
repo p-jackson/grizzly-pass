@@ -1,11 +1,11 @@
 // @flow
 
-import React from "react";
 import { storiesOf, action } from "@kadira/storybook";
 import { select } from "@kadira/storybook-addon-knobs";
+import React from "react";
 import { host } from "storybook-host";
 import { tabIds } from "../../types";
-import { SideMenu } from "../SideMenu";
+import { SideMenuPresentation } from "../SideMenu";
 
 const selectedOptions = [null, ...tabIds];
 
@@ -19,7 +19,7 @@ storiesOf("SideMenu", module)
     })
   )
   .add("", () => (
-    <SideMenu
+    <SideMenuPresentation
       selectTab={action("tab change")}
       selectedTab={select("selected", selectedOptions, null)}
     />

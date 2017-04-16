@@ -1,8 +1,8 @@
 // @flow
 
-import React from "react";
 import { storiesOf } from "@kadira/storybook";
-import { Legend } from "../Legend";
+import React from "react";
+import { LegendPresentation } from "../Legend";
 
 const labels = [
   {
@@ -20,5 +20,5 @@ const labels = [
 ];
 
 storiesOf("Legend", module)
-  .add("one label", () => <Legend labels={labels.slice(0, 1)} />)
-  .add("two label", () => <Legend labels={labels} />);
+  .add("one label", () => <LegendPresentation labels={labels.slice(0, 1)} />)
+  .add("two label", () => <LegendPresentation labels={labels} />);

@@ -1,10 +1,10 @@
 // @flow
 
-import { importFile, validateProject } from "./import";
-import uniq from "lodash/uniq";
-import omit from "lodash/omit";
 import flow from "lodash/flow";
+import omit from "lodash/omit";
+import uniq from "lodash/uniq";
 import moment from "moment";
+import { importFile, validateProject } from "./import";
 import { ok, isErr, orElse, unsafeUnwrap } from "./result";
 
 const untaggedProjects = [
@@ -57,8 +57,9 @@ function uniqueIds({ projects, labels }) {
   const projectIds = projects.map(({ id }) => id);
   const labelIds = labels.map(({ id }) => id);
   const ids = [...projectIds, ...labelIds];
-  return ids.every(i => typeof i === "string") &&
-    uniq(ids).length === ids.length;
+  return (
+    ids.every(i => typeof i === "string") && uniq(ids).length === ids.length
+  );
 }
 
 // Remove ids so projects can be snapshotted (ids can be
