@@ -2,7 +2,7 @@
 
 exports[`can create a SelectTab action with no tab selected 1`] = `
 Object {
-  "tabId": null,
+  "tabId": undefined,
   "type": "SELECT_TAB",
 }
 `;

@@ -1,7 +1,5 @@
-// @flow
-
-import debugFactory from "debug";
-import React from "react";
+import * as debugFactory from "debug";
+import * as React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
@@ -12,7 +10,7 @@ import reducer from "./reducer";
 import "./index.css";
 
 const debug = debugFactory("gp:main");
-debugFactory.log = console.log.bind(console);
+(debugFactory as any).log = console.log.bind(console);
 
 const { version: appVersion } = require("../package.json");
 
@@ -21,7 +19,8 @@ async function run() {
 
   const store = createStore(
     reducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+      (window as any).__REDUX_DEVTOOLS_EXTENSION__()
   );
   store.dispatch(loadDemoData());
 

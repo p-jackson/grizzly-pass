@@ -48,5 +48,5 @@ it("creates a SelectTab action", () => {
 });
 
 it("can create a SelectTab action with no tab selected", () => {
-  expect(actions.selectTab(null)).toMatchSnapshot();
+  expect(actions.selectTab(undefined)).toMatchSnapshot();
 });

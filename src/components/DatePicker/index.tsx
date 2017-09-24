@@ -2,7 +2,7 @@ import * as moment from "moment";
 import * as React from "react";
 import { SingleDatePicker } from "react-dates";
 import { uniqueId } from "lodash";
-import "./build/DatePicker.css";
+import "./DatePicker.scss";
 
 interface Props {
   readonly: boolean;

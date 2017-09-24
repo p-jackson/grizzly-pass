@@ -22,17 +22,17 @@ const importProject = (
 };
 
 interface OwnProps {
-  title?: string;
-  errorMessage?: string | string[];
-  selectedTab?: TabId;
-  selectTab: (tabId?: TabId) => void;
-  updateProject: (project: Project) => void;
   readFileAsText: (file: File) => Promise<string>;
 }
 
-interface AppProps extends OwnProps {
+interface AppProps {
+  title?: string;
+  errorMessage?: string | string[];
+  selectedTab?: TabId;
   projectsByMonth: { month: string; projectIds: string[] }[];
+  updateProject: (project: Project) => void;
   importFile: (file: File) => void;
+  selectTab: (tabId?: TabId) => void;
 }
 
 export function AppPresentation({

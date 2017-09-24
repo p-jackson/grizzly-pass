@@ -174,5 +174,7 @@ it("displays errors as a list if errorMessage prop is an array", () => {
 
 it("can map default state to props", () => {
   const state = reducer(undefined as any, { type: "DUMMY_ACTION" });
-  expect(mapStateToProps(state)).toMatchSnapshot();
+  expect(
+    mapStateToProps(state, { readFileAsText: jest.fn() })
+  ).toMatchSnapshot();
 });
