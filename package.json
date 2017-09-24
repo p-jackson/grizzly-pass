@@ -57,22 +57,5 @@
     "test": "jest --watch",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "lint": "tslint --type-check --project tsconfig.json src/**/*.ts{,x}"
-  },
-  "jest": {
-    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-tests.ts",
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
-    "mapCoverage": true,
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}",
-      "!**/node_modules/**",
-      "!src/**/*.stories.{ts,tsx}"
-    ],
-    "moduleNameMapper": {
-      "\\.(css|scss)$": "<rootDir>/src/__mocks__/style-mock.ts"
-    }
   }
 }
