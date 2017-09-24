@@ -4,54 +4,66 @@
   "private": true,
   "homepage": "https://grizzly-pass.surge.sh",
   "dependencies": {
-    "debug": "^2.6.3",
+    "@types/react-aria-menubutton": "^5.0.0",
+    "@types/react-dates": "^12.1.4",
+    "debug": "^3.0.1",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
-    "react": "^15.4.2",
-    "react-addons-shallow-compare": "^15.5.1",
-    "react-aria-menubutton": "^4.3.0",
-    "react-dates": "^10.0.0",
-    "react-dom": "^15.4.2",
-    "react-redux": "^5.0.4",
-    "redux": "^3.6.0",
+    "react": "^15.6.1",
+    "react-addons-shallow-compare": "^15.6.0",
+    "react-aria-menubutton": "^5.0.2",
+    "react-dates": "^12.6.0",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "@kadira/storybook": "^2.35.3",
-    "@kadira/storybook-addon-knobs": "^1.7.1",
-    "@kadira/storybook-addons": "^1.6.1",
-    "coveralls": "^2.13.0",
-    "cross-env": "^4.0.0",
-    "enzyme": "^2.8.0",
-    "eslint": "^3.19.0",
-    "eslint-plugin-import": "^2.2.0",
-    "flow-bin": "^0.43.1",
-    "ncp": "^2.0.0",
-    "node-sass": "^4.5.2",
-    "npm-run-all": "^4.0.2",
-    "react-addons-test-utils": "^15.4.2",
-    "react-scripts": "0.9.5",
-    "storybook-host": "^1.0.14"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "plugin:import/warnings",
-      "plugin:import/errors"
-    ],
-    "rules": {
-      "import/order": 1
-    }
+    "@types/debug": "0.0.30",
+    "@types/enzyme": "^2.8.8",
+    "@types/jest": "^20.0.8",
+    "@types/lodash": "^4.14.74",
+    "@types/moment": "^2.13.0",
+    "@types/react": "^16.0.5",
+    "@types/react-redux": "^5.0.9",
+    "enzyme": "^2.9.1",
+    "jest": "^21.1.0",
+    "react-test-renderer": "^15.6.1",
+    "ts-jest": "^21.0.1",
+    "typescript": "^2.5.2"
   },
   "scripts": {
     "start": "npm-run-all -p watch-css start-js",
     "start-js": "react-scripts start",
     "build": "npm run build-css && cross-env PUBLIC_URL=/ react-scripts build && ncp CNAME.staging.txt build/CNAME",
     "build-production": "npm run build-css && cross-env PUBLIC_URL=/ react-scripts build && ncp CNAME.prod.txt build/CNAME",
-    "test": "react-scripts test --collectCoverageFrom=src/**/*.js --collectCoverageFrom=!src/**/*.stories.js",
+    "test": "jest --watch",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "build-css": "node-sass src/components/DatePicker/ -o src/components/DatePicker/build/",
     "watch-css": "npm run build-css && node-sass src/components/DatePicker/ -o src/components/DatePicker/build/ --watch",
     "lint": "eslint src"
+  },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-tests.ts",
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ],
+    "mapCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!**/node_modules/**",
+      "!src/**/*.stories.{ts,tsx}"
+    ],
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/__mocks__/style-mock.ts"
+    }
   }
 }

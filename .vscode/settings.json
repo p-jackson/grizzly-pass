@@ -1,5 +1,5 @@
-// Place your settings in this file to overwrite default and user settings.
 {
+  // Place your settings in this file to overwrite default and user settings.
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "search.exclude": {
@@ -7,8 +7,5 @@
     "**/coverage": true,
     "**/build": true
   },
-  "flow.useNPMPackagedFlow": true,
-  "javascript.validate.enable": false,
-  "flow.enabled": true,
-  "prettier.parser": "flow"
+  "javascript.validate.enable": false
 }

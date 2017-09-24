@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`can create a SelectTab action with no tab selected 1`] = `
+Object {
+  "tabId": null,
+  "type": "SELECT_TAB",
+}
+`;
+
+exports[`creates a LoadLabel action 1`] = `
+Object {
+  "label": Object {
+    "id": "1",
+    "title": "title",
+  },
+  "type": "LOAD_LABEL",
+}
+`;
+
+exports[`creates a LoadProject action 1`] = `
+Object {
+  "project": Object {
+    "id": "1",
+    "labels": Array [],
+    "person": "person",
+    "progress": 0,
+    "status": "ontrack",
+    "time": "time",
+    "title": "title",
+  },
+  "type": "LOAD_PROJECT",
+}
+`;
+
+exports[`creates a LoadProjectJsonFailure action 1`] = `
+Object {
+  "errorMessage": "error",
+  "type": "LOAD_PROJECT_JSON_FAILURE",
+}
+`;
+
+exports[`creates a LoadProjectJsonFailure action with multiple errors 1`] = `
+Object {
+  "errorMessage": Array [
+    "error1",
+    "error2",
+  ],
+  "type": "LOAD_PROJECT_JSON_FAILURE",
+}
+`;
+
+exports[`creates a LoadProjectJsonSuccess action 1`] = `
+Object {
+  "data": Object {
+    "labels": Array [],
+    "projects": Array [],
+    "title": undefined,
+  },
+  "type": "LOAD_PROJECT_JSON_SUCCESS",
+}
+`;
+
+exports[`creates a SelectTab action 1`] = `
+Object {
+  "tabId": "edit",
+  "type": "SELECT_TAB",
+}
+`;
+
+exports[`creates an UpdateProject action 1`] = `
+Object {
+  "project": Object {
+    "id": "1",
+    "labels": Array [
+      "1",
+      "2",
+      "3",
+    ],
+    "person": "person",
+    "progress": 0,
+    "status": "ontrack",
+    "time": "time",
+    "title": "title",
+  },
+  "type": "UPDATE_PROJECT",
+}
+`;

@@ -2,10 +2,9 @@ language: node_js
 node_js:
   - 6
   - 7
-cache:
-  yarn: true
+  - 8
 script:
-  - yarn build-css
-  - yarn flow -- check
-  - yarn test -- --coverage
+  - npm run build-css
+  - npm run lint
+  - npm test -- --no-watch --coverage
 after_script: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
