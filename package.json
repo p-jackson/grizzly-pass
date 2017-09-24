@@ -42,17 +42,21 @@
     "ts-jest": "^21.0.1",
     "ts-loader": "^2.3.7",
     "ts-node": "^3.3.0",
+    "tslint": "^5.7.0",
+    "tslint-language-service": "^0.9.6",
     "typescript": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
   },
   "scripts": {
     "start": "webpack-dev-server --progress -d",
-    "build": "webpack --progress -p --env.production && ncp CNAME.staging.txt build/CNAME",
-    "build-production": "webpack --progress -p --env.production && ncp CNAME.prod.txt build/CNAME",
+    "build":
+      "webpack --progress -p --env.production && ncp CNAME.staging.txt build/CNAME",
+    "build-production":
+      "webpack --progress -p --env.production && ncp CNAME.prod.txt build/CNAME",
     "test": "jest --watch",
     "storybook": "start-storybook -p 9001 -c .storybook",
-    "lint": "eslint src"
+    "lint": "tslint --type-check --project tsconfig.json src/**/*.ts{,x}"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "<rootDir>/src/setup-tests.ts",
@@ -60,13 +64,7 @@
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ],
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
     "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",

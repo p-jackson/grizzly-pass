@@ -1,7 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { State } from "../../reducer";
-import { getTitle } from "../../reducer";
+import { getTitle, State } from "../../reducer";
 import Logo from "../Logo";
 import Selectable from "../Selectable";
 import "./Header.css";
