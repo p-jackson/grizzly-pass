@@ -1,8 +1,6 @@
-// @flow
-
-import { storiesOf } from "@kadira/storybook";
-import { text } from "@kadira/storybook-addon-knobs";
-import React from "react";
+import { storiesOf } from "@storybook/react";
+import { text } from "@storybook/addon-knobs";
+import * as React from "react";
 import { host } from "storybook-host";
 import { HeaderPresentation } from "../Header";
 
@@ -18,4 +16,4 @@ storiesOf("Header", module)
   .add("with document title", () => (
     <HeaderPresentation title={text("title", "Top Projects 2017")} />
   ))
-  .add("without document title", () => <HeaderPresentation title={null} />);
+  .add("without document title", () => <HeaderPresentation />);

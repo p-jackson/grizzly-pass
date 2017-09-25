@@ -1,8 +1,6 @@
-// @flow
-
-import { storiesOf } from "@kadira/storybook";
-import { number, select } from "@kadira/storybook-addon-knobs";
-import React from "react";
+import { storiesOf } from "@storybook/react";
+import { number, select } from "@storybook/addon-knobs";
+import * as React from "react";
 import { host } from "storybook-host";
 import { statusIds } from "../../types";
 import ProgressBar from "../ProgressBar";

@@ -1,8 +1,7 @@
-// @flow
-
-import { storiesOf, action } from "@kadira/storybook";
-import { text, number, select, boolean } from "@kadira/storybook-addon-knobs";
-import React from "react";
+import { storiesOf } from "@storybook/react";
+import { action } from "@storybook/addon-actions";
+import { text, number, select, boolean } from "@storybook/addon-knobs";
+import * as React from "react";
 import { host } from "storybook-host";
 import { statusIds } from "../../types";
 import { CardPresentation } from "../Card";

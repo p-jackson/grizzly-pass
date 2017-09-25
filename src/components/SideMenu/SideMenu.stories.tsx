@@ -1,13 +1,20 @@
-// @flow
-
-import { storiesOf, action } from "@kadira/storybook";
-import { select } from "@kadira/storybook-addon-knobs";
-import React from "react";
+import { storiesOf } from "@storybook/react";
+import { action } from "@storybook/addon-actions";
+import { select } from "@storybook/addon-knobs";
+import * as React from "react";
 import { host } from "storybook-host";
 import { tabIds } from "../../types";
 import { SideMenuPresentation } from "../SideMenu";
 
-const selectedOptions = [null, ...tabIds];
+const selectedOptions = tabIds.reduce(
+  (memo, tabId) => ({
+    ...memo,
+    [tabId]: tabId
+  }),
+  {
+    "<undefined>": undefined
+  }
+);
 
 storiesOf("SideMenu", module)
   .addDecorator(
@@ -21,6 +28,6 @@ storiesOf("SideMenu", module)
   .add("", () => (
     <SideMenuPresentation
       selectTab={action("tab change")}
-      selectedTab={select("selected", selectedOptions, null)}
+      selectedTab={select("selected", selectedOptions, "<undefined>")}
     />
   ));

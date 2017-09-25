@@ -1,8 +1,6 @@
-// @flow
-
-import { storiesOf } from "@kadira/storybook";
-import { text, color, boolean } from "@kadira/storybook-addon-knobs";
-import React from "react";
+import { storiesOf } from "@storybook/react";
+import { text, color, boolean } from "@storybook/addon-knobs";
+import * as React from "react";
 import { host } from "storybook-host";
 import Label from "../Label";
 
