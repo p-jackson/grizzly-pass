@@ -3,18 +3,10 @@ import { action } from "@storybook/addon-actions";
 import { select } from "@storybook/addon-knobs";
 import * as React from "react";
 import { host } from "storybook-host";
-import { tabIds } from "../../types";
+import { tabIds, TabId } from "../../types";
 import { SideMenuPresentation } from "../SideMenu";
 
-const selectedOptions = tabIds.reduce(
-  (memo, tabId) => ({
-    ...memo,
-    [tabId]: tabId
-  }),
-  {
-    "<undefined>": undefined
-  }
-);
+const selectedOptions: (TabId | "<undefined>")[] = [...tabIds, "<undefined>"];
 
 storiesOf("SideMenu", module)
   .addDecorator(
@@ -28,6 +20,13 @@ storiesOf("SideMenu", module)
   .add("", () => (
     <SideMenuPresentation
       selectTab={action("tab change")}
-      selectedTab={select("selected", selectedOptions, "<undefined>")}
+      selectedTab={toOptional(
+        select("selected", selectedOptions, "<undefined>")
+      )}
     />
   ));
+
+function toOptional(selected: TabId | "<undefined>"): TabId | undefined {
+  if (selected === "<undefined>") return undefined;
+  else return selected;
+}
