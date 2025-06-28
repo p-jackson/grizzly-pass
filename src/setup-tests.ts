@@ -8,6 +8,6 @@ beforeEach(() => {
   mockNextId = 1;
 });
 
-vi.mock("lodash", () => ({
+vi.mock("./unique-id", () => ({
   uniqueId: () => (mockNextId++).toString(10),
 }));

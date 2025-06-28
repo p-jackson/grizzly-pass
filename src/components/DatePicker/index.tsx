@@ -1,7 +1,7 @@
 import moment from "moment";
 import { SingleDatePicker } from "react-dates";
 import { PureComponent } from "react";
-import { uniqueId } from "lodash";
+import { uniqueId } from "../../unique-id";
 import "./DatePicker.scss";
 
 interface Props {

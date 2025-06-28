@@ -1,6 +1,5 @@
-vi.unmock("lodash");
+vi.unmock("./unique-id");
 
-import { omit, uniq } from "lodash";
 import moment from "moment";
 import { importFile, validateProject } from "./import";
 import { ok } from "./result";
@@ -63,7 +62,7 @@ function uniqueIds({
   const labelIds = labels.map(({ id }) => id);
   const ids = [...projectIds, ...labelIds];
   return (
-    ids.every((i) => typeof i === "string") && uniq(ids).length === ids.length
+    ids.every((i) => typeof i === "string") && new Set(ids).size === ids.length
   );
 }
 
@@ -80,8 +79,8 @@ function stripIds({
 }) {
   return {
     title,
-    projects: projects.map((p) => omit(p, "id", "labels")),
-    labels: labels.map((l) => omit(l, "id")),
+    projects: projects.map(({ id, labels, ...rest }) => rest),
+    labels: labels.map(({ id, ...rest }) => rest),
   };
 }
 
@@ -184,10 +183,9 @@ describe("importFile", () => {
     expect(result.projects[0].labels.length).toBe(1);
     expect(result.projects[1].labels.length).toBe(2);
 
-    const allLabelIds = uniq([
-      ...result.projects[0].labels,
-      ...result.projects[1].labels,
-    ]);
+    const allLabelIds = [
+      ...new Set([...result.projects[0].labels, ...result.projects[1].labels]),
+    ];
     expect(allLabelIds).toEqual([result.labels[0].id, result.labels[1].id]);
 
     expect(uniqueIds(result)).toBe(true);
@@ -212,7 +210,8 @@ describe("importFile", () => {
   });
 
   it("returns an array of errors for invalid projects", () => {
-    const err = importFile(JSON.stringify([omit(allProjects[0], "title")]))
+    const { title, ...rest } = allProjects[0];
+    const err = importFile(JSON.stringify([rest]))
       .orElse((e) => ok(e))
       .unsafeUnwrap();
     expect((err as any).length).toBe(1);
@@ -235,7 +234,8 @@ describe("validateProject", () => {
   const project = untaggedProjects[0];
   Object.keys(project).forEach((key) => {
     it(`rejects project when ${key} field is missing`, () => {
-      expect(validateProject(omit(project, key)).isErr()).toBe(true);
+      const { [key]: _, ...rest } = project;
+      expect(validateProject(rest).isErr()).toBe(true);
     });
   });
 

@@ -1,5 +1,5 @@
-import { isArray, isPlainObject, uniqBy, uniqueId } from "lodash";
 import moment from "moment";
+import { uniqueId } from "./unique-id";
 import { ok, err, fromList, type Result } from "./result";
 import { statusIds } from "./types";
 import type { Project, Label, Status } from "./types";
@@ -49,7 +49,11 @@ export function importFile(
 }
 
 export function validateProject(project: any): Result<ImportProject, string> {
-  if (!isPlainObject(project)) return err("is not a JSON object");
+  if (
+    typeof project !== "object" ||
+    Object.prototype.toString.call(project) !== "[object Object]"
+  )
+    return err("is not a JSON object");
   if (typeof project.title !== "string")
     return err("has an invalid/missing title field");
   if (typeof project.person !== "string")
@@ -75,7 +79,7 @@ export function validateProject(project: any): Result<ImportProject, string> {
     return err("has an invalid/missing, it must be a number between 0 and 100");
   if (
     project.tags !== undefined &&
-    (!isArray(project.tags) ||
+    (!Array.isArray(project.tags) ||
       project.tags.some((t: any) => typeof t !== "string"))
   )
     return err("has an invalid tags list, it must be an array of strings");
@@ -86,19 +90,17 @@ export function validateProject(project: any): Result<ImportProject, string> {
 function parseFile(fileContents: string): Result<any[], string> {
   try {
     const asObj = JSON.parse(fileContents);
-    return isArray(asObj) ? ok(asObj) : err("isn't a JSON array");
+    return Array.isArray(asObj) ? ok(asObj) : err("isn't a JSON array");
   } catch {
     return err("is not valid JSON");
   }
 }
 
 function generateLabels(projects: ImportProject[]): Label[] {
-  return uniqBy(
-    projects
-      .reduce((memo, { tags = [] }) => [...memo, ...tags], [])
-      .map((label) => ({ title: label, id: uniqueId() })),
-    "title",
-  );
+  return projects
+    .reduce((memo, { tags = [] }) => [...memo, ...tags], [])
+    .map((label) => ({ title: label, id: uniqueId() }))
+    .filter((x, i, self) => i === self.findIndex((y) => x.title === y.title));
 }
 
 function findLabelIds(labels: Label[], projectTags: string[]) {

@@ -1,5 +1,5 @@
-import { uniqueId } from "lodash";
 import type { Project, Label, Status, TabId } from "./types";
+import { uniqueId } from "./unique-id";
 
 export interface LoadDemoData {
   type: "LOAD_DEMO_DATA";

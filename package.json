@@ -6,7 +6,6 @@
 	"type": "module",
 	"dependencies": {
 		"debug": "^4.4.1",
-		"lodash": "^4.17.4",
 		"moment": "^2.30.1",
 		"react": "^15.6.2",
 		"react-addons-shallow-compare": "^15.6.2",
@@ -24,7 +23,6 @@
 		"@storybook/react": "^3.2.13",
 		"@types/debug": "^4.1.12",
 		"@types/enzyme": "^2.8.12",
-		"@types/lodash": "^4.14.80",
 		"@types/node": "^24.0.4",
 		"@types/react": "^15.6.5",
 		"@types/react-aria-menubutton": "^5.0.0",
