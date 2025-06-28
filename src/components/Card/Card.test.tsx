@@ -1,5 +1,5 @@
 import { shallow } from "enzyme";
-import moment from "moment";
+import { formatISO } from "date-fns";
 import type { Project, Status, LabelInfo } from "../../types";
 import { CardPresentation } from "../Card";
 import DatePicker from "../DatePicker";
@@ -11,7 +11,7 @@ import "redux-thunk";
 function renderCard({
   title = "",
   person = "",
-  time = moment().toISOString(),
+  time = formatISO(new Date()),
   progress = 0,
   status = "ontrack",
   labels = [],
@@ -168,7 +168,7 @@ it("calls onProjectChange when the date field is changed", () => {
   const onTimeChange = renderCard({ handleProjectChange, readonly: false })
     .find(DatePicker)
     .prop("onTimeChange");
-  const now = moment().format();
+  const now = formatISO(new Date());
   onTimeChange(now);
   expect(handleProjectChange).toHaveBeenCalled();
   expect(handleProjectChange.mock.calls[0][0]).toMatchObject({

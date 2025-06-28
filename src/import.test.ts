@@ -1,6 +1,6 @@
 vi.unmock("./unique-id");
 
-import moment from "moment";
+import { parse, parseISO, format, formatISO } from "date-fns";
 import { importFile, validateProject } from "./import";
 import { ok } from "./result";
 import type { Project, Label } from "./types";
@@ -99,7 +99,7 @@ function utcTimes({
     title,
     projects: projects.map((project) => ({
       ...project,
-      time: moment(project.time).utcOffset(0, true),
+      time: format(project.time, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"),
     })),
     labels,
   };
@@ -129,7 +129,7 @@ describe("importFile", () => {
         {
           title: "Tea Swirl",
           person: "Karen Lemon",
-          time: moment("2017-08-28", "YYYY-MM-DD").format(),
+          time: formatISO(parse("2017-08-28", "yyyy-MM-dd", new Date())),
           progress: 23,
           status: "ontrack",
           labels: [],
@@ -137,7 +137,7 @@ describe("importFile", () => {
         {
           title: "Rake Jumper",
           person: "Lennie Apple",
-          time: moment("2018-02-19", "YYYY-MM-DD").format(),
+          time: formatISO(parse("2018-02-19", "yyyy-MM-dd", new Date())),
           progress: 90,
           status: "onhold",
           labels: [],
@@ -145,7 +145,7 @@ describe("importFile", () => {
         {
           title: "Empty Tag List",
           person: "Timmy no Tag",
-          time: moment("2018-02-17", "YYYY-MM-DD").format(),
+          time: formatISO(parse("2018-02-17", "yyyy-MM-dd", new Date())),
           progress: 90,
           status: "onhold",
           labels: [],
@@ -166,14 +166,14 @@ describe("importFile", () => {
         {
           title: "Coffee Swirl",
           person: "Joe Lemon",
-          time: moment("2017-03-15", "YYYY-MM-DD").format(),
+          time: formatISO(parse("2017-03-15", "yyyy-MM-dd", new Date())),
           progress: 13,
           status: "ontrack",
         },
         {
           title: "Rake Twister",
           person: "Alex Apple",
-          time: moment("2017-03-15", "YYYY-MM-DD").format(),
+          time: formatISO(parse("2017-03-15", "yyyy-MM-dd", new Date())),
           progress: 50,
           status: "onhold",
         },
@@ -199,14 +199,17 @@ describe("importFile", () => {
 
     // Timezone offsets change depending on the date (remember daylight savings)
     // so get the local offset for the date in allProjects[0]
-    // (moment parses all dates in local time by default).
-    const offset = moment(allProjects[0].date, "YYYY-MM-DD").utcOffset();
+    const offset = parse(
+      allProjects[0].date,
+      "yyyy-MM-dd",
+      new Date(),
+    ).getTimezoneOffset();
 
-    expect(moment.parseZone(time).utcOffset()).toBe(offset);
-    expect(moment(time).hour()).toBe(0);
-    expect(moment(time).minute()).toBe(0);
-    expect(moment(time).second()).toBe(0);
-    expect(moment(time).millisecond()).toBe(0);
+    expect(new Date(time).getTimezoneOffset()).toBe(offset);
+    expect(new Date(time).getHours()).toBe(0);
+    expect(new Date(time).getMinutes()).toBe(0);
+    expect(new Date(time).getSeconds()).toBe(0);
+    expect(new Date(time).getMilliseconds()).toBe(0);
   });
 
   it("returns an array of errors for invalid projects", () => {

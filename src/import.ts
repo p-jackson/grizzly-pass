@@ -1,4 +1,4 @@
-import moment from "moment";
+import { formatISO, parse } from "date-fns";
 import { uniqueId } from "./unique-id";
 import { ok, err, fromList, type Result } from "./result";
 import { statusIds } from "./types";
@@ -40,7 +40,7 @@ export function importFile(
           person,
           status: health,
           progress,
-          time: moment(date, "YYYY-MM-DD").format(),
+          time: formatISO(parse(date, "yyyy-MM-dd", new Date())),
           labels: findLabelIds(labels, tags),
         };
       }),

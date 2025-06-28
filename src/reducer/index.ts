@@ -1,4 +1,4 @@
-import moment from "moment";
+import { format } from "date-fns";
 import { combineReducers } from "redux";
 import type { Action } from "../actions";
 import { projects as demoProjects, labels as demoLabels } from "../demo-data";
@@ -109,12 +109,12 @@ export function getProjectIdsByMonth(
   return monthIndexes
     .map((monthIndex) =>
       state.projects.filter(
-        (project) => moment(project.time).month() === monthIndex,
+        (project) => new Date(project.time).getMonth() === monthIndex,
       ),
     )
     .filter((month) => month.length > 0)
     .map((month) => ({
-      month: moment(month[0].time).format("MMMM"),
+      month: format(month[0].time, "MMMM"),
       projectIds: month.map((project) => project.id),
     }));
 }

@@ -1,4 +1,4 @@
-import moment from "moment";
+import { format } from "date-fns";
 import { connect } from "react-redux";
 import { updateProject } from "../../actions";
 import {
@@ -90,7 +90,7 @@ function renderDate(
   onChange: (project: Project) => void,
 ) {
   const time = wholeProject[attr];
-  const date = moment(time).format("D MMMM");
+  const date = format(time, "d MMMM");
 
   if (readonly) return <Selectable>{date}</Selectable>;
   else

@@ -1,5 +1,6 @@
 import moment from "moment";
 import { SingleDatePicker } from "react-dates";
+import { formatISO } from "date-fns";
 import { PureComponent } from "react";
 import { uniqueId } from "../../unique-id";
 import "./DatePicker.scss";
@@ -12,7 +13,7 @@ interface Props {
 
 interface State {
   focused: boolean;
-  date: moment.Moment;
+  date: Date;
 }
 
 export default class DatePicker extends PureComponent<Props, State> {
@@ -24,14 +25,15 @@ export default class DatePicker extends PureComponent<Props, State> {
     this.id = uniqueId();
     this.state = {
       focused: false,
-      date: moment(this.props.time),
+      date: new Date(this.props.time),
     };
   }
 
   render() {
     const handleChange = (date: moment.Moment) => {
-      this.setState({ date });
-      this.props.onTimeChange(date.format());
+      const asDate = new Date(date.format());
+      this.setState({ date: asDate });
+      this.props.onTimeChange(formatISO(asDate));
     };
 
     const { focused, date } = this.state;
@@ -40,7 +42,7 @@ export default class DatePicker extends PureComponent<Props, State> {
       <div className="DatePicker">
         <SingleDatePicker
           id={this.id}
-          date={date}
+          date={moment(date)}
           onDateChange={handleChange}
           focused={focused}
           onFocusChange={({ focused }) => this.setState({ focused: !!focused })}

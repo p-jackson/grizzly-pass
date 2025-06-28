@@ -1,4 +1,5 @@
 import { shallow } from "enzyme";
+import { subDays } from "date-fns";
 import moment from "moment";
 import { SingleDatePicker } from "react-dates";
 import DatePicker from "../DatePicker";
@@ -29,7 +30,7 @@ it("it only displays a single month", () => {
 it("passes the time as a moment object to the SDP", () => {
   const time = "2017-04-08T11:04:13.234Z";
   const picker = renderDatePicker({ time });
-  expect(picker.find(SingleDatePicker).prop("date")).toEqual(moment(time));
+  expect(picker.find(SingleDatePicker).prop("date")).toEqual(moment(new Date(time)));
 });
 
 it("disables the SDP if readonly", () => {
@@ -48,8 +49,7 @@ it("allows users to choose dates in the past", () => {
   const picker = renderDatePicker();
   const rangeChecker = picker.find(SingleDatePicker).prop("isOutsideRange");
 
-  if (rangeChecker)
-    expect(rangeChecker(moment().subtract(1, "day"))).toBe(false);
+  if (rangeChecker) expect(rangeChecker(subDays(new Date(), 1))).toBe(false);
 });
 
 it("keeps the focus prop in sync with the onFocusChange event", () => {
