@@ -3,7 +3,7 @@ export const statusIds: Status[] = [
   "ontrack",
   "atrisk",
   "intervention",
-  "onhold"
+  "onhold",
 ];
 
 export type TabId = "edit";

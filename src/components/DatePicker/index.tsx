@@ -1,6 +1,6 @@
-import * as moment from "moment";
-import * as React from "react";
+import moment from "moment";
 import { SingleDatePicker } from "react-dates";
+import { PureComponent } from "react";
 import { uniqueId } from "lodash";
 import "./DatePicker.scss";
 
@@ -15,7 +15,7 @@ interface State {
   date: moment.Moment;
 }
 
-export default class DatePicker extends React.PureComponent<Props, State> {
+export default class DatePicker extends PureComponent<Props, State> {
   state: State;
   private readonly id: string;
 
@@ -24,7 +24,7 @@ export default class DatePicker extends React.PureComponent<Props, State> {
     this.id = uniqueId();
     this.state = {
       focused: false,
-      date: moment(this.props.time)
+      date: moment(this.props.time),
     };
   }
 

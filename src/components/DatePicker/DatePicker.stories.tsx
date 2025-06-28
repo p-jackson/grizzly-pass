@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react";
 import { boolean } from "@storybook/addon-knobs";
-import * as React from "react";
 import { host } from "storybook-host";
 import DatePicker from "../DatePicker";
 
@@ -8,8 +7,8 @@ storiesOf("DatePicker", module)
   .addDecorator(
     host({
       title: "Display and edits dates.",
-      align: "top left"
-    })
+      align: "top left",
+    }),
   )
   .add("", () => (
     <DatePicker

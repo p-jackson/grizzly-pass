@@ -1,8 +1,8 @@
-import * as debugFactory from "debug";
+import debugFactory from "debug";
 const debug = debugFactory("gp:database");
 
 export function init({
-  indexedDB
+  indexedDB,
 }: {
   indexedDB?: IDBFactory;
 }): Promise<IDBDatabase | null> {
@@ -17,31 +17,31 @@ export function init({
   return new Promise((resolve, reject) => {
     const request = factory.open("GrizzlyPassDatabase", 1);
 
-    request.onerror = event => {
+    request.onerror = () => {
       const { error } = request;
       debug("error opening database");
       reject(error);
     };
 
-    request.onsuccess = event => {
+    request.onsuccess = (event) => {
       debug("open request was successful");
       resolve((event.target as any).result);
     };
 
-    request.onupgradeneeded = event => {
+    request.onupgradeneeded = (event) => {
       debug("database upgrade required");
       try {
         const db = (event.target as any).result;
         db.createObjectStore("Documents", {
           keyPath: "id",
-          autoIncrement: true
+          autoIncrement: true,
         });
         const projects = db.createObjectStore("Projects", {
           keyPath: "id",
-          autoIncrement: true
+          autoIncrement: true,
         });
         projects.createIndex("documentId", "documentId", {
-          unique: false
+          unique: false,
         });
         db.createObjectStore("Labels", { keyPath: "id", autoIncrement: true });
       } catch (e) {

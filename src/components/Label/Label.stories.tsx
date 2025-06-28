@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react";
 import { text, color, boolean } from "@storybook/addon-knobs";
-import * as React from "react";
 import { host } from "storybook-host";
 import Label from "../Label";
 
@@ -8,8 +7,8 @@ storiesOf("Label", module)
   .addDecorator(
     host({
       title: "Labels for projects.",
-      align: "center middle"
-    })
+      align: "center middle",
+    }),
   )
   .add("", () => {
     const initial = text("initial", "L");
@@ -23,7 +22,7 @@ storiesOf("Label", module)
           id: "1",
           initial,
           colour,
-          title
+          title,
         }}
       />
     );

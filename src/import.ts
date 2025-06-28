@@ -1,7 +1,8 @@
 import { isArray, isPlainObject, uniqBy, uniqueId } from "lodash";
-import * as moment from "moment";
-import { ok, err, fromList, Result } from "./result";
-import { statusIds, Project, Label, Status } from "./types";
+import moment from "moment";
+import { ok, err, fromList, type Result } from "./result";
+import { statusIds } from "./types";
+import type { Project, Label, Status } from "./types";
 
 type ImportProject = {
   title: string;
@@ -19,19 +20,19 @@ type Output = {
 };
 
 export function importFile(
-  fileContents: string
+  fileContents: string,
 ): Result<Output, string | string[]> {
   return parseFile(fileContents)
-    .mapErr(e => `File ${e}`)
-    .andThen(data =>
-      fromList(data.map(validateProject)).mapErr(badProjects =>
-        badProjects.map((badProject, i) => `Project ${i + 1} ${badProject}`)
-      )
+    .mapErr((e) => `File ${e}`)
+    .andThen((data) =>
+      fromList(data.map(validateProject)).mapErr((badProjects) =>
+        badProjects.map((badProject, i) => `Project ${i + 1} ${badProject}`),
+      ),
     )
-    .map(projects => [projects, generateLabels(projects)])
+    .map((projects) => [projects, generateLabels(projects)])
     .map(([projects, labels]: [ImportProject[], Label[]]) => ({
       title: undefined,
-      projects: projects.map(project => {
+      projects: projects.map((project) => {
         const { title, person, health, progress, date, tags = [] } = project;
         return {
           id: uniqueId(),
@@ -40,10 +41,10 @@ export function importFile(
           status: health,
           progress,
           time: moment(date, "YYYY-MM-DD").format(),
-          labels: findLabelIds(labels, tags)
+          labels: findLabelIds(labels, tags),
         };
       }),
-      labels
+      labels,
     }));
 }
 
@@ -56,15 +57,15 @@ export function validateProject(project: any): Result<ImportProject, string> {
   if (!statusIds.includes(project.health))
     return err(
       `has an invalid/missing health field, it must be one of: ${statusIds.join(
-        ", "
-      )}`
+        ", ",
+      )}`,
     );
   if (
     typeof project.date !== "string" ||
     !/^\d\d\d\d-\d\d-\d\d$/.test(project.date)
   )
     return err(
-      "has an invalid/missing date field, it must be in the YYYY-MM-DD format"
+      "has an invalid/missing date field, it must be in the YYYY-MM-DD format",
     );
   if (
     typeof project.progress !== "number" ||
@@ -86,7 +87,7 @@ function parseFile(fileContents: string): Result<any[], string> {
   try {
     const asObj = JSON.parse(fileContents);
     return isArray(asObj) ? ok(asObj) : err("isn't a JSON array");
-  } catch (e) {
+  } catch {
     return err("is not valid JSON");
   }
 }
@@ -95,11 +96,13 @@ function generateLabels(projects: ImportProject[]): Label[] {
   return uniqBy(
     projects
       .reduce((memo, { tags = [] }) => [...memo, ...tags], [])
-      .map(label => ({ title: label, id: uniqueId() })),
-    "title"
+      .map((label) => ({ title: label, id: uniqueId() })),
+    "title",
   );
 }
 
 function findLabelIds(labels: Label[], projectTags: string[]) {
-  return projectTags.map(tag => (labels.find(l => l.title === tag) as any).id);
+  return projectTags.map(
+    (tag) => (labels.find((l) => l.title === tag) as any).id,
+  );
 }

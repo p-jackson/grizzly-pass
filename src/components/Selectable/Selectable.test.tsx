@@ -1,5 +1,4 @@
 import { shallow } from "enzyme";
-import * as React from "react";
 import Selectable from "../Selectable";
 
 const selectable = shallow(<Selectable>child text</Selectable>);
@@ -15,10 +14,7 @@ it("uses a <span> for the selectable element", () => {
 });
 
 it("adds the `enableSelection` class", () => {
-  expect(
-    selectable
-      .first()
-      .prop("className")
-      .split(" ")
-  ).toContain("enableSelection");
+  expect(selectable.first().prop("className").split(" ")).toContain(
+    "enableSelection",
+  );
 });

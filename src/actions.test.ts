@@ -5,8 +5,8 @@ it("creates a LoadProjectJsonSuccess action", () => {
     actions.loadProjectJsonSuccess({
       title: undefined,
       labels: [],
-      projects: []
-    })
+      projects: [],
+    }),
   ).toMatchSnapshot();
 });
 
@@ -16,13 +16,13 @@ it("creates a LoadProjectJsonFailure action", () => {
 
 it("creates a LoadProjectJsonFailure action with multiple errors", () => {
   expect(
-    actions.loadProjectJsonFailure(["error1", "error2"])
+    actions.loadProjectJsonFailure(["error1", "error2"]),
   ).toMatchSnapshot();
 });
 
 it("creates a LoadProject action", () => {
   expect(
-    actions.loadProject("title", "person", "time", 0, "ontrack", [])
+    actions.loadProject("title", "person", "time", 0, "ontrack", []),
   ).toMatchSnapshot();
 });
 
@@ -39,7 +39,15 @@ it("creates an UpdateProject action", () => {
   const status = "ontrack";
   const labels = ["1", "2", "3"];
   expect(
-    actions.updateProject({ id, title, person, time, progress, status, labels })
+    actions.updateProject({
+      id,
+      title,
+      person,
+      time,
+      progress,
+      status,
+      labels,
+    }),
   ).toMatchSnapshot();
 });
 

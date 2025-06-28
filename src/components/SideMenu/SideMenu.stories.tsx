@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import { select } from "@storybook/addon-knobs";
-import * as React from "react";
 import { host } from "storybook-host";
 import { tabIds, TabId } from "../../types";
 import { SideMenuPresentation } from "../SideMenu";
@@ -14,14 +13,14 @@ storiesOf("SideMenu", module)
       title: "Main navigation control.",
       align: "center middle",
       height: "100%",
-      width: 60
-    })
+      width: 60,
+    }),
   )
   .add("", () => (
     <SideMenuPresentation
       selectTab={action("tab change")}
       selectedTab={toOptional(
-        select("selected", selectedOptions, "<undefined>")
+        select("selected", selectedOptions, "<undefined>"),
       )}
     />
   ));

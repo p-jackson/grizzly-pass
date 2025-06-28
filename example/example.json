@@ -5,9 +5,7 @@
     "date": "2017-03-15",
     "progress": 13,
     "health": "ontrack",
-    "tags": [
-      "Apple"
-    ]
+    "tags": ["Apple"]
   },
   {
     "title": "Rake Twister",
@@ -15,9 +13,6 @@
     "date": "2017-04-12",
     "progress": 50,
     "health": "onhold",
-    "tags": [
-      "Apple",
-      "Orange"
-    ]
+    "tags": ["Apple", "Orange"]
   }
 ]

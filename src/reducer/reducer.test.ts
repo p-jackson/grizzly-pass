@@ -6,7 +6,7 @@ function makeStore(
 ) {
   const projectActions = projects.map(
     ({ title = "title", person = "person", labels = [] }) =>
-      loadProject(title, person, "time", 0, "ontrack", labels)
+      loadProject(title, person, "time", 0, "ontrack", labels),
   );
 
   return projectActions.reduce(reducer, undefined) as fromReducer.State;

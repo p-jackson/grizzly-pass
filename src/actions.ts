@@ -1,11 +1,11 @@
 import { uniqueId } from "lodash";
-import { Project, Label, Status, TabId } from "./types";
+import type { Project, Label, Status, TabId } from "./types";
 
 export interface LoadDemoData {
   type: "LOAD_DEMO_DATA";
 }
 export const loadDemoData = (): LoadDemoData => ({
-  type: "LOAD_DEMO_DATA"
+  type: "LOAD_DEMO_DATA",
 });
 
 export interface LoadProjectJsonSuccess {
@@ -22,7 +22,7 @@ export const loadProjectJsonSuccess = (data: {
   labels: Label[];
 }): LoadProjectJsonSuccess => ({
   type: "LOAD_PROJECT_JSON_SUCCESS",
-  data
+  data,
 });
 
 export interface LoadProjectJsonFailure {
@@ -30,10 +30,10 @@ export interface LoadProjectJsonFailure {
   errorMessage: string | string[];
 }
 export const loadProjectJsonFailure = (
-  errorMessage: string | string[]
+  errorMessage: string | string[],
 ): LoadProjectJsonFailure => ({
   type: "LOAD_PROJECT_JSON_FAILURE",
-  errorMessage
+  errorMessage,
 });
 
 export interface LoadProject {
@@ -46,7 +46,7 @@ export const loadProject = (
   time: string,
   progress: number,
   status: Status,
-  labels: string[]
+  labels: string[],
 ): LoadProject => ({
   type: "LOAD_PROJECT",
   project: {
@@ -56,8 +56,8 @@ export const loadProject = (
     time,
     progress,
     status,
-    labels
-  }
+    labels,
+  },
 });
 
 export interface LoadLabel {
@@ -68,8 +68,8 @@ export const loadLabel = (title: string): LoadLabel => ({
   type: "LOAD_LABEL",
   label: {
     id: uniqueId(),
-    title
-  }
+    title,
+  },
 });
 
 export interface UpdateProject {
@@ -78,7 +78,7 @@ export interface UpdateProject {
 }
 export const updateProject = (project: Project): UpdateProject => ({
   type: "UPDATE_PROJECT",
-  project
+  project,
 });
 
 export interface SelectTab {
@@ -87,7 +87,7 @@ export interface SelectTab {
 }
 export const selectTab = (tabId?: TabId): SelectTab => ({
   type: "SELECT_TAB",
-  tabId
+  tabId,
 });
 
 export type Action =

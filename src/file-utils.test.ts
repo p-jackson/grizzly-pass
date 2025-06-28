@@ -6,7 +6,7 @@ class MockFileReader {
   result?: string;
 
   readAsText(
-    file: { type: "text"; text: string } | { type: "error"; error: any }
+    file: { type: "text"; text: string } | { type: "error"; error: any },
   ) {
     setTimeout(() => {
       expect(this.onload).not.toBe(null);
@@ -25,7 +25,7 @@ const readFileAsText = fileUtils.readFileAsText(MockFileReader as any);
 
 it("returns the files contents", async () => {
   expect(await readFileAsText({ type: "text", text: "File Text" } as any)).toBe(
-    "File Text"
+    "File Text",
   );
 });
 

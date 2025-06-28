@@ -1,21 +1,18 @@
 import { shallow } from "enzyme";
-import * as React from "react";
 import { Button } from "react-aria-menubutton";
 import Label from "../Label";
 
-function renderLabel(
-  {
-    initial = "",
-    title = "",
-    colour = "",
-    readonly = true
-  }: {
-    initial?: string;
-    title?: string;
-    colour?: string;
-    readonly?: boolean;
-  } = {}
-) {
+function renderLabel({
+  initial = "",
+  title = "",
+  colour = "",
+  readonly = true,
+}: {
+  initial?: string;
+  title?: string;
+  colour?: string;
+  readonly?: boolean;
+} = {}) {
   const labelInfo = { id: "1", initial, colour, title };
   return shallow(<Label labelInfo={labelInfo} readonly={readonly} />);
 }
@@ -33,14 +30,14 @@ it("renders the label's initial (when not read-only)", () => {
 it("applies the colour prop as a background style", () => {
   const label = renderLabel({ colour: "#f00" });
   expect(label.prop("style")).toMatchObject({
-    background: "#f00"
+    background: "#f00",
   });
 });
 
 it("applies the colour prop as a background style (when not read-only)", () => {
   const label = renderLabel({ colour: "#f00", readonly: false });
   expect(label.find(Button).prop("style")).toMatchObject({
-    background: "#f00"
+    background: "#f00",
   });
 });
 

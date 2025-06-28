@@ -1,26 +1,23 @@
 import { shallow } from "enzyme";
-import * as moment from "moment";
-import * as React from "react";
+import moment from "moment";
 import { SingleDatePicker } from "react-dates";
 import DatePicker from "../DatePicker";
 
-function renderDatePicker(
-  {
-    readonly = false,
-    time = "2017-04-08T11:04:13.234Z",
-    handleTimeChange = jest.fn()
-  }: {
-    readonly?: boolean;
-    time?: string;
-    handleTimeChange?: (time: string) => void;
-  } = {}
-) {
+function renderDatePicker({
+  readonly = false,
+  time = "2017-04-08T11:04:13.234Z",
+  handleTimeChange = vi.fn(),
+}: {
+  readonly?: boolean;
+  time?: string;
+  handleTimeChange?: (time: string) => void;
+} = {}) {
   return shallow(
     <DatePicker
       readonly={readonly}
       time={time}
       onTimeChange={handleTimeChange}
-    />
+    />,
   );
 }
 
@@ -65,7 +62,7 @@ it("keeps the focus prop in sync with the onFocusChange event", () => {
 });
 
 it("calls onTimeChange prop when date is changed", () => {
-  const handleTimeChange = jest.fn();
+  const handleTimeChange = vi.fn();
   const picker = renderDatePicker({ handleTimeChange });
   const onDateChange = picker.find(SingleDatePicker).prop("onDateChange");
   const now = moment();

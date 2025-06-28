@@ -1,6 +1,5 @@
 import { storiesOf } from "@storybook/react";
 import { number, select } from "@storybook/addon-knobs";
-import * as React from "react";
 import { host } from "storybook-host";
 import { statusIds } from "../../types";
 import ProgressBar from "../ProgressBar";
@@ -8,9 +7,9 @@ import ProgressBar from "../ProgressBar";
 const statusOptions = statusIds.reduce(
   (memo, status) => ({
     ...memo,
-    [status]: status
+    [status]: status,
   }),
-  {}
+  {},
 );
 
 storiesOf("ProgressBar", module)
@@ -18,8 +17,8 @@ storiesOf("ProgressBar", module)
     host({
       title: "Progress bar that also displays project health.",
       align: "center middle",
-      width: 400
-    })
+      width: 400,
+    }),
   )
   .add("", () => (
     <ProgressBar

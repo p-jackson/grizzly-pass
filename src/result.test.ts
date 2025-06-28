@@ -1,3 +1,4 @@
+import * as assert from "assert";
 import { err, ok, fromList } from "./result";
 
 it("returns the value if an ok result is unsafeUnwrap'd", () => {
@@ -11,7 +12,7 @@ it("throws if an error Result<_, string> is unsafeUnwrap'd", () => {
 
 it("throws if an error Result<_, []> is unsafeUnwrap'd", () => {
   expect(() =>
-    err(["bad", "bad"]).unsafeUnwrap()
+    err(["bad", "bad"]).unsafeUnwrap(),
   ).toThrowErrorMatchingSnapshot();
 });
 
@@ -21,42 +22,42 @@ it("throws if an error Result<_, T> is unsafeUnwrap'd (where T doesn't have a to
 });
 
 it("leaves an ok result unchanged when mapErr is called", () => {
-  const result = ok(113).mapErr(i => i + 1);
+  const result = ok(113).mapErr(() => assert.fail());
   expect(result).toEqual(ok(113));
 });
 
 it("changes an err result when mapErr is called", () => {
-  const result = err(113).mapErr(i => i + 1);
+  const result = err(113).mapErr((i) => i + 1);
   expect(result).toEqual(err(114));
 });
 
 it("changes an ok result when map is called", () => {
-  const result = ok(113).map(i => i + 1);
+  const result = ok(113).map((i) => i + 1);
   expect(result).toEqual(ok(114));
 });
 
 it("leaves an err result unchanged when map is called", () => {
-  const result = err(113).map(i => i + 1);
+  const result = err(113).map(() => assert.fail());
   expect(result).toEqual(err(113));
 });
 
 it("uses the returned result when andThen is called", () => {
-  const result = ok(113).andThen(i => err("to error"));
+  const result = ok(113).andThen(() => err("to error"));
   expect(result).toEqual(err("to error"));
 });
 
 it("leaves an err result unchanged when andThen is called", () => {
-  const result = err(113).andThen(i => err(i + 1));
+  const result = err(113).andThen(() => assert.fail());
   expect(result).toEqual(err(113));
 });
 
 it("uses the returned result when orElse is called", () => {
-  const result = err(113).orElse(i => err(i + 1));
+  const result = err(113).orElse((i) => err(i + 1));
   expect(result).toEqual(err(114));
 });
 
 it("leaves an ok result unchanged when orElse is called", () => {
-  const result = ok(113).orElse(i => err(i + 1));
+  const result = ok(113).orElse(() => assert.fail());
   expect(result).toEqual(ok(113));
 });
 

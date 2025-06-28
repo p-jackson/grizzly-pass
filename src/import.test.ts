@@ -1,10 +1,10 @@
-jest.unmock("lodash");
+vi.unmock("lodash");
 
 import { omit, uniq } from "lodash";
-import * as moment from "moment";
+import moment from "moment";
 import { importFile, validateProject } from "./import";
 import { ok } from "./result";
-import { Project, Label } from "./types";
+import type { Project, Label } from "./types";
 
 const untaggedProjects = [
   {
@@ -12,14 +12,14 @@ const untaggedProjects = [
     person: "Karen Lemon",
     date: "2017-08-28",
     progress: 23,
-    health: "ontrack"
+    health: "ontrack",
   },
   {
     title: "Rake Jumper",
     person: "Lennie Apple",
     date: "2018-02-19",
     progress: 90,
-    health: "onhold"
+    health: "onhold",
   },
   {
     title: "Empty Tag List",
@@ -27,8 +27,8 @@ const untaggedProjects = [
     date: "2018-02-17",
     progress: 90,
     health: "onhold",
-    tags: []
-  }
+    tags: [],
+  },
 ];
 
 const taggedProjects = [
@@ -38,7 +38,7 @@ const taggedProjects = [
     date: "2017-03-15",
     progress: 13,
     health: "ontrack",
-    tags: ["Apple"]
+    tags: ["Apple"],
   },
   {
     title: "Rake Twister",
@@ -46,15 +46,15 @@ const taggedProjects = [
     date: "2017-03-15",
     progress: 50,
     health: "onhold",
-    tags: ["Apple", "Orange"]
-  }
+    tags: ["Apple", "Orange"],
+  },
 ];
 
 const allProjects = [...taggedProjects, ...untaggedProjects];
 
 function uniqueIds({
   projects,
-  labels
+  labels,
 }: {
   projects: Project[];
   labels: Label[];
@@ -63,7 +63,7 @@ function uniqueIds({
   const labelIds = labels.map(({ id }) => id);
   const ids = [...projectIds, ...labelIds];
   return (
-    ids.every(i => typeof i === "string") && uniq(ids).length === ids.length
+    ids.every((i) => typeof i === "string") && uniq(ids).length === ids.length
   );
 }
 
@@ -72,7 +72,7 @@ function uniqueIds({
 function stripIds({
   title,
   projects,
-  labels
+  labels,
 }: {
   title?: string;
   projects: Project[];
@@ -80,8 +80,8 @@ function stripIds({
 }) {
   return {
     title,
-    projects: projects.map(p => omit(p, "id", "labels")),
-    labels: labels.map(l => omit(l, "id"))
+    projects: projects.map((p) => omit(p, "id", "labels")),
+    labels: labels.map((l) => omit(l, "id")),
   };
 }
 
@@ -90,7 +90,7 @@ function stripIds({
 function utcTimes({
   title,
   projects,
-  labels
+  labels,
 }: {
   title?: string;
   projects: Partial<Project>[];
@@ -98,11 +98,11 @@ function utcTimes({
 }) {
   return {
     title,
-    projects: projects.map(project => ({
+    projects: projects.map((project) => ({
       ...project,
-      time: moment(project.time).utcOffset(0, true)
+      time: moment(project.time).utcOffset(0, true),
     })),
-    labels
+    labels,
   };
 }
 
@@ -116,9 +116,9 @@ describe("importFile", () => {
   // The import format doesn't support titles
   it("always returns undefined for the title", () => {
     expect(
-      importFile(JSON.stringify(allProjects)).unsafeUnwrap()
+      importFile(JSON.stringify(allProjects)).unsafeUnwrap(),
     ).toMatchObject({
-      title: undefined
+      title: undefined,
     });
   });
 
@@ -133,7 +133,7 @@ describe("importFile", () => {
           time: moment("2017-08-28", "YYYY-MM-DD").format(),
           progress: 23,
           status: "ontrack",
-          labels: []
+          labels: [],
         },
         {
           title: "Rake Jumper",
@@ -141,7 +141,7 @@ describe("importFile", () => {
           time: moment("2018-02-19", "YYYY-MM-DD").format(),
           progress: 90,
           status: "onhold",
-          labels: []
+          labels: [],
         },
         {
           title: "Empty Tag List",
@@ -149,9 +149,9 @@ describe("importFile", () => {
           time: moment("2018-02-17", "YYYY-MM-DD").format(),
           progress: 90,
           status: "onhold",
-          labels: []
-        }
-      ]
+          labels: [],
+        },
+      ],
     });
     expect(uniqueIds(result)).toEqual(true);
     expect(utcTimes(stripIds(result))).toMatchSnapshot();
@@ -169,16 +169,16 @@ describe("importFile", () => {
           person: "Joe Lemon",
           time: moment("2017-03-15", "YYYY-MM-DD").format(),
           progress: 13,
-          status: "ontrack"
+          status: "ontrack",
         },
         {
           title: "Rake Twister",
           person: "Alex Apple",
           time: moment("2017-03-15", "YYYY-MM-DD").format(),
           progress: 50,
-          status: "onhold"
-        }
-      ]
+          status: "onhold",
+        },
+      ],
     });
 
     expect(result.projects[0].labels.length).toBe(1);
@@ -186,7 +186,7 @@ describe("importFile", () => {
 
     const allLabelIds = uniq([
       ...result.projects[0].labels,
-      ...result.projects[1].labels
+      ...result.projects[1].labels,
     ]);
     expect(allLabelIds).toEqual([result.labels[0].id, result.labels[1].id]);
 
@@ -196,7 +196,7 @@ describe("importFile", () => {
 
   it("interprets dates as midnight local time", () => {
     const { time } = importFile(
-      JSON.stringify(allProjects.slice(0, 1))
+      JSON.stringify(allProjects.slice(0, 1)),
     ).unsafeUnwrap().projects[0];
 
     // Timezone offsets change depending on the date (remember daylight savings)
@@ -213,7 +213,7 @@ describe("importFile", () => {
 
   it("returns an array of errors for invalid projects", () => {
     const err = importFile(JSON.stringify([omit(allProjects[0], "title")]))
-      .orElse(e => ok(e))
+      .orElse((e) => ok(e))
       .unsafeUnwrap();
     expect((err as any).length).toBe(1);
   });
@@ -233,7 +233,7 @@ describe("validateProject", () => {
   });
 
   const project = untaggedProjects[0];
-  Object.keys(project).forEach(key => {
+  Object.keys(project).forEach((key) => {
     it(`rejects project when ${key} field is missing`, () => {
       expect(validateProject(omit(project, key)).isErr()).toBe(true);
     });

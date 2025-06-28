@@ -1,12 +1,11 @@
-import * as React from "react";
 import { connect } from "react-redux";
 import { selectTab } from "../../actions";
-import { getSelectedTab, State } from "../../reducer";
-import { TabId } from "../../types";
+import { getSelectedTab, type State } from "../../reducer";
+import type { TabId } from "../../types";
 import "./SideMenu.css";
 
 const buttons: { tabId: TabId; text: string }[] = [
-  { tabId: "edit", text: "Edit" }
+  { tabId: "edit", text: "Edit" },
 ];
 
 interface SideMenuProps {
@@ -16,7 +15,7 @@ interface SideMenuProps {
 
 export function SideMenuPresentation({
   selectedTab,
-  selectTab
+  selectTab,
 }: SideMenuProps) {
   const buttonsElems = buttons.map(({ tabId, text }) => (
     <button
@@ -33,15 +32,16 @@ export function SideMenuPresentation({
 }
 
 const mapStateToProps = (state: State) => ({
-  selectedTab: getSelectedTab(state)
+  selectedTab: getSelectedTab(state),
 });
 
 const mapDispatchToProps = {
-  selectTab
+  selectTab,
 };
 
-const SideMenu = connect(mapStateToProps, mapDispatchToProps)(
-  SideMenuPresentation
-);
+const SideMenu = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SideMenuPresentation);
 
 export default SideMenu;

@@ -1,7 +1,6 @@
-import * as React from "react";
 import { connect } from "react-redux";
-import { getUsedLabels, getLabelInfo, State } from "../../reducer";
-import { LabelInfo } from "../../types";
+import { getUsedLabels, getLabelInfo, type State } from "../../reducer";
+import type { LabelInfo } from "../../types";
 import Label from "../Label";
 import "./Legend.css";
 
@@ -10,7 +9,7 @@ interface LegendProps {
 }
 
 export function LegendPresentation({ labels }: LegendProps) {
-  const labelElems = labels.map(labelInfo => {
+  const labelElems = labels.map((labelInfo) => {
     return (
       <div className="Legend-labelWrapper" key={labelInfo.id}>
         <Label labelInfo={labelInfo} readonly={true} />
@@ -33,6 +32,6 @@ export default Legend;
 function mapStateToProps(state: State) {
   const usedLabels = getUsedLabels(state);
   return {
-    labels: usedLabels.map(id => getLabelInfo(state, id))
+    labels: usedLabels.map((id) => getLabelInfo(state, id)),
   };
 }

@@ -1,5 +1,4 @@
 import { storiesOf } from "@storybook/react";
-import * as React from "react";
 import { LegendPresentation } from "../Legend";
 
 const labels = [
@@ -7,14 +6,14 @@ const labels = [
     id: "3",
     initial: "A",
     colour: "#f00",
-    title: "Apple"
+    title: "Apple",
   },
   {
     id: "4",
     initial: "O",
     colour: "#0f0",
-    title: "Lime"
-  }
+    title: "Lime",
+  },
 ];
 
 storiesOf("Legend", module)

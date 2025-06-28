@@ -1,7 +1,6 @@
 import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import { text, number, select, boolean } from "@storybook/addon-knobs";
-import * as React from "react";
 import { host } from "storybook-host";
 import { statusIds } from "../../types";
 import { CardPresentation } from "../Card";
@@ -9,17 +8,17 @@ import { CardPresentation } from "../Card";
 const statusOptions = statusIds.reduce(
   (memo, status) => ({
     ...memo,
-    [status]: status
+    [status]: status,
   }),
-  {}
+  {},
 );
 
 storiesOf("Card", module)
   .addDecorator(
     host({
       title: "Info card that displays project health.",
-      align: "center middle"
-    })
+      align: "center middle",
+    }),
   )
   .add("project with no labels", () => (
     <CardPresentation
@@ -30,7 +29,7 @@ storiesOf("Card", module)
         progress: number("progress", 55),
         time: text("time", "2016-08-03T23:00:00Z"),
         status: select("status", statusOptions, "ontrack"),
-        labels: []
+        labels: [],
       }}
       labelInfo={[]}
       readonly={boolean("readonly", true)}
@@ -46,11 +45,11 @@ storiesOf("Card", module)
         progress: number("progress", 55),
         time: text("time", "2016-08-03T23:00:00Z"),
         status: select("status", statusOptions, "ontrack"),
-        labels: ["1", "2"]
+        labels: ["1", "2"],
       }}
       labelInfo={[
         { id: "1", initial: "A", colour: "red", title: "Apple" },
-        { id: "2", initial: "B", colour: "blue", title: "Bear" }
+        { id: "2", initial: "B", colour: "blue", title: "Bear" },
       ]}
       readonly={boolean("readonly", true)}
       updateProject={action("update project")}
@@ -65,11 +64,11 @@ storiesOf("Card", module)
         progress: number("progress", 55),
         time: text("time", "2016-08-03T23:00:00Z"),
         status: select("status", statusOptions, "ontrack"),
-        labels: ["1", "2"]
+        labels: ["1", "2"],
       }}
       labelInfo={[
         { id: "1", initial: "A", colour: "red", title: "Apple" },
-        { id: "2", initial: "B", colour: "blue", title: "Bear" }
+        { id: "2", initial: "B", colour: "blue", title: "Bear" },
       ]}
       readonly={false}
       updateProject={action("update project")}

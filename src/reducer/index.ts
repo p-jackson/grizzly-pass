@@ -1,11 +1,11 @@
-import * as moment from "moment";
+import moment from "moment";
 import { combineReducers } from "redux";
-import { Action } from "../actions";
+import type { Action } from "../actions";
 import { projects as demoProjects, labels as demoLabels } from "../demo-data";
 import { generateLabelInfo } from "../labels";
-import { Label, Project, LabelInfo, TabId } from "../types";
+import type { Label, Project, LabelInfo, TabId } from "../types";
 
-export { Label, Project };
+export type { Label, Project };
 
 export interface State {
   readonly title: string | null;
@@ -20,7 +20,7 @@ const reducer = combineReducers<State>({
   selectedTab,
   projects,
   labels,
-  errorMessage
+  errorMessage,
 });
 export default reducer;
 
@@ -31,7 +31,7 @@ function title(title: string | null = null, action: Action): string | null {
 
 function selectedTab(
   selectedTab: TabId | null = null,
-  action: Action
+  action: Action,
 ): TabId | null {
   if (action.type === "SELECT_TAB")
     return action.tabId === undefined ? null : action.tabId;
@@ -46,7 +46,7 @@ function projects(projects: Project[] = [], action: Action): Project[] {
     case "LOAD_PROJECT":
       return [...projects, action.project];
 
-    case "UPDATE_PROJECT":
+    case "UPDATE_PROJECT": {
       const project = action.project;
       const index = projects.findIndex(({ id }) => id === project.id);
       if (index === -1) return projects;
@@ -54,8 +54,9 @@ function projects(projects: Project[] = [], action: Action): Project[] {
         return [
           ...projects.slice(0, index),
           action.project,
-          ...projects.slice(index + 1)
+          ...projects.slice(index + 1),
         ];
+    }
 
     default:
       return projects;
@@ -75,7 +76,6 @@ function labels(labels: Label[] = [], action: Action): Label[] {
 
 function errorMessage(
   errorMessage: string | string[] | null = null,
-  action: Action
 ): string | string[] | null {
   return errorMessage;
 }
@@ -85,17 +85,17 @@ export function getTitle(state: State): string | undefined {
 }
 
 export function getProject(state: State, id: string): Project | undefined {
-  return state.projects.find(project => project.id === id);
+  return state.projects.find((project) => project.id === id);
 }
 
 export function getUsedLabels(state: State): string[] {
   const allLabelIds = state.projects.reduce(
     (memo, project) => [...memo, ...project.labels],
-    [] as string[]
+    [] as string[],
   );
   return state.labels
-    .filter(label => allLabelIds.indexOf(label.id) !== -1)
-    .map(label => label.id);
+    .filter((label) => allLabelIds.indexOf(label.id) !== -1)
+    .map((label) => label.id);
 }
 
 export function getLabelInfo(state: State, id: string): LabelInfo {
@@ -103,19 +103,19 @@ export function getLabelInfo(state: State, id: string): LabelInfo {
 }
 
 export function getProjectIdsByMonth(
-  state: State
+  state: State,
 ): { month: string; projectIds: string[] }[] {
   const monthIndexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
   return monthIndexes
-    .map(monthIndex =>
+    .map((monthIndex) =>
       state.projects.filter(
-        project => moment(project.time).month() === monthIndex
-      )
+        (project) => moment(project.time).month() === monthIndex,
+      ),
     )
-    .filter(month => month.length > 0)
-    .map(month => ({
+    .filter((month) => month.length > 0)
+    .map((month) => ({
       month: moment(month[0].time).format("MMMM"),
-      projectIds: month.map(project => project.id)
+      projectIds: month.map((project) => project.id),
     }));
 }
 

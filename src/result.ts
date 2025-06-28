@@ -19,6 +19,7 @@ export class Ok<T, E> implements Result<T, E> {
     return new Ok<T2, E>(f(this.value));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mapErr<E2>(f: (e: E) => E2): Result<T, E2> {
     return new Ok<T, E2>(this.value);
   }
@@ -35,6 +36,7 @@ export class Ok<T, E> implements Result<T, E> {
     return f(this.value);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   orElse<T2, E2>(f: (e: E) => Result<T2, E2>): Result<T | T2, E2> {
     return new Ok<T, E2>(this.value);
   }
@@ -51,6 +53,7 @@ export class Err<T, E> implements Result<T, E> {
     this.error = error;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   map<T2>(f: (t: T) => T2): Result<T2, E> {
     return new Err<T2, E>(this.error);
   }
@@ -67,6 +70,7 @@ export class Err<T, E> implements Result<T, E> {
     return true;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   andThen<T2, E2>(f: (t: T) => Result<T2, E2>): Result<T2, E | E2> {
     return new Err<T2, E>(this.error);
   }
@@ -76,25 +80,28 @@ export class Err<T, E> implements Result<T, E> {
   }
 
   unsafeUnwrap(): T {
-    if (typeof this.error === "string" || this.error.toString)
+    if (
+      typeof this.error === "string" ||
+      (this.error && typeof this.error.toString === "function")
+    )
       throw new Error(`Unwrapped result with err: ${this.error}`);
     else throw new Error(`Unwrapped result with err`);
   }
 }
 
-export const ok = <T>(t: T) => new Ok<T, any>(t);
+export const ok = <T>(t: T) => new Ok<T, unknown>(t);
 
-export const err = <E>(e: E) => new Err<any, E>(e);
+export const err = <E>(e: E) => new Err<unknown, E>(e);
 
 export function fromList<T, E>(
-  listOfResults: Result<T, E>[]
+  listOfResults: Result<T, E>[],
 ): Result<T[], E[]> {
-  const errs = listOfResults.reduce((memo, r) => {
-    if (_isErr(r)) return [...memo, r.error];
-    else return memo;
-  }, []);
-  if (errs.length) return err(errs);
-  else return ok(listOfResults.map(r => r.unsafeUnwrap()));
+  const errs = listOfResults.reduce((acc, r) => {
+    if (_isErr(r)) return [...acc, r.error];
+    else return acc;
+  }, [] as E[]);
+  if (errs.length) return new Err(errs);
+  else return new Ok(listOfResults.map((r) => r.unsafeUnwrap()));
 }
 
 function _isErr<T, E>(result: Result<T, E>): result is Err<T, E> {

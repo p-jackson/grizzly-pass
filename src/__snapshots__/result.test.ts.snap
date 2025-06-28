@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`throws if an error Result<_, []> is unsafeUnwrap'd 1`] = `"Unwrapped result with err: bad,bad"`;
+exports[`throws if an error Result<_, []> is unsafeUnwrap'd 1`] = `[Error: Unwrapped result with err: bad,bad]`;
 
-exports[`throws if an error Result<_, T> is unsafeUnwrap'd (where T doesn't have a toString) 1`] = `"Unwrapped result with err"`;
+exports[`throws if an error Result<_, T> is unsafeUnwrap'd (where T doesn't have a toString) 1`] = `[Error: Unwrapped result with err]`;
 
-exports[`throws if an error Result<_, string> is unsafeUnwrap'd 1`] = `"Unwrapped result with err: bad"`;
+exports[`throws if an error Result<_, string> is unsafeUnwrap'd 1`] = `[Error: Unwrapped result with err: bad]`;

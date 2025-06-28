@@ -1,5 +1,4 @@
 import { shallow } from "enzyme";
-import * as React from "react";
 import Label from "../Label";
 import { LegendPresentation } from "../Legend";
 
@@ -8,14 +7,14 @@ const labels = [
     id: "3",
     initial: "A",
     colour: "#ff0",
-    title: "Apple"
+    title: "Apple",
   },
   {
     id: "4",
     initial: "O",
     colour: "#0ff",
-    title: "Orange"
-  }
+    title: "Orange",
+  },
 ];
 
 const legend = shallow(<LegendPresentation labels={labels} />);
@@ -32,8 +31,8 @@ it("passes label into to <Label /> props", () => {
       id: "3",
       initial: "A",
       colour: "#ff0",
-      title: "Apple"
-    }
+      title: "Apple",
+    },
   });
 });
 

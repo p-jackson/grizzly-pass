@@ -1,7 +1,6 @@
 import { shallow } from "enzyme";
-import * as React from "react";
 import reducer from "../../reducer";
-import { Project, TabId } from "../../types";
+import type { Project, TabId } from "../../types";
 import { AppPresentation, mapStateToProps } from "../App";
 import Card from "../Card";
 import Header from "../Header";
@@ -10,33 +9,31 @@ import Legend from "../Legend";
 const projectsByMonth: { month: string; projectIds: string[] }[] = [
   {
     month: "March",
-    projectIds: ["1"]
+    projectIds: ["1"],
   },
   {
     month: "April",
-    projectIds: ["2"]
-  }
+    projectIds: ["2"],
+  },
 ];
 
-function renderApp(
-  {
-    title,
-    projectsByMonth = [],
-    importFile = jest.fn(),
-    errorMessage,
-    selectedTab,
-    selectTab = jest.fn(),
-    updateProject = jest.fn()
-  }: {
-    title?: string;
-    projectsByMonth?: { month: string; projectIds: string[] }[];
-    importFile?: (file: File) => void;
-    errorMessage?: string | string[];
-    selectedTab?: TabId;
-    selectTab?: (tabId?: TabId) => void;
-    updateProject?: (project: Project) => void;
-  } = {}
-) {
+function renderApp({
+  title,
+  projectsByMonth = [],
+  importFile = vi.fn(),
+  errorMessage,
+  selectedTab,
+  selectTab = vi.fn(),
+  updateProject = vi.fn(),
+}: {
+  title?: string;
+  projectsByMonth?: { month: string; projectIds: string[] }[];
+  importFile?: (file: File) => void;
+  errorMessage?: string | string[];
+  selectedTab?: TabId;
+  selectTab?: (tabId?: TabId) => void;
+  updateProject?: (project: Project) => void;
+} = {}) {
   return shallow(
     <AppPresentation
       projectsByMonth={projectsByMonth}
@@ -46,7 +43,7 @@ function renderApp(
       errorMessage={errorMessage}
       selectedTab={selectedTab}
       updateProject={updateProject}
-    />
+    />,
   );
 }
 
@@ -74,7 +71,7 @@ it("shows a card for each project passed in", () => {
   const app = renderApp({ projectsByMonth });
   const projectIds = projectsByMonth.reduce(
     (memo, { projectIds }) => [...memo, ...projectIds],
-    []
+    [],
   );
   expect(app.find(Card).length).toBe(projectIds.length);
 });
@@ -100,51 +97,51 @@ it("renders month names at the top of the columns", () => {
 });
 
 it("prevents default event handling on dragover", () => {
-  const preventDefault = jest.fn();
+  const preventDefault = vi.fn();
   defaultApp.simulate("dragover", { preventDefault });
   expect(preventDefault).toHaveBeenCalled();
 });
 
 it("prevents default event handling on drop", () => {
-  const preventDefault = jest.fn();
+  const preventDefault = vi.fn();
   defaultApp.simulate("drop", { preventDefault, dataTransfer: { files: [] } });
   expect(preventDefault).toHaveBeenCalled();
 });
 
 it("calls drop handler when browser support the DataTransferItemList interface", () => {
   const mockFile = { MOCK: "FILE" };
-  const importFile = jest.fn();
+  const importFile = vi.fn();
   const app = renderApp({ importFile });
   app.simulate("drop", {
     preventDefault: () => {},
     dataTransfer: {
-      items: [{ kind: "file", getAsFile: () => mockFile }]
-    }
+      items: [{ kind: "file", getAsFile: () => mockFile }],
+    },
   });
   expect(importFile).toHaveBeenCalledWith(mockFile);
 });
 
 it("calls drop handler when browser support the DataTransfer interface", () => {
   const mockFile = { MOCK: "FILE" };
-  const importFile = jest.fn();
+  const importFile = vi.fn();
   const app = renderApp({ importFile });
   app.simulate("drop", {
     preventDefault: () => {},
     dataTransfer: {
-      files: [mockFile]
-    }
+      files: [mockFile],
+    },
   });
   expect(importFile).toHaveBeenCalledWith(mockFile);
 });
 
 it("doesn't call drop handler it wasn't a file that was dropped", () => {
-  const importFile = jest.fn();
+  const importFile = vi.fn();
   const app = renderApp({ importFile });
   app.simulate("drop", {
     preventDefault: () => {},
     dataTransfer: {
-      items: [{ kind: "string", getAsFile: () => {} }]
-    }
+      items: [{ kind: "string", getAsFile: () => {} }],
+    },
   });
   expect(importFile).not.toHaveBeenCalled();
 });
@@ -158,23 +155,11 @@ it("displays errors as a list if errorMessage prop is an array", () => {
   const errorMessage = ["Error 1", "Error 2"];
   const app = renderApp({ errorMessage });
   expect(app.find(".App-content li").length).toBe(2);
-  expect(
-    app
-      .find(".App-content li")
-      .at(0)
-      .text()
-  ).toBe("Error 1");
-  expect(
-    app
-      .find(".App-content li")
-      .at(1)
-      .text()
-  ).toBe("Error 2");
+  expect(app.find(".App-content li").at(0).text()).toBe("Error 1");
+  expect(app.find(".App-content li").at(1).text()).toBe("Error 2");
 });
 
 it("can map default state to props", () => {
   const state = reducer(undefined as any, { type: "DUMMY_ACTION" });
-  expect(
-    mapStateToProps(state, { readFileAsText: jest.fn() })
-  ).toMatchSnapshot();
+  expect(mapStateToProps(state, { readFileAsText: vi.fn() })).toMatchSnapshot();
 });

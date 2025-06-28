@@ -1,6 +1,5 @@
-import * as React from "react";
 import { connect } from "react-redux";
-import { getTitle, State } from "../../reducer";
+import { getTitle, type State } from "../../reducer";
 import Logo from "../Logo";
 import Selectable from "../Selectable";
 import "./Header.css";
@@ -25,7 +24,7 @@ export function HeaderPresentation({ title }: { title?: string }) {
 }
 
 const Header = connect((state: State) => ({
-  title: getTitle(state)
+  title: getTitle(state),
 }))(HeaderPresentation);
 
 export default Header;

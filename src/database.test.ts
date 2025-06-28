@@ -7,19 +7,19 @@ describe("init", () => {
 
   it("creates a schema in the GrizzlyPassDatabase with default data", async () => {
     const projects = {
-      createIndex: jest.fn()
+      createIndex: vi.fn(),
     };
     const db = {
-      createObjectStore: jest.fn(name => {
+      createObjectStore: vi.fn((name) => {
         if (name === "Projects") return projects;
-      })
+      }),
     };
-    const openRequest: any = {
+    const openRequest = {
       onsuccess: null,
-      onupgradeneeded: null
+      onupgradeneeded: null,
     };
-    const indexedDB: any = {
-      open: jest.fn(() => {
+    const indexedDB = {
+      open: vi.fn(() => {
         setTimeout(() => {
           expect(openRequest.onupgradeneeded).not.toBe(null);
           if (openRequest.onupgradeneeded)
@@ -29,7 +29,7 @@ describe("init", () => {
             openRequest.onsuccess({ target: { result: db } });
         }, 0);
         return openRequest;
-      })
+      }),
     };
 
     const dbResult = await init({ indexedDB });
@@ -37,34 +37,36 @@ describe("init", () => {
     expect(indexedDB.open).toHaveBeenCalledWith("GrizzlyPassDatabase", 1);
     expect(db.createObjectStore).toHaveBeenCalledWith("Documents", {
       keyPath: "id",
-      autoIncrement: true
+      autoIncrement: true,
     });
     expect(db.createObjectStore).toHaveBeenCalledWith("Projects", {
       keyPath: "id",
-      autoIncrement: true
+      autoIncrement: true,
     });
     expect(db.createObjectStore).toHaveBeenCalledWith("Labels", {
       keyPath: "id",
-      autoIncrement: true
+      autoIncrement: true,
     });
-    expect(
-      projects.createIndex
-    ).toHaveBeenCalledWith("documentId", "documentId", { unique: false });
+    expect(projects.createIndex).toHaveBeenCalledWith(
+      "documentId",
+      "documentId",
+      { unique: false },
+    );
   });
 
   it("rejects the promise if on error is called", async () => {
     const request: any = {
       onerror: null,
-      error: { error: "error" }
+      error: { error: "error" },
     };
     const indexedDB: any = {
-      open: jest.fn(() => {
+      open: vi.fn(() => {
         setTimeout(() => {
           expect(request.onerror).not.toBe(null);
           if (request.onerror) request.onerror({ error: "error" });
         }, 0);
         return request;
-      })
+      }),
     };
 
     try {
@@ -78,23 +80,23 @@ describe("init", () => {
 
   it("rejects the promise if the requested object store already exists", async () => {
     const db = {
-      createObjectStore: jest.fn(() => {
+      createObjectStore: vi.fn(() => {
         const error = { error: "object store already exists" };
         throw error;
-      })
+      }),
     };
     const request: any = {
-      onupgradeneeded: null
+      onupgradeneeded: null,
     };
     const indexedDB: any = {
-      open: jest.fn(() => {
+      open: vi.fn(() => {
         setTimeout(() => {
           expect(request.onupgradeneeded).not.toBe(null);
           if (request.onupgradeneeded)
             request.onupgradeneeded({ target: { result: db } });
         }, 0);
         return request;
-      })
+      }),
     };
 
     try {

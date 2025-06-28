@@ -1,9 +1,13 @@
-import * as moment from "moment";
-import * as React from "react";
+import moment from "moment";
 import { connect } from "react-redux";
 import { updateProject } from "../../actions";
-import { getEditable, getProject, getLabelInfo, State } from "../../reducer";
-import { Project, LabelInfo } from "../../types";
+import {
+  getEditable,
+  getProject,
+  getLabelInfo,
+  type State,
+} from "../../reducer";
+import type { Project, LabelInfo } from "../../types";
 import DatePicker from "../DatePicker";
 import Label from "../Label";
 import ProgressBar from "../ProgressBar";
@@ -21,7 +25,7 @@ export function CardPresentation({
   readonly,
   project,
   labelInfo,
-  updateProject
+  updateProject,
 }: CardProps) {
   if (!project) return null;
 
@@ -29,7 +33,7 @@ export function CardPresentation({
 
   const labelsDiv = !labelInfo.length ? null : (
     <div className="Card-labels">
-      {labelInfo.map(labelInfo => (
+      {labelInfo.map((labelInfo) => (
         <div key={labelInfo.id} className="Card-label">
           <Label labelInfo={labelInfo} readonly={readonly} />
         </div>
@@ -37,7 +41,9 @@ export function CardPresentation({
     </div>
   );
 
-  const className = ["Card", readonly && "isReadonly"].filter(f => f).join(" ");
+  const className = ["Card", readonly && "isReadonly"]
+    .filter((f) => f)
+    .join(" ");
 
   return (
     <div className={className}>
@@ -62,7 +68,7 @@ function renderTextElement(
   wholeProject: Project,
   attr: "title" | "person",
   readonly: boolean,
-  onChange: (project: Project) => void
+  onChange: (project: Project) => void,
 ) {
   const text = wholeProject[attr];
 
@@ -72,7 +78,7 @@ function renderTextElement(
       <input
         value={text}
         placeholder={attr === "title" ? "Title" : "Person"}
-        onChange={e => onChange({ ...wholeProject, [attr]: e.target.value })}
+        onChange={(e) => onChange({ ...wholeProject, [attr]: e.target.value })}
       />
     );
 }
@@ -81,7 +87,7 @@ function renderDate(
   wholeProject: Project,
   attr: "time",
   readonly: boolean,
-  onChange: (project: Project) => void
+  onChange: (project: Project) => void,
 ) {
   const time = wholeProject[attr];
   const date = moment(time).format("D MMMM");
@@ -92,7 +98,7 @@ function renderDate(
       <DatePicker
         readonly={readonly}
         time={time}
-        onTimeChange={time => onChange({ ...wholeProject, time })}
+        onTimeChange={(time) => onChange({ ...wholeProject, time })}
       />
     );
 }
@@ -103,12 +109,14 @@ function mapStateToProps(state: State, { projectId }: { projectId: string }) {
   return {
     readonly: !getEditable(state),
     project,
-    labelInfo: project ? project.labels.map(id => getLabelInfo(state, id)) : []
+    labelInfo: project
+      ? project.labels.map((id) => getLabelInfo(state, id))
+      : [],
   };
 }
 
 const mapDispatchToProps = {
-  updateProject
+  updateProject,
 };
 
 const Card = connect(mapStateToProps, mapDispatchToProps)(CardPresentation);

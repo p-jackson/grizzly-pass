@@ -1,6 +1,5 @@
-import * as React from "react";
 import { Button, Wrapper, Menu, MenuItem } from "react-aria-menubutton";
-import { LabelInfo } from "../../types";
+import type { LabelInfo } from "../../types";
 import "./Label.css";
 
 interface LabelProps {
@@ -34,7 +33,7 @@ export default function Label({ labelInfo, readonly }: LabelProps) {
 }
 
 function renderMenuItems(labelTitles: string[]) {
-  return labelTitles.map(title => (
+  return labelTitles.map((title) => (
     <li key={title}>
       <MenuItem className="Label-menuItem">{title}</MenuItem>
     </li>

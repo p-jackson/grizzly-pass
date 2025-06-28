@@ -1,10 +1,7 @@
 {
-  "compilerOptions": {
-    "plugins": [{ "name": "tslint-language-service" }],
-    "target": "es2017",
-    "module": "commonjs",
-    "jsx": "react",
-    "strict": true,
-    "moduleResolution": "node"
-  }
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

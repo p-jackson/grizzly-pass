@@ -1,15 +1,15 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`can create a SelectTab action with no tab selected 1`] = `
-Object {
+{
   "tabId": undefined,
   "type": "SELECT_TAB",
 }
 `;
 
 exports[`creates a LoadLabel action 1`] = `
-Object {
-  "label": Object {
+{
+  "label": {
     "id": "1",
     "title": "title",
   },
@@ -18,10 +18,10 @@ Object {
 `;
 
 exports[`creates a LoadProject action 1`] = `
-Object {
-  "project": Object {
+{
+  "project": {
     "id": "1",
-    "labels": Array [],
+    "labels": [],
     "person": "person",
     "progress": 0,
     "status": "ontrack",
@@ -33,15 +33,15 @@ Object {
 `;
 
 exports[`creates a LoadProjectJsonFailure action 1`] = `
-Object {
+{
   "errorMessage": "error",
   "type": "LOAD_PROJECT_JSON_FAILURE",
 }
 `;
 
 exports[`creates a LoadProjectJsonFailure action with multiple errors 1`] = `
-Object {
-  "errorMessage": Array [
+{
+  "errorMessage": [
     "error1",
     "error2",
   ],
@@ -50,10 +50,10 @@ Object {
 `;
 
 exports[`creates a LoadProjectJsonSuccess action 1`] = `
-Object {
-  "data": Object {
-    "labels": Array [],
-    "projects": Array [],
+{
+  "data": {
+    "labels": [],
+    "projects": [],
     "title": undefined,
   },
   "type": "LOAD_PROJECT_JSON_SUCCESS",
@@ -61,17 +61,17 @@ Object {
 `;
 
 exports[`creates a SelectTab action 1`] = `
-Object {
+{
   "tabId": "edit",
   "type": "SELECT_TAB",
 }
 `;
 
 exports[`creates an UpdateProject action 1`] = `
-Object {
-  "project": Object {
+{
+  "project": {
     "id": "1",
-    "labels": Array [
+    "labels": [
       "1",
       "2",
       "3",

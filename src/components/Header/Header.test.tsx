@@ -1,5 +1,4 @@
 import { shallow } from "enzyme";
-import * as React from "react";
 import { HeaderPresentation } from "../Header";
 import Logo from "../Logo";
 import Selectable from "../Selectable";
@@ -11,12 +10,9 @@ it("contains a logo", () => {
 });
 
 it("renders the document title in selectable text", () => {
-  expect(
-    header
-      .find("h1")
-      .find(Selectable)
-      .prop("children")
-  ).toBe("Projects 2017");
+  expect(header.find("h1").find(Selectable).prop("children")).toBe(
+    "Projects 2017",
+  );
 });
 
 it("doesn't have a header element when there's no title", () => {

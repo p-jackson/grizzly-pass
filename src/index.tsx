@@ -1,5 +1,4 @@
-import * as debugFactory from "debug";
-import * as React from "react";
+import debugFactory from "debug";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
@@ -10,17 +9,15 @@ import reducer from "./reducer";
 import "./index.css";
 
 const debug = debugFactory("gp:main");
-(debugFactory as any).log = console.log.bind(console);
-
-const { version: appVersion } = require("../package.json");
+debugFactory.log = console.log.bind(console);
 
 async function run() {
-  console.log(appVersion);
+  console.log(__APP_VERSION__);
 
   const store = createStore(
     reducer,
     (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-      (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+      (window as any).__REDUX_DEVTOOLS_EXTENSION__(),
   );
   store.dispatch(loadDemoData());
 
@@ -28,8 +25,8 @@ async function run() {
     <Provider store={store}>
       <App readFileAsText={readFileAsText(FileReader)} />
     </Provider>,
-    document.getElementById("root")
+    document.getElementById("root"),
   );
 }
 
-run().catch(e => debug(e.stack || e));
+run().catch((e) => debug(e.stack || e));
