@@ -1,5 +1,5 @@
-import { shallow } from "enzyme";
-import Label from "../Label";
+// @vitest-environment jsdom
+import { render, screen } from "@testing-library/react";
 import { LegendPresentation } from "../Legend";
 
 const labels = [
@@ -17,31 +17,19 @@ const labels = [
   },
 ];
 
-const legend = shallow(<LegendPresentation labels={labels} />);
-
 it("contains a <Label /> and title for each used label", () => {
-  expect(legend.find(Label).length).toBe(2);
-  expect(legend.find(".Legend-labelTitle").length).toBe(2);
-});
-
-it("passes label into to <Label /> props", () => {
-  const legend = shallow(<LegendPresentation labels={labels.slice(0, 1)} />);
-  expect(legend.find(Label).props()).toMatchObject({
-    labelInfo: {
-      id: "3",
-      initial: "A",
-      colour: "#ff0",
-      title: "Apple",
-    },
-  });
+  render(<LegendPresentation labels={labels} />);
+  expect(screen.getByText("A")).toBeInTheDocument();
+  expect(screen.getByText("O")).toBeInTheDocument();
 });
 
 it("uses readonly <Label />s", () => {
-  const legend = shallow(<LegendPresentation labels={labels.slice(0, 1)} />);
-  expect(legend.find(Label).prop("readonly")).toBe(true);
+  render(<LegendPresentation labels={labels.slice(0, 1)} />);
+  expect(screen.getByTitle("Apple")).not.toHaveRole("button");
+  expect(screen.getByTitle("Apple")).toHaveTextContent("A");
 });
 
 it("displays the labels title", () => {
-  const legend = shallow(<LegendPresentation labels={labels.slice(0, 1)} />);
-  expect(legend.find(".Legend-labelTitle").text()).toBe("Apple");
+  render(<LegendPresentation labels={labels.slice(0, 1)} />);
+  expect(screen.getByText("Apple")).toHaveClass("Legend-labelTitle");
 });

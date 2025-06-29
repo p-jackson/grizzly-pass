@@ -1,21 +1,18 @@
-import { shallow } from "enzyme";
+// @vitest-environment jsdom
+import { render, screen } from "@testing-library/react";
 import { HeaderPresentation } from "../Header";
-import Logo from "../Logo";
-import Selectable from "../Selectable";
-
-const header = shallow(<HeaderPresentation title="Projects 2017" />);
 
 it("contains a logo", () => {
-  expect(header.find(Logo).length).toBe(1);
+  render(<HeaderPresentation title="Projects 2017" />);
+  expect(screen.getByText("GP")).toHaveClass("Logo");
 });
 
 it("renders the document title in selectable text", () => {
-  expect(header.find("h1").find(Selectable).prop("children")).toBe(
-    "Projects 2017",
-  );
+  render(<HeaderPresentation title="Projects 2017" />);
+  expect(screen.getByRole("heading")).toHaveTextContent("Projects 2017");
 });
 
 it("doesn't have a header element when there's no title", () => {
-  const header = shallow(<HeaderPresentation />);
-  expect(header.find("h1").length).toBe(0);
+  render(<HeaderPresentation />);
+  expect(screen.queryByRole("heading")).not.toBeInTheDocument();
 });

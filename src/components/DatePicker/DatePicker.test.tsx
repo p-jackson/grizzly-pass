@@ -1,7 +1,6 @@
-import { shallow } from "enzyme";
-import { subDays } from "date-fns";
-import moment from "moment";
-import { SingleDatePicker } from "react-dates";
+// @vitest-environment jsdom
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import DatePicker from "../DatePicker";
 
 function renderDatePicker({
@@ -13,7 +12,7 @@ function renderDatePicker({
   time?: string;
   handleTimeChange?: (time: string) => void;
 } = {}) {
-  return shallow(
+  return render(
     <DatePicker
       readonly={readonly}
       time={time}
@@ -22,50 +21,46 @@ function renderDatePicker({
   );
 }
 
-it("it only displays a single month", () => {
-  const picker = renderDatePicker();
-  expect(picker.find(SingleDatePicker).prop("numberOfMonths")).toBe(1);
+it("it only displays a single month", async () => {
+  const user = userEvent.setup();
+  renderDatePicker();
+  await user.click(screen.getByRole("button"));
+  expect(screen.getAllByRole("grid")).toHaveLength(1);
 });
 
-it("passes the time as a moment object to the SDP", () => {
+it("selects the time prop when first opened", async () => {
+  const user = userEvent.setup();
   const time = "2017-04-08T11:04:13.234Z";
-  const picker = renderDatePicker({ time });
-  expect(picker.find(SingleDatePicker).prop("date")).toEqual(moment(new Date(time)));
+
+  renderDatePicker({ time });
+  await user.click(screen.getByRole("button", { name: "8 April" }));
+
+  expect(screen.getByRole("button", { name: /selected/ })).toHaveTextContent(
+    "8",
+  );
 });
 
-it("disables the SDP if readonly", () => {
-  const picker = renderDatePicker({ readonly: true });
-  expect(picker.find(SingleDatePicker).prop("disabled")).toBe(true);
+it("disables the date picker if readonly", () => {
+  renderDatePicker({ readonly: true });
+  expect(screen.getByRole("button", { name: "8 April" })).toBeDisabled();
 });
 
-it("enables the SDP if not readonly", () => {
-  const picker = renderDatePicker({ readonly: false });
-  expect(picker.find(SingleDatePicker).prop("disabled")).toBe(false);
+it("enables the date picker if not readonly", () => {
+  renderDatePicker({ readonly: false });
+  expect(screen.getByRole("button", { name: "8 April" })).toBeEnabled();
 });
 
-it("allows users to choose dates in the past", () => {
-  expect.hasAssertions();
-
-  const picker = renderDatePicker();
-  const rangeChecker = picker.find(SingleDatePicker).prop("isOutsideRange");
-
-  if (rangeChecker) expect(rangeChecker(subDays(new Date(), 1))).toBe(false);
-});
-
-it("keeps the focus prop in sync with the onFocusChange event", () => {
-  const picker = renderDatePicker();
-  const onFocusChange = picker.find(SingleDatePicker).prop("onFocusChange");
-  onFocusChange({ focused: true });
-  expect(picker.find(SingleDatePicker).prop("focused")).toBe(true);
-  onFocusChange({ focused: false });
-  expect(picker.find(SingleDatePicker).prop("focused")).toBe(false);
-});
-
-it("calls onTimeChange prop when date is changed", () => {
+it("calls onTimeChange prop when date is changed", async () => {
+  const user = userEvent.setup();
   const handleTimeChange = vi.fn();
-  const picker = renderDatePicker({ handleTimeChange });
-  const onDateChange = picker.find(SingleDatePicker).prop("onDateChange");
-  const now = moment();
-  onDateChange(now);
-  expect(handleTimeChange).toHaveBeenCalledWith(now.format());
+  const time = "2017-04-08T11:04:13.234Z";
+
+  renderDatePicker({ time, handleTimeChange });
+  await user.click(screen.getByRole("button", { name: "8 April" }));
+  await user.click(screen.getByRole("button", { name: /22/ }));
+
+  expect(handleTimeChange).toHaveBeenCalledWith(
+    expect.stringMatching(/^2017-04-22/),
+  );
+  expect(screen.getByRole("button", { name: "22 April" })).toBeInTheDocument();
 });

@@ -1,9 +1,13 @@
-import moment from "moment";
-import { SingleDatePicker } from "react-dates";
-import { formatISO } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { PureComponent } from "react";
 import { uniqueId } from "../../unique-id";
-import "./DatePicker.scss";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 
 interface Props {
   readonly: boolean;
@@ -12,8 +16,8 @@ interface Props {
 }
 
 interface State {
-  focused: boolean;
   date: Date;
+  open: boolean;
 }
 
 export default class DatePicker extends PureComponent<Props, State> {
@@ -24,33 +28,38 @@ export default class DatePicker extends PureComponent<Props, State> {
     super(props);
     this.id = uniqueId();
     this.state = {
-      focused: false,
       date: new Date(this.props.time),
+      open: false,
     };
   }
 
   render() {
-    const handleChange = (date: moment.Moment) => {
-      const asDate = new Date(date.format());
-      this.setState({ date: asDate });
-      this.props.onTimeChange(formatISO(asDate));
+    const handleSelect = (date: Date) => {
+      this.setState({ date });
+      this.props.onTimeChange(formatISO(date));
     };
 
-    const { focused, date } = this.state;
+    const { open, date } = this.state;
 
     return (
       <div className="DatePicker">
-        <SingleDatePicker
-          id={this.id}
-          date={moment(date)}
-          onDateChange={handleChange}
-          focused={focused}
-          onFocusChange={({ focused }) => this.setState({ focused: !!focused })}
-          disabled={this.props.readonly}
-          numberOfMonths={1}
-          isOutsideRange={() => false}
-          displayFormat="D MMMM"
-        />
+        <Popover open={open} onOpenChange={(open) => this.setState({ open })}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" disabled={this.props.readonly}>
+              {format(date, "d MMMM")}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <Calendar
+              id={this.id}
+              mode="single"
+              selected={date}
+              defaultMonth={date}
+              captionLayout="dropdown"
+              onSelect={handleSelect}
+            />
+          </PopoverContent>
+        </Popover>
       </div>
     );
   }

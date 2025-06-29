@@ -1,8 +1,8 @@
-import { shallow } from "enzyme";
+// @vitest-environment jsdom
+import { render } from "@testing-library/react";
 import Logo from "../Logo";
 
-const logo = shallow(<Logo />);
-
 it("contains the letters GP", () => {
-  expect(logo.text()).toBe("GP");
+  const { container } = render(<Logo />);
+  expect(container).toHaveTextContent("GP");
 });

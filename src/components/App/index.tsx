@@ -57,6 +57,7 @@ export function AppPresentation({
   return (
     <div
       className="App"
+      data-testid="dropzone"
       onDrop={(e) => handleDrop(importFile, e)}
       onDragOver={handleDragOver}
     >

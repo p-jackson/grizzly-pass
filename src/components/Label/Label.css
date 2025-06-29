@@ -10,31 +10,3 @@
   font-weight: 600;
   font-size: 16px;
 }
-
-.Label-wrapper {
-  position: relative;
-}
-
-.Label-button {
-  cursor: pointer;
-}
-
-.Label-menu {
-  position: absolute;
-  right: 0;
-  margin-top: 4px;
-  z-index: 1;
-  background: #fff;
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.05),
-    0 0 0 1px rgba(0, 0, 0, 0.07);
-  border-radius: 3px;
-}
-
-.Label-menu li {
-  list-style: none;
-}
-
-.Label-menuItem {
-  padding: 10px;
-}

@@ -1,4 +1,5 @@
 import debug from "debug";
+import "@testing-library/jest-dom";
 
 // Debug package should use STDOUT instead of STDERR
 debug.log = console.log.bind(console);

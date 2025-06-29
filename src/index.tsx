@@ -1,5 +1,5 @@
 import debugFactory from "debug";
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { loadDemoData } from "./actions";
@@ -21,11 +21,11 @@ async function run() {
   );
   store.dispatch(loadDemoData());
 
-  render(
+  const root = createRoot(document.getElementById("root")!);
+  root.render(
     <Provider store={store}>
       <App readFileAsText={readFileAsText(FileReader)} />
     </Provider>,
-    document.getElementById("root"),
   );
 }
 
